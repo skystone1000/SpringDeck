@@ -1,0 +1,11 @@
+# The doc-link checker's HEAD-probe cache. Regenerated on demand, and stale
+# entries would otherwise be committed and then trusted.
+tools/.doc-link-cache.json
+
+# macOS
+.DS_Store
+
+# There is no build step and no package manager in the app path. If either of
+# these appears, something has gone wrong.
+node_modules/
+dist/
