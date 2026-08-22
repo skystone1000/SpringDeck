@@ -1,0 +1,325 @@
+/* ==========================================================================
+   themes.css — THE TOKEN LAYER
+
+   This is the only file in the application that may contain a colour literal.
+   A grep for a hex value or `rgba(` across styles.css, components.css,
+   rail.css, theory.css, animations.css and print.css must return nothing.
+
+   Two layers live here, and the distinction matters:
+
+     PRIMITIVES     the design system verbatim — surfaces, the accent ramp, the
+                    three priority tiers, the nine category hues, the 4pt scale,
+                    four semantic radii, two durations. Literals allowed.
+
+     SEMANTIC       the meanings this codebase needs that a palette does not —
+                    shadows, syntax colours, diagram parts, state colours. Every
+                    one of these RESOLVES TO A PRIMITIVE rather than introducing
+                    a new colour. That is how the single-colour-file rule
+                    survives the fact that a code viewer needs seven of them.
+
+   Declared exceptions are at the bottom of the file, in one block, so they can
+   be read rather than discovered.
+   ========================================================================== */
+
+:root {
+    /* ---- Type ------------------------------------------------------------
+       Three families, three jobs. Display carries headings and the wordmark,
+       sans carries everything readable, mono carries code and anything the
+       reader is meant to compare character by character. Every family has a
+       real fallback chain: the app must be readable with the font CDN blocked.
+       -------------------------------------------------------------------- */
+    --font-display: "Bricolage Grotesque", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-sans:    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    --font-mono:    "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+    --text-display: 44px;
+    --text-h1:      28px;
+    --text-h2:      20px;
+    --text-body:    15px;
+    --text-small:   13px;   /* a FLOOR, not a suggestion */
+    --text-micro:   11px;
+
+    --leading-body:   1.65;
+    --leading-answer: 1.7;
+    --measure:        72ch;
+
+    /* ---- Code ------------------------------------------------------------
+       Tokens rather than values in place, because the source text and the line
+       gutter must agree exactly or the numbers drift away from the lines.
+       -------------------------------------------------------------------- */
+    --code-size:    13px;
+    --code-leading: 1.6;
+    --code-pad-y:   12px;
+    --code-pad-x:   16px;
+
+    /* ---- Space — 4pt scale ----------------------------------------------
+       12 inside a card, 16 between cards, 48 between page blocks.
+       -------------------------------------------------------------------- */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+
+    /* ---- Radius — semantic, not sized ------------------------------------
+       The name says WHERE it goes. Under sm/md/lg/xl a row and a card drifted
+       apart every time someone reached for the nearest-looking value.
+       -------------------------------------------------------------------- */
+    --radius-input: 6px;
+    --radius-row:   10px;
+    --radius-card:  14px;
+    --radius-pill:  999px;
+
+    /* ---- Motion — there is no third --------------------------------------- */
+    --transition-hover: 120ms;
+    --transition-panel: 200ms;
+    --ease-standard: cubic-bezier(0.2, 0, 0.2, 1);
+
+    /* ---- Layout constants ------------------------------------------------
+       The header height is repeated as the sidebar's `top` and in
+       scroll-padding-top / scroll-margin-top. Change all of them together —
+       which is why it is one token.
+       -------------------------------------------------------------------- */
+    --rail-width:      64px;
+    --sidebar-width:   280px;
+    --header-height:   60px;
+    --content-max:     980px;
+}
+
+/* ==========================================================================
+   PRIMITIVES — light theme (the default)
+   ========================================================================== */
+
+:root {
+    /* Accent. Spring's green, ramped.
+       TWO working steps by design: 500 on dark, 600 on light. 500 fails
+       contrast against white at small sizes, and shrinking the text is not an
+       answer when --text-small is a floor. */
+    --accent-100:  #EAF4E0;
+    --accent-300:  #A9D97F;
+    --accent-500:  #6DB33F;
+    --accent-600:  #4F8A2B;
+    --accent-700:  #3A6620;
+    --accent-wash: #F3F9EC;
+    --accent-work: var(--accent-600);   /* the step that passes contrast HERE */
+
+    /* Surfaces */
+    --ds-canvas:        #FAFAF7;
+    --ds-surface:       #FFFFFF;
+    --ds-raised:        #FFFFFF;
+    --ds-sunken:        #F3F4F0;
+    --ds-border:        #E2E5DD;
+    --ds-border-subtle: #EDEFEA;
+    --ds-text:          #191C17;
+    --ds-muted:         #5A6156;
+    --ds-faint:         #8A9184;
+    --ds-veil:          rgba(25, 28, 23, 0.06);
+    --ds-veil-strong:   rgba(25, 28, 23, 0.14);
+    --ds-hover:         rgba(25, 28, 23, 0.04);
+    --ds-glass:         rgba(255, 255, 255, 0.82);
+    --ds-scrim:         rgba(25, 28, 23, 0.45);
+
+    /* Priority tiers.
+       SOFT FILLS WITH A RANK DOT, never outlined red and yellow badges — those
+       read as errors and warnings, and a must-know question is neither. The
+       third tier is neutral on purpose: optional content should recede rather
+       than compete for the same attention as the short list. */
+    --tier-must-bg:    #FBEAEA;
+    --tier-must-dot:   #C4433F;
+    --tier-must-ink:   #9E312E;
+    --tier-should-bg:  #FAF1DC;
+    --tier-should-dot: #C08A20;
+    --tier-should-ink: #856011;
+    --tier-good-bg:    #EFF1EE;
+    --tier-good-dot:   #9AA294;
+    --tier-good-ink:   #5A6156;
+
+    /* The nine category hues, plus slate. THERE IS NO TENTH.
+       If a spec asks for a colour outside this ramp, take the nearest member
+       and say so in a comment where the substitution is made. */
+    --hue-violet-bg:  #F0EBFB;  --hue-violet-ink:  #6842C2;
+    --hue-sky-bg:     #E6F1FC;  --hue-sky-ink:     #1C6BB2;
+    --hue-teal-bg:    #DFF2EF;  --hue-teal-ink:    #147268;
+    --hue-lime-bg:    #ECF5DB;  --hue-lime-ink:    #55771B;
+    --hue-pink-bg:    #FBEAF1;  --hue-pink-ink:    #B3356A;
+    --hue-amber-bg:   #FCF1DB;  --hue-amber-ink:   #925F10;
+    --hue-indigo-bg:  #E9ECFA;  --hue-indigo-ink:  #3F4EBE;
+    --hue-rose-bg:    #FBEAEA;  --hue-rose-ink:    #B63737;
+    --hue-fuchsia-bg: #F7EAF9;  --hue-fuchsia-ink: #933AA1;
+    --hue-slate-bg:   #EDEFEC;  --hue-slate-ink:   #545B50;
+}
+
+/* ==========================================================================
+   PRIMITIVES — dark theme
+   Only the values that must change are redefined. Type, space, radius and
+   motion are theme-independent and are not repeated.
+   ========================================================================== */
+
+:root[data-theme="dark"] {
+    --accent-100:  #1B2A12;
+    --accent-300:  #4F8A2B;
+    --accent-500:  #8ECB63;
+    --accent-600:  #A9D97F;
+    --accent-700:  #C6E6A8;
+    --accent-wash: #17210F;
+    --accent-work: var(--accent-500);
+
+    --ds-canvas:        #0E100D;
+    --ds-surface:       #161914;
+    --ds-raised:        #1D211B;
+    --ds-sunken:        #0A0C09;
+    --ds-border:        #2B302A;
+    --ds-border-subtle: #21261F;
+    --ds-text:          #E9EBE6;
+    --ds-muted:         #9BA395;
+    --ds-faint:         #6C7467;
+    --ds-veil:          rgba(233, 235, 230, 0.07);
+    --ds-veil-strong:   rgba(233, 235, 230, 0.16);
+    --ds-hover:         rgba(233, 235, 230, 0.05);
+    --ds-glass:         rgba(22, 25, 20, 0.82);
+    --ds-scrim:         rgba(0, 0, 0, 0.62);
+
+    --tier-must-bg:    #33191A;
+    --tier-must-dot:   #E07A76;
+    --tier-must-ink:   #F0A6A3;
+    --tier-should-bg:  #2E2410;
+    --tier-should-dot: #D4A44A;
+    --tier-should-ink: #E9C784;
+    --tier-good-bg:    #1D211B;
+    --tier-good-dot:   #6C7467;
+    --tier-good-ink:   #9BA395;
+
+    --hue-violet-bg:  #241D38;  --hue-violet-ink:  #B49BF0;
+    --hue-sky-bg:     #13273A;  --hue-sky-ink:     #7CBCEE;
+    --hue-teal-bg:    #0F2F2B;  --hue-teal-ink:    #5FC7B8;
+    --hue-lime-bg:    #1D2A10;  --hue-lime-ink:    #A9CD6D;
+    --hue-pink-bg:    #331621;  --hue-pink-ink:    #EE8FB6;
+    --hue-amber-bg:   #2E2310;  --hue-amber-ink:   #E0B25E;
+    --hue-indigo-bg:  #191D39;  --hue-indigo-ink:  #96A2F2;
+    --hue-rose-bg:    #331717;  --hue-rose-ink:    #EE8E8E;
+    --hue-fuchsia-bg: #2B1632;  --hue-fuchsia-ink: #DB93E6;
+    --hue-slate-bg:   #1D211B;  --hue-slate-ink:   #9BA395;
+}
+
+/* Readers who have chosen nothing get their system preference. An explicit
+   choice is stamped on the root element by the inline <head> script and wins
+   over this block, in both directions. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --accent-100:  #1B2A12;
+        --accent-300:  #4F8A2B;
+        --accent-500:  #8ECB63;
+        --accent-600:  #A9D97F;
+        --accent-700:  #C6E6A8;
+        --accent-wash: #17210F;
+        --accent-work: var(--accent-500);
+
+        --ds-canvas:        #0E100D;
+        --ds-surface:       #161914;
+        --ds-raised:        #1D211B;
+        --ds-sunken:        #0A0C09;
+        --ds-border:        #2B302A;
+        --ds-border-subtle: #21261F;
+        --ds-text:          #E9EBE6;
+        --ds-muted:         #9BA395;
+        --ds-faint:         #6C7467;
+        --ds-veil:          rgba(233, 235, 230, 0.07);
+        --ds-veil-strong:   rgba(233, 235, 230, 0.16);
+        --ds-hover:         rgba(233, 235, 230, 0.05);
+        --ds-glass:         rgba(22, 25, 20, 0.82);
+        --ds-scrim:         rgba(0, 0, 0, 0.62);
+
+        --tier-must-bg:    #33191A;
+        --tier-must-dot:   #E07A76;
+        --tier-must-ink:   #F0A6A3;
+        --tier-should-bg:  #2E2410;
+        --tier-should-dot: #D4A44A;
+        --tier-should-ink: #E9C784;
+        --tier-good-bg:    #1D211B;
+        --tier-good-dot:   #6C7467;
+        --tier-good-ink:   #9BA395;
+
+        --hue-violet-bg:  #241D38;  --hue-violet-ink:  #B49BF0;
+        --hue-sky-bg:     #13273A;  --hue-sky-ink:     #7CBCEE;
+        --hue-teal-bg:    #0F2F2B;  --hue-teal-ink:    #5FC7B8;
+        --hue-lime-bg:    #1D2A10;  --hue-lime-ink:    #A9CD6D;
+        --hue-pink-bg:    #331621;  --hue-pink-ink:    #EE8FB6;
+        --hue-amber-bg:   #2E2310;  --hue-amber-ink:   #E0B25E;
+        --hue-indigo-bg:  #191D39;  --hue-indigo-ink:  #96A2F2;
+        --hue-rose-bg:    #331717;  --hue-rose-ink:    #EE8E8E;
+        --hue-fuchsia-bg: #2B1632;  --hue-fuchsia-ink: #DB93E6;
+        --hue-slate-bg:   #1D211B;  --hue-slate-ink:   #9BA395;
+    }
+}
+
+/* ==========================================================================
+   THE SEMANTIC LAYER
+
+   Names for the meanings this codebase needs. Every value below resolves to a
+   primitive above. Nothing here introduces a colour.
+   ========================================================================== */
+
+:root {
+    /* Focus. One ring, both themes, every focusable thing. A second focus
+       style is a second thing to keep accessible, and it never stays so. */
+    --focus-ring: var(--accent-work);
+
+    /* State. Named for meaning, resolved to the ramp. */
+    --state-success: var(--hue-lime-ink);
+    --state-warning: var(--hue-amber-ink);
+    --state-danger:  var(--hue-rose-ink);
+    --state-info:    var(--hue-sky-ink);
+
+    /* Code viewer. Seven colours, and the reason the semantic layer exists:
+       without it, a syntax highlighter would put seven literals in a
+       stylesheet that is not allowed to hold any. */
+    --syntax-keyword:    var(--hue-violet-ink);
+    --syntax-type:       var(--hue-sky-ink);
+    --syntax-string:     var(--hue-lime-ink);
+    --syntax-number:     var(--hue-amber-ink);
+    --syntax-annotation: var(--hue-teal-ink);
+    --syntax-comment:    var(--ds-faint);
+    --syntax-meta:       var(--hue-pink-ink);
+    --syntax-plain:      var(--ds-text);
+    --syntax-surface:    var(--ds-sunken);
+    --syntax-gutter:     var(--ds-faint);
+
+    /* Diagrams, drawn by the app rather than vendored. */
+    --diagram-node-bg:     var(--ds-raised);
+    --diagram-node-border: var(--ds-border);
+    --diagram-line:        var(--ds-faint);
+    --diagram-label:       var(--ds-muted);
+    --diagram-accent:      var(--accent-work);
+
+    /* Shadows. rgba is permitted here and only here. */
+    --shadow-card:   0 1px 2px var(--ds-veil), 0 2px 8px var(--ds-veil);
+    --shadow-raised: 0 2px 4px var(--ds-veil), 0 8px 24px var(--ds-veil);
+    --shadow-drawer: 0 0 0 100vmax var(--ds-scrim);
+}
+
+/* ==========================================================================
+   DECLARED EXCEPTIONS
+
+   Two, and they are written here rather than hidden inside a rule so that a
+   reader looking for "why is this colour not from the ramp" finds the answer
+   in the place they are already looking.
+   ========================================================================== */
+
+:root {
+    /* 1. --figure-plate is white in BOTH themes.
+       Vendored documentation figures are frequently transparent PNGs drawn for
+       a white page. On a dark canvas an unplated figure becomes an outline of
+       nothing. Inverting them instead would misrepresent their author while
+       still carrying their attribution, which is worse than a white rectangle.
+       Figures render unmodified, on a plate. */
+    --figure-plate: #FFFFFF;
+    --figure-plate-ink: #191C17;
+}
+
+/* 2. The accent has two working steps — 500 on dark, 600 on light — because
+      500 fails contrast against a white surface at --text-small, and
+      --text-small is a floor rather than a suggestion. Consumers must use
+      --accent-work, never --accent-500 directly, for anything text-sized.
+      The swap itself is above, in each theme's primitive block. */
