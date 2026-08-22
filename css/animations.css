@@ -1,0 +1,131 @@
+/* ==========================================================================
+   animations.css — keyframes, reveal states, reduced-motion overrides
+
+   Every animation here is decoration. GSAP may never load; the CDN may be
+   blocked; the reader may have asked for reduced motion. In all three cases
+   the content must still be readable and every state must resolve to its
+   FINISHED appearance rather than to nothing.
+
+   No colour literals.
+   ========================================================================== */
+
+/* ---- Topic transition ---------------------------------------------------
+   renderTopic() fades the container out for 150ms, rebuilds, and fades back.
+   The duration is matched in navigation.js, where search waits for it before
+   scrolling a card into view.
+   ---------------------------------------------------------------------- */
+
+#topicContainer {
+    opacity: 1;
+    transition: opacity 150ms var(--ease-standard);
+}
+#topicContainer.topic-transitioning { opacity: 0; }
+
+/* ---- Card reveal --------------------------------------------------------
+   The stagger is driven by a MutationObserver on the topic container rather
+   than by the render function calling into GSAP, so anything that appends a
+   .question-card animates correctly no matter which code path appended it.
+
+   This CSS is the fallback when GSAP is absent. When GSAP runs it clears its
+   inline styles on completion and hands control back here — otherwise a
+   leftover transform fights the card's hover transition.
+   ---------------------------------------------------------------------- */
+
+@keyframes card-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: none; }
+}
+
+.question-card, .module-card, .drill-card, .predict-card {
+    animation: card-in 260ms var(--ease-standard) both;
+}
+
+/* ---- Answer expand ------------------------------------------------------ */
+
+@keyframes answer-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+.question-card.is-open .question-body { animation: answer-in 180ms var(--ease-standard) both; }
+
+/* ---- Diagram draw-on ----------------------------------------------------
+   The stroke is drawn by animating dashoffset to zero. Under reduced motion
+   this must RESOLVE TO THE FINISHED STATE — a diagram that never appears is a
+   worse outcome than one that appears instantly.
+   ---------------------------------------------------------------------- */
+
+@keyframes draw-on {
+    to { stroke-dashoffset: 0; }
+}
+.diagram .draw {
+    stroke-dasharray: var(--draw-length, 1000);
+    stroke-dashoffset: var(--draw-length, 1000);
+    animation: draw-on 700ms var(--ease-standard) forwards;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+.diagram .fade { animation: fade-in 400ms var(--ease-standard) 300ms both; }
+
+/* ---- Predict reveal ----------------------------------------------------- */
+
+@keyframes reveal-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: none; }
+}
+.predict-card.is-revealed .predict-reveal { animation: reveal-in 220ms var(--ease-standard) both; }
+
+/* ---- Search results ----------------------------------------------------- */
+
+@keyframes panel-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: none; }
+}
+.search-results.is-open { animation: panel-in var(--transition-panel) var(--ease-standard) both; }
+
+/* ---- Progress pulse -----------------------------------------------------
+   Fires when a progress toggle is pressed. Every mutation dispatches one
+   event and three places read the same store, so the checkbox, the sidebar
+   count and the header bar move together.
+   ---------------------------------------------------------------------- */
+
+@keyframes progress-pulse {
+    0%   { transform: scale(1); }
+    45%  { transform: scale(1.12); }
+    100% { transform: scale(1); }
+}
+.progress-toggle.just-pressed { animation: progress-pulse 240ms var(--ease-standard); }
+
+/* ==========================================================================
+   Reduced motion
+
+   The particle background is disabled ENTIRELY — not slowed, not faded. Every
+   other animation collapses to a no-op, and every one of them resolves to its
+   finished state. The diagram rule is the one that matters: without the
+   dashoffset override the strokes would sit permanently at their starting
+   offset, which is invisible.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+
+    #bgCanvas { display: none; }
+
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Resolve, do not merely stop. */
+    .diagram .draw {
+        stroke-dasharray: none;
+        stroke-dashoffset: 0;
+        animation: none;
+    }
+    .diagram .fade { opacity: 1; animation: none; }
+    #topicContainer.topic-transitioning { opacity: 1; }
+}

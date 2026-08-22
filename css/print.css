@@ -1,0 +1,136 @@
+/* ==========================================================================
+   print.css — the night-before revision sheet
+
+   Linked with media="print". This is NOT a sixth mode: it adds no rail item,
+   no route, no storage key and no entry in modes.js. It is the one reading
+   mode the five-mode rail cannot serve, and it is the mode a candidate wants
+   most at eleven o'clock the night before.
+
+   Use it with ?cram to print the must-know set, or with ?tier= to print one
+   band. The active filter is printed as a header line so the sheet says what
+   it is a filter OF — a stack of paper that does not name its own scope is
+   worse than no stack of paper.
+
+   No colour literals: this file consumes the token layer like every other.
+   ========================================================================== */
+
+@media print {
+
+    /* Force the light palette. A dark theme on paper is a cartridge of ink
+       and an unreadable page. */
+    :root, :root[data-theme="dark"] {
+        --ds-canvas:        #FFF;
+        --ds-surface:       #FFF;
+        --ds-raised:        #FFF;
+        --ds-sunken:        #F4F4F2;
+        --ds-border:        #CCC;
+        --ds-border-subtle: #E4E4E0;
+        --ds-text:          #000;
+        --ds-muted:         #333;
+        --ds-faint:         #666;
+        --accent-work:      #2F5A1B;
+        --accent-wash:      #F2F7EC;
+    }
+
+    @page { margin: 16mm 14mm; }
+
+    body {
+        background: #FFF;
+        color: #000;
+        font-size: 10.5pt;
+        line-height: 1.45;
+    }
+
+    /* The furniture goes. None of it is navigable on paper. */
+    .rail,
+    .mode-header,
+    .sidebar,
+    .drawer-overlay,
+    .back-to-top,
+    .search,
+    .search-results,
+    .skip-link,
+    #bgCanvas,
+    .tier-filter,
+    .alphabet-grid,
+    .progress-toggle,
+    .question-actions,
+    .question-chevron,
+    .cram-banner button {
+        display: none !important;
+    }
+
+    .main-content {
+        margin: 0;
+        padding: 0;
+        min-height: 0;
+    }
+    #topicContainer { max-width: none; opacity: 1 !important; }
+
+    /* Everything the reader collapsed is expanded. A printed sheet with the
+       answers hidden is a printed sheet of questions, which is a different
+       and much less useful document. */
+    .question-body { display: block !important; }
+    .predict-reveal { display: block !important; }
+    .drill-sketch > *:not(summary) { display: block !important; }
+    .drill-sketch summary { display: none !important; }
+
+    /* Say what this is a filter of. */
+    .cram-banner {
+        display: flex !important;
+        background: none;
+        border: 1px solid var(--ds-border);
+        border-radius: 0;
+        color: #000;
+        font-size: 9pt;
+    }
+
+    /* Keep a card whole where the page allows it. */
+    .question-card,
+    .drill-card,
+    .predict-card,
+    .block-definition,
+    .block-comparison,
+    .block-version,
+    .figure {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        box-shadow: none;
+        border-color: var(--ds-border);
+    }
+
+    .chapter, .subsection-heading, .glossary-letter {
+        break-after: avoid;
+        page-break-after: avoid;
+    }
+
+    .topic-title, .track-title { break-after: avoid; }
+
+    /* Code has to stay legible and must not be clipped at the margin. */
+    .code-source, .code-output-lines {
+        overflow: visible;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-size: 8.5pt;
+    }
+    .code-block { break-inside: avoid; }
+
+    /* Reference links are useless as underlined text on paper; print the URL
+       once, after the label. */
+    .answer a::after,
+    .block-prose a::after {
+        content: " (" attr(href) ")";
+        font-size: 8pt;
+        color: var(--ds-faint);
+        word-break: break-all;
+    }
+    /* Except in-page anchors, where the URL says nothing. */
+    .answer a[href^="#"]::after,
+    .block-prose a[href^="#"]::after { content: ""; }
+
+    /* No animation on paper, and every state resolves to its finished form. */
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
