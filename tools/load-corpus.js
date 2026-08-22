@@ -41,6 +41,37 @@ function scriptOrder() {
     return order;
 }
 
+/* The names the data layer declares. Needed because of a subtlety that costs
+   an hour if you meet it without warning:
+
+   `const topics = [...]` at the top level of a script does NOT create a
+   property on the global object. It creates a lexical binding in the script
+   scope. The browser is fine with this — later scripts share that scope and
+   see the binding — but a vm context exposes only global-object properties,
+   so reading `context.topics` finds nothing at all.
+
+   The fix is to append a block that copies each binding onto globalThis, which
+   is exactly the visibility the browser already gives the next script. The
+   list is here, in one place, and a `typeof` guard means a name that does not
+   exist yet in the current phase is simply skipped. */
+const DECLARED = [
+    // question corpus
+    'topics', 'topicTracks', 'languages', 'runnableLanguages',
+    'topicsInTrack', 'topicById',
+    // theory corpus
+    'theoryTracks', 'theoryModules', 'theoryByModuleId',
+    'subjectTracks', 'modulesInTrack', 'blocksOfTypeInTrack',
+    // the mode registry
+    'appModes', 'modeById', 'modeForRoute', 'modeForKey'
+];
+
+function exportBlock() {
+    return '\n;/* ==== exposed for the vm, see DECLARED ==== */\n' +
+        DECLARED
+            .map(name => `if (typeof ${name} !== 'undefined') globalThis.${name} = ${name};`)
+            .join('\n') + '\n';
+}
+
 function loadCorpus(options) {
     const opts = options || {};
     const files = scriptOrder();
@@ -55,7 +86,7 @@ function loadCorpus(options) {
 
     const source = files
         .map(f => '/* ==== ' + f + ' ==== */\n' + fs.readFileSync(path.join(ROOT, f), 'utf8'))
-        .join('\n;\n');
+        .join('\n;\n') + exportBlock();
 
     const context = vm.createContext({ console });
 
@@ -82,7 +113,7 @@ function loadCorpus(options) {
     return context;
 }
 
-module.exports = { loadCorpus, scriptOrder, ROOT };
+module.exports = { loadCorpus, scriptOrder, DECLARED, ROOT };
 
 /* Run directly to see what the browser would see. */
 if (require.main === module) {
