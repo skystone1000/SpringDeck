@@ -1,0 +1,558 @@
+/* ==========================================================================
+   theory.css — everything the theory, drill, predict and glossary modes add
+
+   The twelve block types render here. A thirteenth is a case in renderBlock()
+   plus a rule in this file, and nothing else in the application learns about
+   it — which is the whole reason the block list is a switch rather than a
+   family of components.
+
+   No colour literals.
+   ========================================================================== */
+
+/* ---- Track and module cards --------------------------------------------- */
+
+.track-section { margin-bottom: var(--space-7); }
+
+.track-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid var(--hue-bg, var(--ds-border));
+}
+.track-title {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    color: var(--hue-ink, var(--ds-text));
+}
+.track-meta { font-size: var(--text-small); color: var(--ds-faint); }
+
+.module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-4);
+}
+
+.module-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-card);
+    background: var(--ds-surface);
+    text-align: left;
+    cursor: pointer;
+    transition: border-color var(--transition-hover) var(--ease-standard),
+                box-shadow var(--transition-hover) var(--ease-standard);
+}
+.module-card:hover { border-color: var(--hue-ink, var(--ds-veil-strong)); box-shadow: var(--shadow-card); }
+
+.module-order {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    font-variant-numeric: tabular-nums;
+    color: var(--ds-faint);
+}
+.module-title { font-size: var(--text-body); font-weight: 600; }
+.module-tagline { font-size: var(--text-small); color: var(--ds-muted); }
+
+.module-foot {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+    font-size: var(--text-micro);
+    color: var(--ds-faint);
+}
+
+.module-progress-bar {
+    flex: 1;
+    height: 3px;
+    border-radius: var(--radius-pill);
+    background: var(--ds-sunken);
+    overflow: hidden;
+}
+.module-progress-fill { height: 100%; background: var(--hue-ink, var(--accent-work)); }
+
+/* Prerequisites always resolve to a LOWER order, so the reading path can
+   never ask for knowledge it has not taught. validate-theory.js enforces it. */
+.module-prereqs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    font-size: var(--text-micro);
+    color: var(--ds-faint);
+}
+.module-prereq {
+    padding: 0 var(--space-2);
+    border-radius: var(--radius-input);
+    background: var(--ds-sunken);
+}
+
+/* ---- Chapter ------------------------------------------------------------ */
+
+.chapter {
+    margin-bottom: var(--space-7);
+    scroll-margin-top: calc(var(--header-height) + var(--space-4));
+}
+
+.chapter-head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+.chapter-title {
+    flex: 1;
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    letter-spacing: -0.01em;
+}
+.chapter-summary {
+    max-width: var(--measure);
+    margin-bottom: var(--space-4);
+    font-size: var(--text-body);
+    color: var(--ds-muted);
+}
+
+/* Why this gets asked, and what a good answer contains. The failure mode at
+   three to seven years is not ignorance, it is shape. */
+.interview-angle {
+    max-width: var(--measure);
+    margin: var(--space-4) 0;
+    padding: var(--space-3) var(--space-4);
+    border-left: 2px solid var(--accent-300);
+    border-radius: 0 var(--radius-row) var(--radius-row) 0;
+    background: var(--accent-wash);
+    font-size: var(--text-small);
+}
+.interview-angle-label {
+    display: block;
+    margin-bottom: var(--space-1);
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-work);
+}
+
+.chapter-read {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+}
+
+/* ==========================================================================
+   The twelve block types
+   ========================================================================== */
+
+.block { max-width: var(--measure); margin-bottom: var(--space-4); }
+.block-wide { max-width: none; }
+
+/* 1 — prose. The default. */
+.block-prose { line-height: var(--leading-answer); }
+.block-prose code {
+    padding: 1px 5px;
+    border-radius: var(--radius-input);
+    background: var(--ds-sunken);
+    font-size: 0.92em;
+}
+
+/* 2 — definition. HARVESTED INTO THE GLOSSARY. Every term arrives there with
+      the chapter that owns it already attached, which makes the backlink a
+      property of the data rather than a link somebody must remember to write. */
+.block-definition {
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-row);
+    background: var(--ds-surface);
+}
+.definition-term {
+    display: inline-block;
+    margin-bottom: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    font-weight: 600;
+    color: var(--accent-work);
+}
+.block-definition[data-important="true"] { border-left: 2px solid var(--accent-500); }
+
+/* 3 — types. An enumeration with a name per item. */
+.block-types { }
+.types-title { margin-bottom: var(--space-3); font-size: var(--text-body); font-weight: 600; }
+.types-item {
+    display: grid;
+    grid-template-columns: minmax(120px, 200px) 1fr;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-top: 1px solid var(--ds-border-subtle);
+}
+.types-item:first-of-type { border-top: 0; }
+.types-name { font-family: var(--font-mono); font-size: var(--text-small); color: var(--ds-text); }
+.types-desc { font-size: var(--text-small); color: var(--ds-muted); }
+
+/* 4 — syntax. Delegates to the question bank's renderCodeBlock(), so a
+      snippet looks identical in both corpora. It may carry an output pane and
+      notes; the validator applies the same output.kind rule it applies to a
+      question snippet. */
+.block-syntax { max-width: none; }
+.syntax-notes { margin-top: var(--space-2); font-size: var(--text-small); color: var(--ds-muted); }
+
+/* 5 — table. */
+.block-table { max-width: none; }
+.block-table table { width: 100%; border-collapse: collapse; font-size: var(--text-small); }
+.block-table th, .block-table td {
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--ds-border-subtle);
+    text-align: left;
+    vertical-align: top;
+}
+.block-table thead th {
+    border-bottom: 1px solid var(--ds-border);
+    font-weight: 600;
+    color: var(--ds-muted);
+    white-space: nowrap;
+}
+
+/* 6 — comparison. Two things, aspect by aspect. */
+.block-comparison { max-width: none; }
+.comparison-title { margin-bottom: var(--space-3); font-size: var(--text-body); font-weight: 600; }
+.comparison-grid {
+    display: grid;
+    grid-template-columns: minmax(100px, 160px) 1fr 1fr;
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-row);
+    overflow: hidden;
+    font-size: var(--text-small);
+}
+.comparison-grid > * { padding: var(--space-2) var(--space-3); border-top: 1px solid var(--ds-border-subtle); }
+.comparison-grid > :nth-child(-n + 3) { border-top: 0; background: var(--ds-sunken); font-weight: 600; }
+.comparison-aspect { color: var(--ds-muted); }
+
+/* 7 — pitfall. A callout. */
+.block-pitfall, .block-tip {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-row);
+    border-left: 2px solid;
+    font-size: var(--text-small);
+}
+.block-pitfall { background: var(--tier-must-bg); border-left-color: var(--tier-must-dot); }
+.callout-label {
+    display: block;
+    margin-bottom: var(--space-1);
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+.block-pitfall .callout-label { color: var(--tier-must-ink); }
+
+/* 8 — tip. "Saying it well". */
+.block-tip { background: var(--accent-wash); border-left-color: var(--accent-300); }
+.block-tip .callout-label { color: var(--accent-work); }
+
+/* 9 — diagram. Delegates to renderDiagram(). */
+.block-diagram { max-width: none; }
+
+/* 10 — drill. THE SYNTHESIS MODE'S UNIT.
+       The sketch is collapsed on creation, and that is not a style choice:
+       reading the solution before attempting the drill is the one way to get
+       nothing out of it. */
+.block-drill, .drill-card {
+    max-width: none;
+    margin-bottom: var(--space-5);
+    padding: var(--space-4);
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-card);
+    background: var(--ds-surface);
+}
+.drill-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+}
+.drill-title { flex: 1; font-size: var(--text-body); font-weight: 600; }
+
+/* Drill tiers reuse the --tier-* tokens. There are four tiers and three
+   tokens; the mapping is fixed here so a tier-1 drill and a must-know chapter
+   carry the same weight rather than speaking two colour languages.
+     tier 1 (machine coding) -> must     tier 3 (implementation) -> should
+     tier 2 (HLD design)     -> must     tier 4 (debug/review)   -> good     */
+.drill-tier {
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-micro);
+    font-weight: 600;
+}
+.drill-tier[data-tier="1"], .drill-tier[data-tier="2"] { background: var(--tier-must-bg);   color: var(--tier-must-ink); }
+.drill-tier[data-tier="3"]                             { background: var(--tier-should-bg); color: var(--tier-should-ink); }
+.drill-tier[data-tier="4"]                             { background: var(--tier-good-bg);   color: var(--tier-good-ink); }
+
+.drill-minutes {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    font-variant-numeric: tabular-nums;
+    color: var(--ds-faint);
+}
+
+.drill-prompt { margin-bottom: var(--space-4); line-height: var(--leading-answer); }
+
+.watch-for { margin-bottom: var(--space-3); }
+.watch-for-label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ds-faint);
+}
+.watch-for ul { margin: 0; padding-left: var(--space-5); font-size: var(--text-small); color: var(--ds-muted); }
+
+.drill-sketch summary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-pill);
+    color: var(--ds-muted);
+    font-size: var(--text-small);
+    cursor: pointer;
+    list-style: none;
+}
+.drill-sketch summary::-webkit-details-marker { display: none; }
+.drill-sketch summary:hover { color: var(--ds-text); border-color: var(--ds-veil-strong); }
+.drill-sketch[open] summary { margin-bottom: var(--space-3); }
+
+/* 11 — predict. THE ONLY BLOCK TYPE THAT WITHHOLDS SOMETHING.
+       It hands its snippet to renderCodeBlock() deliberately WITHOUT the
+       output field, because that function paints an output pane directly under
+       the code — the one thing this block exists to prevent. The answer is
+       built alongside and hidden behind a class, so revealing is a class
+       toggle rather than a render and a revealed block survives a filter
+       change. */
+.block-predict, .predict-card {
+    max-width: none;
+    margin-bottom: var(--space-5);
+    padding: var(--space-4);
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-card);
+    background: var(--ds-surface);
+}
+.predict-prompt { margin-bottom: var(--space-3); font-weight: 500; }
+
+/* The reveal pane's heading derives from the artefact, so a reader is never
+   shown a console frame around something that never touched a console. */
+.predict-artefact {
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-input);
+    background: var(--hue-teal-bg);
+    color: var(--hue-teal-ink);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+}
+
+.predict-options { display: grid; gap: var(--space-2); margin: var(--space-4) 0; }
+.predict-option {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-row);
+    background: none;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    cursor: pointer;
+    transition: border-color var(--transition-hover) var(--ease-standard),
+                background var(--transition-hover) var(--ease-standard);
+}
+.predict-option:hover:not(:disabled) { border-color: var(--ds-veil-strong); background: var(--ds-hover); }
+.predict-option-key {
+    flex: none;
+    width: 18px;
+    color: var(--ds-faint);
+    font-weight: 600;
+}
+.predict-option.is-correct { border-color: var(--state-success); background: var(--accent-wash); }
+.predict-option.is-wrong   { border-color: var(--tier-must-dot); background: var(--tier-must-bg); }
+.predict-option:disabled   { cursor: default; }
+
+.predict-reveal { display: none; margin-top: var(--space-4); }
+.predict-card.is-revealed .predict-reveal { display: block; }
+
+/* The wrong answer people actually give, and why. A distractor that is
+   obviously wrong makes the exercise worthless. */
+.predict-distractor {
+    margin-top: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-left: 2px solid var(--tier-should-dot);
+    border-radius: 0 var(--radius-row) var(--radius-row) 0;
+    background: var(--tier-should-bg);
+    font-size: var(--text-small);
+    color: var(--tier-should-ink);
+}
+
+/* Where an answer is not machine-verifiable it must SAY SO IN THE DATA. */
+.predict-verification {
+    margin-top: var(--space-3);
+    font-size: var(--text-micro);
+    color: var(--ds-faint);
+}
+
+.verdict-strip { display: flex; gap: var(--space-1); flex-wrap: wrap; padding: 0 var(--space-3) var(--space-3); }
+.verdict-dot {
+    width: 8px; height: 8px;
+    border-radius: var(--radius-pill);
+    background: var(--ds-sunken);
+}
+/* Three states, not two. Right, wrong and unanswered are different things and
+   the store is a map for exactly this reason. */
+.verdict-dot[data-verdict="right"] { background: var(--state-success); }
+.verdict-dot[data-verdict="wrong"] { background: var(--tier-must-dot); }
+
+/* 12 — version. What changed, and when.
+       Backend truth is version-scoped, and a claim written into prose is
+       invisible to every validator and the most certain to become false. */
+.block-version {
+    max-width: none;
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-row);
+    overflow: hidden;
+}
+.version-title {
+    padding: var(--space-2) var(--space-4);
+    border-bottom: 1px solid var(--ds-border-subtle);
+    background: var(--ds-sunken);
+    font-size: var(--text-small);
+    font-weight: 600;
+}
+.version-item {
+    display: grid;
+    grid-template-columns: minmax(110px, 170px) 1fr;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-top: 1px solid var(--ds-border-subtle);
+    font-size: var(--text-small);
+}
+.version-item:first-of-type { border-top: 0; }
+.version-label { display: flex; flex-direction: column; gap: var(--space-1); }
+.version-name { font-family: var(--font-mono); font-size: var(--text-micro); color: var(--ds-muted); }
+.version-state {
+    align-self: flex-start;
+    padding: 0 var(--space-2);
+    border-radius: var(--radius-pill);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.version-state[data-state="was"]     { background: var(--ds-sunken);      color: var(--ds-faint); }
+.version-state[data-state="changed"] { background: var(--tier-should-bg); color: var(--tier-should-ink); }
+.version-state[data-state="is"]      { background: var(--accent-wash);    color: var(--accent-work); }
+.version-state[data-state="removed"] { background: var(--tier-must-bg);   color: var(--tier-must-ink); }
+.version-state[data-state="preview"] { background: var(--hue-violet-bg);  color: var(--hue-violet-ink); }
+
+/* ==========================================================================
+   Glossary
+   ========================================================================== */
+
+.alphabet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+    gap: var(--space-1);
+    margin-bottom: var(--space-4);
+}
+.alphabet-key {
+    display: grid;
+    place-items: center;
+    padding: var(--space-1) 0;
+    border: 0;
+    border-radius: var(--radius-input);
+    background: var(--ds-sunken);
+    color: var(--ds-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    cursor: pointer;
+}
+.alphabet-key:hover:not(:disabled) { background: var(--ds-veil); color: var(--ds-text); }
+.alphabet-key:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.glossary-letter {
+    margin: var(--space-6) 0 var(--space-3);
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    color: var(--ds-faint);
+    scroll-margin-top: calc(var(--header-height) + var(--space-4));
+}
+
+.glossary-entry {
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--ds-border-subtle);
+}
+.glossary-term {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    font-weight: 600;
+}
+.glossary-def { max-width: var(--measure); font-size: var(--text-small); color: var(--ds-muted); }
+.glossary-source { margin-top: var(--space-1); font-size: var(--text-micro); }
+
+/* Two derived chips, neither of which needs an authored field.
+   ASKED      — this word appears by name in a question somebody is asked.
+   ANNOTATION — the term begins with @, and Spring's vocabulary is half
+                annotations, so the A-Z needs to be scannable by kind. */
+.term-chip {
+    padding: 0 var(--space-2);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+.term-chip[data-kind="asked"]      { background: var(--accent-wash);   color: var(--accent-work); }
+.term-chip[data-kind="annotation"] { background: var(--hue-teal-bg);   color: var(--hue-teal-ink); }
+
+/* ==========================================================================
+   Cram banner — the filter lives in the hash, so it spans modules and is
+   shareable. A filter that reset on navigation would be useless for revision.
+   ========================================================================== */
+
+.cram-banner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-pill);
+    background: var(--tier-must-bg);
+    color: var(--tier-must-ink);
+    font-size: var(--text-small);
+}
+.cram-banner button {
+    margin-left: auto;
+    border: 0;
+    background: none;
+    color: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: var(--text-small);
+}
+
+@media (max-width: 600px) {
+    .types-item, .version-item { grid-template-columns: 1fr; gap: var(--space-1); }
+    .comparison-grid { grid-template-columns: 1fr; }
+    .comparison-grid > :nth-child(-n + 3) { background: var(--ds-sunken); }
+}
