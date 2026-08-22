@@ -16,27 +16,38 @@
 
 @media print {
 
-    /* Force the light palette. A dark theme on paper is a cartridge of ink
-       and an unreadable page. */
-    :root, :root[data-theme="dark"] {
-        --ds-canvas:        #FFF;
-        --ds-surface:       #FFF;
-        --ds-raised:        #FFF;
-        --ds-sunken:        #F4F4F2;
-        --ds-border:        #CCC;
-        --ds-border-subtle: #E4E4E0;
-        --ds-text:          #000;
-        --ds-muted:         #333;
-        --ds-faint:         #666;
-        --accent-work:      #2F5A1B;
-        --accent-wash:      #F2F7EC;
+    /* Force the light palette. A dark theme on paper is a spent cartridge and
+       an unreadable sheet.
+
+       These resolve to --print-* primitives declared in themes.css rather than
+       to literals. The first draft of this file inlined the eighteen hex
+       values and the Phase 0 grep for colour literals outside themes.css
+       caught it, which is precisely what that grep is for. */
+    :root,
+    :root[data-theme="dark"],
+    :root:not([data-theme="light"]) {
+        --ds-canvas:        var(--print-canvas);
+        --ds-surface:       var(--print-surface);
+        --ds-raised:        var(--print-surface);
+        --ds-sunken:        var(--print-sunken);
+        --ds-border:        var(--print-border);
+        --ds-border-subtle: var(--print-border-subtle);
+        --ds-text:          var(--print-text);
+        --ds-muted:         var(--print-muted);
+        --ds-faint:         var(--print-faint);
+        --accent-work:      var(--print-accent);
+        --accent-wash:      var(--print-accent-wash);
+        --ds-veil:          transparent;
+        --ds-veil-strong:   transparent;
+        --ds-hover:         transparent;
+        --ds-glass:         var(--print-surface);
     }
 
     @page { margin: 16mm 14mm; }
 
     body {
-        background: #FFF;
-        color: #000;
+        background: var(--ds-canvas);
+        color: var(--ds-text);
         font-size: 10.5pt;
         line-height: 1.45;
     }
@@ -81,7 +92,7 @@
         background: none;
         border: 1px solid var(--ds-border);
         border-radius: 0;
-        color: #000;
+        color: var(--ds-text);
         font-size: 9pt;
     }
 

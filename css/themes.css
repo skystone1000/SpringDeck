@@ -318,6 +318,31 @@
     --figure-plate-ink: #191C17;
 }
 
+/* ---- Print primitives ---------------------------------------------------
+   A printed page is always light: a dark theme on paper is a spent cartridge
+   and an unreadable sheet. print.css needs light values even when the reader
+   has data-theme="dark" stamped on the root element, and it cannot simply use
+   the :root block because [data-theme="dark"] has already overridden it.
+
+   So the light values it needs are named here, where colour literals are
+   allowed, and print.css consumes the names. This is not an exception to the
+   single-colour-file rule — it is the rule working. The first draft of
+   print.css inlined these eighteen values and the Phase 0 grep caught it.
+   -------------------------------------------------------------------------- */
+
+:root {
+    --print-canvas:        #FFFFFF;
+    --print-surface:       #FFFFFF;
+    --print-sunken:        #F4F4F2;
+    --print-border:        #C9C9C4;
+    --print-border-subtle: #E4E4E0;
+    --print-text:          #000000;
+    --print-muted:         #333333;
+    --print-faint:         #666666;
+    --print-accent:        #2F5A1B;
+    --print-accent-wash:   #F2F7EC;
+}
+
 /* 2. The accent has two working steps — 500 on dark, 600 on light — because
       500 fails contrast against a white surface at --text-small, and
       --text-small is a floor rather than a suggestion. Consumers must use
