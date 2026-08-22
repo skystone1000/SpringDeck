@@ -69,7 +69,8 @@ Opening `index.html` from disk must also work. Check it before every phase gate.
 This project hand-sets its commit dates, as DroidDeck does, so the history reads
 as the incremental build it describes rather than as one bulk import.
 
-- The history **starts on 2026-08-22** and advances forward.
+- The build history **starts on 2026-08-22** and advances forward. The two
+  planning documents that precede the code are dated 2026-08-21.
 - **15–17 commits per active day.**
 - After every two or three active days, **skip one or two days entirely.** A
   history with no gaps in it does not look like one a person produced.
@@ -81,10 +82,18 @@ Set both dates on every commit — Git takes the author date from
 `GIT_AUTHOR_DATE` and the committer date from `GIT_COMMITTER_DATE`, and a commit
 that sets only the first still sorts by the second:
 
+Feed the message on stdin with a quoted heredoc, never with `-m`. A body
+containing backticks, `[...]` or `$` gets mangled by the shell otherwise —
+this has already silently eaten a phrase out of one commit message here:
+
 ```bash
 GIT_AUTHOR_DATE="2026-08-22T10:15:00+05:30" \
 GIT_COMMITTER_DATE="2026-08-22T10:15:00+05:30" \
-git commit -m "Subject line" -m "Body paragraph explaining why."
+git commit -F - <<'MSG'
+Subject line
+
+Body paragraph explaining why.
+MSG
 ```
 
 Record the last date used at the bottom of this file so the next session
@@ -128,5 +137,36 @@ Where a cross-language comparison earns its place it is **prose in a
 
 | | |
 |---|---|
-| **Current phase** | Phase 0 — Skeleton |
-| **Last commit date used** | 2026-08-22 |
+| **Phases complete** | 0 — Skeleton · 1 — The tool chain |
+| **Next phase** | 2 — The question bank, core half (~355 questions across 10 topics) |
+| **Last commit date used** | 2026-08-22, 18 commits |
+| **Next active day** | 2026-08-23 |
+
+### Phase gates recorded
+
+**Phase 0 — Skeleton.** PASSED. The page renders in both themes; the code
+gutter and the code source agree on line count exactly. `grep -nE
+'#[0-9a-fA-F]{3,8}\b|rgba?\(' css/*.css | grep -v themes.css` returns nothing
+— it caught eighteen literals in `print.css` on the day it was written, which
+were moved into the token layer as `--print-*` primitives.
+
+**Phase 1 — The tool chain.** PASSED. `node tools/validate-questions.js` exits
+0, and every one of its seven checks was broken on purpose and confirmed to
+fire: bad tier, duplicate id, must-know with no reference, image with no
+attribution and no file on disk, `stdout` claimed for a non-runnable language,
+unknown language (a Kotlin snippet — the Java-only rule holds), disallowed tag,
+inline event handler.
+
+### Known blind spots — recorded now, not discovered in Phase 9
+
+- `check-doc-links.js` will follow HTTP redirects but **cannot see an HTML
+  meta-refresh**. Spring's documentation restructured its URL scheme between
+  the 2.x and 3.x reference layouts, and a stub page that answers 200 and
+  refreshes elsewhere will pass. Budget one manual link-reading pass per
+  documentation source, per phase that adds links.
+- SQL predict answers are dialect-dependent. Every `artefact: 'sql-result'`
+  entry must name the engine and version it was checked against. Write
+  "PostgreSQL 16", never "SQL".
+- `validate-questions.js` check 4 (images) has been exercised against a
+  synthetic failure but no real figure exists in the corpus yet. Re-confirm it
+  against the first vendored figure rather than assuming.
