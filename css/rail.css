@@ -1,0 +1,307 @@
+/* ==========================================================================
+   rail.css — the icon rail and the mode header
+
+   The rail is built from data/modes.js and from nothing else. Every value it
+   reads — the icon, the digit, the accent token name, the group — comes from
+   that array, which is why adding a mode is a data change rather than an edit
+   in four files.
+
+   No colour literals.
+   ========================================================================== */
+
+.rail {
+    padding: var(--space-3) 0;
+    gap: var(--space-2);
+    background: var(--ds-surface);
+    border-right: 1px solid var(--ds-border);
+}
+
+/* ---- Brand -------------------------------------------------------------- */
+
+.rail-brand {
+    display: grid;
+    place-items: center;
+    width: 36px; height: 36px;
+    margin-bottom: var(--space-3);
+    border-radius: var(--radius-row);
+    background: var(--accent-wash);
+    color: var(--accent-work);
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: -0.04em;
+}
+
+/* ---- Rail items --------------------------------------------------------- */
+
+#railItems {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    width: 100%;
+}
+
+.rail-item {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 40px; height: 40px;
+    border: 0;
+    border-radius: var(--radius-row);
+    background: none;
+    color: var(--ds-faint);
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition-hover) var(--ease-standard),
+                color var(--transition-hover) var(--ease-standard);
+}
+.rail-item:hover { background: var(--ds-hover); color: var(--ds-text); }
+
+/* --mode-accent is set inline from the mode's accentVar, which holds a TOKEN
+   NAME rather than a colour. A literal there would break the rule that
+   themes.css holds every colour in the application. */
+.rail-item[aria-selected="true"] {
+    background: var(--ds-sunken);
+    color: var(--mode-accent, var(--accent-work));
+}
+.rail-item[aria-selected="true"]::before {
+    content: "";
+    position: absolute;
+    left: calc(var(--space-2) * -1 - 2px);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px; height: 18px;
+    border-radius: var(--radius-pill);
+    background: var(--mode-accent, var(--accent-work));
+}
+
+/* The digit sits under the icon and is the keyboard hint. One place decides
+   when a mode digit is off — never five. */
+.rail-key {
+    position: absolute;
+    right: 3px; bottom: 1px;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--ds-faint);
+    opacity: 0;
+    transition: opacity var(--transition-hover) var(--ease-standard);
+}
+.rail-item:hover .rail-key, .rail-item:focus-visible .rail-key { opacity: 1; }
+
+/* ---- The divider -------------------------------------------------------
+   Two study modes above, three drill modes below. Load bearing rather than
+   decorative: the divider is what tells a reader that Questions and Theory
+   are places to learn and the other three are places to be tested.
+   validate-nav.js asserts the two groups stay contiguous, so the divider
+   still separates something.
+   ---------------------------------------------------------------------- */
+
+.rail-divider {
+    width: 24px;
+    height: 1px;
+    margin: var(--space-2) 0;
+    background: var(--ds-border);
+}
+
+/* ---- Rail footer: meter and theme switch -------------------------------- */
+
+.rail-foot {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* The meter shows THIS MODE's count and this mode's noun. There is
+   deliberately no function anywhere that adds the five together — an average
+   over five incompatible units is a sixth number true of nothing. */
+.rail-meter {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    padding: var(--space-2) 0;
+    border-radius: var(--radius-row);
+    background: var(--ds-sunken);
+    line-height: 1.1;
+}
+.rail-meter-value {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--mode-accent, var(--accent-work));
+}
+.rail-meter-noun {
+    font-size: 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ds-faint);
+}
+
+.theme-switch {
+    display: grid;
+    place-items: center;
+    width: 36px; height: 36px;
+    border: 0;
+    border-radius: var(--radius-row);
+    background: none;
+    color: var(--ds-faint);
+    cursor: pointer;
+    transition: background var(--transition-hover) var(--ease-standard),
+                color var(--transition-hover) var(--ease-standard);
+}
+.theme-switch:hover { background: var(--ds-hover); color: var(--ds-text); }
+.theme-switch svg { width: 17px; height: 17px; }
+
+/* One button, two glyphs, whichever is not current. */
+:root[data-theme="dark"] .icon-moon,
+:root:not([data-theme="light"]) .icon-moon { display: none; }
+:root[data-theme="dark"] .icon-sun,
+:root:not([data-theme="light"]) .icon-sun { display: block; }
+.icon-sun { display: none; }
+:root[data-theme="light"] .icon-sun { display: none; }
+:root[data-theme="light"] .icon-moon { display: block; }
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) .icon-moon { display: block; }
+    :root:not([data-theme="dark"]) .icon-sun { display: none; }
+}
+
+/* ==========================================================================
+   The mode header
+   ========================================================================== */
+
+.mode-header {
+    background: var(--ds-glass);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--ds-border);
+}
+
+.hamburger {
+    display: none;
+    place-items: center;
+    width: 34px; height: 34px;
+    border: 0;
+    border-radius: var(--radius-input);
+    background: none;
+    color: var(--ds-muted);
+    cursor: pointer;
+}
+.hamburger:hover { background: var(--ds-hover); color: var(--ds-text); }
+
+.mode-title {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+}
+
+.mode-meta {
+    font-size: var(--text-small);
+    color: var(--ds-faint);
+    white-space: nowrap;
+}
+
+.mode-progress {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+}
+
+.mode-progress-bar {
+    width: 96px; height: 4px;
+    border-radius: var(--radius-pill);
+    background: var(--ds-sunken);
+    overflow: hidden;
+}
+.mode-progress-fill {
+    height: 100%;
+    border-radius: var(--radius-pill);
+    background: var(--mode-accent, var(--accent-work));
+    transition: width var(--transition-panel) var(--ease-standard);
+}
+.mode-progress-text {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    font-variant-numeric: tabular-nums;
+    color: var(--ds-muted);
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   The sidebar — the shell of it. The five shapes it can take live in
+   theory.css, because four of the five belong to modes that file styles.
+   ========================================================================== */
+
+.sidebar {
+    padding: var(--space-4) var(--space-3) var(--space-7);
+    background: var(--ds-surface);
+    border-right: 1px solid var(--ds-border);
+}
+
+.sidebar-section { margin-bottom: var(--space-5); }
+
+.sidebar-section-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0 var(--space-3) var(--space-2);
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--hue-ink, var(--ds-faint));
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    border: 0;
+    border-radius: var(--radius-row);
+    background: none;
+    color: var(--ds-muted);
+    font-size: var(--text-small);
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background var(--transition-hover) var(--ease-standard),
+                color var(--transition-hover) var(--ease-standard);
+}
+.sidebar-link:hover { background: var(--ds-hover); color: var(--ds-text); }
+.sidebar-link.is-active {
+    background: var(--hue-bg, var(--accent-wash));
+    color: var(--hue-ink, var(--accent-work));
+    font-weight: 500;
+}
+
+.sidebar-link-title { flex: 1; min-width: 0; }
+
+.sidebar-count {
+    flex: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    font-variant-numeric: tabular-nums;
+    color: var(--ds-faint);
+}
+
+.sidebar-sublink {
+    padding-left: var(--space-6);
+    font-size: var(--text-micro);
+}
+
+@media (max-width: 768px) {
+    .hamburger { display: grid; }
+    .mode-meta { display: none; }
+}
+@media (max-width: 480px) {
+    .mode-title { display: none; }
+    .mode-progress-bar { width: 56px; }
+}
