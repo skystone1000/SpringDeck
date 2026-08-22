@@ -1,0 +1,577 @@
+/* ==========================================================================
+   components.css — everything inside the shell
+
+   The question bank's furniture: the topic header, key-topic pills, the tier
+   filter, question cards and their answers, code blocks, figures, tables and
+   the search panel.
+
+   Theory, drills, predict and the glossary add their own furniture in
+   theory.css. The rail and the mode header live in rail.css.
+
+   No colour literals.
+   ========================================================================== */
+
+/* ---- Topic header ------------------------------------------------------- */
+
+.topic-header {
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--ds-border-subtle);
+}
+
+.topic-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ds-faint);
+}
+
+.topic-title {
+    font-family: var(--font-display);
+    font-size: var(--text-h1);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-2);
+}
+
+.topic-meta {
+    font-size: var(--text-small);
+    color: var(--ds-muted);
+}
+
+/* The category hue travels on a data-hue attribute, never as a passed-down
+   colour. One attribute on the header tints the eyebrow and the rule beneath
+   the title together, so the colour and the kinship cannot drift apart. */
+[data-hue="violet"]  { --hue-bg: var(--hue-violet-bg);  --hue-ink: var(--hue-violet-ink); }
+[data-hue="sky"]     { --hue-bg: var(--hue-sky-bg);     --hue-ink: var(--hue-sky-ink); }
+[data-hue="teal"]    { --hue-bg: var(--hue-teal-bg);    --hue-ink: var(--hue-teal-ink); }
+[data-hue="lime"]    { --hue-bg: var(--hue-lime-bg);    --hue-ink: var(--hue-lime-ink); }
+[data-hue="pink"]    { --hue-bg: var(--hue-pink-bg);    --hue-ink: var(--hue-pink-ink); }
+[data-hue="amber"]   { --hue-bg: var(--hue-amber-bg);   --hue-ink: var(--hue-amber-ink); }
+[data-hue="indigo"]  { --hue-bg: var(--hue-indigo-bg);  --hue-ink: var(--hue-indigo-ink); }
+[data-hue="rose"]    { --hue-bg: var(--hue-rose-bg);    --hue-ink: var(--hue-rose-ink); }
+[data-hue="fuchsia"] { --hue-bg: var(--hue-fuchsia-bg); --hue-ink: var(--hue-fuchsia-ink); }
+[data-hue="slate"]   { --hue-bg: var(--hue-slate-bg);   --hue-ink: var(--hue-slate-ink); }
+
+.topic-header[data-hue] .topic-eyebrow { color: var(--hue-ink); }
+.topic-header[data-hue] { border-bottom-color: var(--hue-bg); }
+
+/* ---- Key-topic pills ---------------------------------------------------- */
+
+.key-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+}
+
+.key-topic {
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    background: var(--hue-bg, var(--ds-sunken));
+    color: var(--hue-ink, var(--ds-muted));
+    font-size: var(--text-micro);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* ---- Tier filter -------------------------------------------------------
+   Independent, not a floor: must-know alone to drill the short list,
+   should-know alone to find the gaps you have been skipping. A tier with
+   nothing in it is still SHOWN, disabled, so the reader learns the topic has
+   none rather than wondering where the control went.
+   ---------------------------------------------------------------------- */
+
+.tier-filter {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+}
+
+.tier-filter-label {
+    margin-right: var(--space-1);
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ds-faint);
+}
+
+.tier-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
+    background: var(--ds-sunken);
+    color: var(--ds-muted);
+    font-size: var(--text-small);
+    cursor: pointer;
+    transition: background var(--transition-hover) var(--ease-standard),
+                color var(--transition-hover) var(--ease-standard);
+}
+.tier-chip:hover:not(:disabled) { background: var(--ds-veil); }
+.tier-chip[aria-pressed="true"] { border-color: currentColor; }
+.tier-chip:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.tier-chip .tier-dot {
+    width: 7px; height: 7px;
+    border-radius: var(--radius-pill);
+    background: currentColor;
+    flex: none;
+}
+
+.tier-chip[data-tier="must-know"]   { background: var(--tier-must-bg);   color: var(--tier-must-ink); }
+.tier-chip[data-tier="must-know"] .tier-dot   { background: var(--tier-must-dot); }
+.tier-chip[data-tier="should-know"] { background: var(--tier-should-bg); color: var(--tier-should-ink); }
+.tier-chip[data-tier="should-know"] .tier-dot { background: var(--tier-should-dot); }
+.tier-chip[data-tier="good-to-know"]{ background: var(--tier-good-bg);   color: var(--tier-good-ink); }
+.tier-chip[data-tier="good-to-know"] .tier-dot{ background: var(--tier-good-dot); }
+
+.tier-count { font-variant-numeric: tabular-nums; opacity: 0.75; }
+
+/* ---- Subsection headings ------------------------------------------------ */
+
+.subsection-heading {
+    margin: var(--space-7) 0 var(--space-4);
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    letter-spacing: -0.01em;
+}
+.subsection-heading:first-child { margin-top: 0; }
+
+/* ---- Question card -----------------------------------------------------
+   Cards render collapsed. The answer, the code blocks and the diagram
+   containers are all built up front — only the diagram SVG is deferred, so
+   the container has been laid out before anything measures it.
+   ---------------------------------------------------------------------- */
+
+.question-card {
+    margin-bottom: var(--space-4);
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-card);
+    background: var(--ds-surface);
+    overflow: hidden;
+    transition: border-color var(--transition-hover) var(--ease-standard),
+                box-shadow var(--transition-hover) var(--ease-standard);
+}
+.question-card:hover { border-color: var(--ds-veil-strong); box-shadow: var(--shadow-card); }
+.question-card.is-open { border-color: var(--accent-300); }
+
+.question-head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-4);
+    border: 0;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+/* Question numbers stay STABLE under filtering. Card 3 is card 3 whether or
+   not cards 1 and 2 are hidden — gappy numbering is the right trade, because
+   the number is an identifier people cite. */
+.question-number {
+    flex: none;
+    min-width: 2.2ch;
+    padding-top: 1px;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    font-variant-numeric: tabular-nums;
+    color: var(--ds-faint);
+}
+
+.question-text {
+    flex: 1;
+    font-size: var(--text-body);
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.question-side {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.question-chevron {
+    color: var(--ds-faint);
+    transition: transform var(--transition-panel) var(--ease-standard);
+}
+.question-card.is-open .question-chevron { transform: rotate(90deg); }
+
+/* Priority tier badge — a soft fill and a rank dot. */
+.tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-micro);
+    font-weight: 600;
+    white-space: nowrap;
+}
+.tier-badge .tier-dot { width: 6px; height: 6px; border-radius: var(--radius-pill); }
+.tier-badge[data-tier="must-know"]    { background: var(--tier-must-bg);   color: var(--tier-must-ink); }
+.tier-badge[data-tier="must-know"] .tier-dot    { background: var(--tier-must-dot); }
+.tier-badge[data-tier="should-know"]  { background: var(--tier-should-bg); color: var(--tier-should-ink); }
+.tier-badge[data-tier="should-know"] .tier-dot  { background: var(--tier-should-dot); }
+.tier-badge[data-tier="good-to-know"] { background: var(--tier-good-bg);   color: var(--tier-good-ink); }
+.tier-badge[data-tier="good-to-know"] .tier-dot { background: var(--tier-good-dot); }
+
+/* ---- Answer body -------------------------------------------------------- */
+
+.question-body {
+    display: none;
+    padding: 0 var(--space-4) var(--space-4);
+    border-top: 1px solid var(--ds-border-subtle);
+}
+.question-card.is-open .question-body { display: block; }
+
+.answer {
+    max-width: var(--measure);
+    padding-top: var(--space-4);
+    line-height: var(--leading-answer);
+    color: var(--ds-text);
+}
+.answer strong { font-weight: 600; }
+.answer code {
+    padding: 1px 5px;
+    border-radius: var(--radius-input);
+    background: var(--ds-sunken);
+    font-size: 0.92em;
+}
+.answer table {
+    width: 100%;
+    margin-bottom: var(--space-3);
+    border-collapse: collapse;
+    font-size: var(--text-small);
+}
+.answer th, .answer td {
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--ds-border-subtle);
+    text-align: left;
+    vertical-align: top;
+}
+.answer th { font-weight: 600; color: var(--ds-muted); }
+
+/* ---- Progress controls -------------------------------------------------- */
+
+.question-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--ds-border-subtle);
+}
+
+.progress-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--ds-muted);
+    font-size: var(--text-small);
+    cursor: pointer;
+    transition: border-color var(--transition-hover) var(--ease-standard),
+                color var(--transition-hover) var(--ease-standard),
+                background var(--transition-hover) var(--ease-standard);
+}
+.progress-toggle:hover { border-color: var(--ds-veil-strong); color: var(--ds-text); }
+.progress-toggle[aria-pressed="true"] {
+    border-color: var(--accent-300);
+    background: var(--accent-wash);
+    color: var(--accent-work);
+    font-weight: 500;
+}
+
+/* The review-later store keeps a date, so a card deferred three weeks ago
+   reads as older than one deferred yesterday. */
+.review-date {
+    font-variant-numeric: tabular-nums;
+    font-size: var(--text-micro);
+    color: var(--ds-faint);
+}
+
+/* ---- Tags ---------------------------------------------------------------- */
+
+.question-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+}
+.question-tag {
+    padding: 1px var(--space-2);
+    border-radius: var(--radius-input);
+    background: var(--ds-sunken);
+    color: var(--ds-faint);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+}
+
+/* ---- Code block --------------------------------------------------------
+   Shared verbatim with the theory renderers. A snippet looks and behaves
+   identically in both corpora because it is the same function drawing it.
+   ---------------------------------------------------------------------- */
+
+.code-block {
+    margin: var(--space-4) 0;
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-row);
+    background: var(--syntax-surface);
+    overflow: hidden;
+}
+
+.code-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--code-pad-x);
+    border-bottom: 1px solid var(--ds-border-subtle);
+    background: var(--ds-surface);
+}
+
+.code-title { font-size: var(--text-small); font-weight: 500; color: var(--ds-muted); }
+
+.code-lang {
+    padding: 1px var(--space-2);
+    border-radius: var(--radius-input);
+    background: var(--ds-sunken);
+    color: var(--ds-faint);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.code-body { display: flex; }
+
+.code-gutter {
+    flex: none;
+    padding: var(--code-pad-y) var(--space-2) var(--code-pad-y) var(--code-pad-x);
+    border-right: 1px solid var(--ds-border-subtle);
+    color: var(--syntax-gutter);
+    font-family: var(--font-mono);
+    /* The gutter and the source share --code-size and --code-leading exactly.
+       Any drift between them and the numbers stop matching the lines. */
+    font-size: var(--code-size);
+    line-height: var(--code-leading);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    user-select: none;
+}
+
+.code-source {
+    flex: 1;
+    margin: 0;
+    padding: var(--code-pad-y) var(--code-pad-x);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: var(--code-size);
+    line-height: var(--code-leading);
+    color: var(--syntax-plain);
+    tab-size: 4;
+}
+
+.tok-keyword    { color: var(--syntax-keyword); font-weight: 500; }
+.tok-type       { color: var(--syntax-type); }
+.tok-string     { color: var(--syntax-string); }
+.tok-number     { color: var(--syntax-number); }
+.tok-annotation { color: var(--syntax-annotation); font-weight: 500; }
+.tok-comment    { color: var(--syntax-comment); font-style: italic; }
+.tok-meta       { color: var(--syntax-meta); }
+
+/* ---- Output pane -------------------------------------------------------
+   `stdout` is literal console text and is re-executed by run-snippets.js.
+   `trace` is prose about behaviour and is rendered as a numbered list and
+   LABELLED as such. Printing a fabricated "Output:" over code that cannot be
+   run teaches something false, which is worse than showing nothing — so the
+   two never share a presentation.
+   ---------------------------------------------------------------------- */
+
+.code-output {
+    border-top: 1px solid var(--ds-border-subtle);
+    background: var(--ds-surface);
+}
+
+.code-output-label {
+    padding: var(--space-2) var(--code-pad-x) 0;
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ds-faint);
+}
+
+.code-output-lines {
+    margin: 0;
+    padding: var(--space-2) var(--code-pad-x) var(--code-pad-y);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: var(--code-size);
+    line-height: var(--code-leading);
+    color: var(--ds-muted);
+}
+
+.code-output-trace {
+    margin: 0;
+    padding: var(--space-2) var(--code-pad-x) var(--code-pad-y) calc(var(--code-pad-x) + var(--space-5));
+    font-size: var(--text-small);
+    color: var(--ds-muted);
+}
+
+.code-output-explain {
+    padding: 0 var(--code-pad-x) var(--code-pad-y);
+    font-size: var(--text-small);
+    color: var(--ds-muted);
+}
+
+/* ---- Figures ------------------------------------------------------------
+   Vendored, never hotlinked, and rendered unmodified on a white plate under
+   the dark theme rather than inverted — editing someone's diagram while
+   keeping their attribution misrepresents them.
+   ---------------------------------------------------------------------- */
+
+.figure {
+    margin: var(--space-4) 0;
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-row);
+    overflow: hidden;
+}
+.figure-plate {
+    padding: var(--space-4);
+    background: var(--figure-plate);
+    text-align: center;
+}
+.figure-plate img { display: block; margin: 0 auto; height: auto; }
+.figure-caption {
+    padding: var(--space-3) var(--space-4);
+    border-top: 1px solid var(--ds-border-subtle);
+    background: var(--ds-surface);
+    font-size: var(--text-small);
+    color: var(--ds-muted);
+}
+/* Attribution is a licence condition, not a courtesy. It is a required field
+   in the data and its absence is a validator error. */
+.figure-source { display: block; margin-top: var(--space-1); font-size: var(--text-micro); color: var(--ds-faint); }
+
+/* ---- Diagram container -------------------------------------------------- */
+
+.diagram {
+    margin: var(--space-4) 0;
+    padding: var(--space-4);
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-row);
+    background: var(--ds-surface);
+}
+.diagram svg { display: block; width: 100%; height: auto; }
+
+/* ---- Empty and error states --------------------------------------------- */
+
+.empty-state {
+    padding: var(--space-7) var(--space-5);
+    border: 1px dashed var(--ds-border);
+    border-radius: var(--radius-card);
+    text-align: center;
+    color: var(--ds-muted);
+}
+.empty-state h2 { margin-bottom: var(--space-2); font-family: var(--font-display); font-size: var(--text-h2); }
+
+/* ---- Search ------------------------------------------------------------- */
+
+.search {
+    position: relative;
+    flex: none;
+    margin-left: auto;
+}
+
+.search-input {
+    width: 220px;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-pill);
+    background: var(--ds-surface);
+    color: var(--ds-text);
+    font-size: var(--text-small);
+    transition: width var(--transition-panel) var(--ease-standard),
+                border-color var(--transition-hover) var(--ease-standard);
+}
+.search-input::placeholder { color: var(--ds-faint); }
+.search-input:focus { width: 320px; border-color: var(--accent-300); }
+
+.search-results {
+    position: absolute;
+    right: 0;
+    top: calc(100% + var(--space-2));
+    width: min(560px, 82vw);
+    max-height: 62vh;
+    overflow-y: auto;
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-card);
+    background: var(--ds-raised);
+    box-shadow: var(--shadow-raised);
+    display: none;
+}
+.search-results.is-open { display: block; }
+
+/* Results are grouped by mode, because opening a question and opening a
+   chapter are not the same action and the reader should know which before
+   the click. */
+.search-group-label {
+    position: sticky;
+    top: 0;
+    padding: var(--space-2) var(--space-4);
+    background: var(--ds-raised);
+    border-bottom: 1px solid var(--ds-border-subtle);
+    font-size: var(--text-micro);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ds-faint);
+}
+
+.search-result {
+    display: block;
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    border: 0;
+    border-bottom: 1px solid var(--ds-border-subtle);
+    background: none;
+    text-align: left;
+    cursor: pointer;
+}
+.search-result:hover, .search-result.is-active { background: var(--ds-hover); }
+.search-result-title { font-size: var(--text-small); font-weight: 500; }
+.search-result-context { margin-top: 2px; font-size: var(--text-micro); color: var(--ds-faint); }
+.search-result mark {
+    padding: 0 1px;
+    border-radius: 2px;
+    background: var(--accent-100);
+    color: inherit;
+}
+
+@media (max-width: 1024px) {
+    .search-input { width: 160px; }
+    .search-input:focus { width: 240px; }
+}
+@media (max-width: 480px) {
+    .search-input { width: 36px; padding-left: var(--space-2); padding-right: var(--space-2); }
+    .search-input:focus { width: 62vw; }
+    .search-results { position: fixed; right: var(--space-3); left: var(--space-3); width: auto; }
+}
