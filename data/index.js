@@ -14,7 +14,8 @@
    than a framework, because everything else assumes it. */
 const topics = [
     javaLanguageData,
-    collectionsData
+    collectionsData,
+    concurrencyData
 ];
 
 /* The languages the highlighter knows, and the only ones a snippet may
@@ -72,7 +73,8 @@ const tracks = [
    problems and only one of them is legal. */
 const topicTracks = {
     'java-language': 'java-platform',
-    'collections':   'java-platform'
+    'collections':   'java-platform',
+    'concurrency':   'java-platform'
 };
 
 function trackById(id) {
