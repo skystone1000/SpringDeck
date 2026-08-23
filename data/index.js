@@ -13,7 +13,7 @@
    reader lands on with no hash at all — so it is the language itself rather
    than a framework, because everything else assumes it. */
 const topics = [
-    placeholderData
+    javaLanguageData
 ];
 
 /* The languages the highlighter knows, and the only ones a snippet may
@@ -70,7 +70,7 @@ const tracks = [
    decided about, and validate-nav.js catches that. The two are different
    problems and only one of them is legal. */
 const topicTracks = {
-    'placeholder': null
+    'java-language': 'java-platform'
 };
 
 function trackById(id) {
