@@ -138,9 +138,11 @@ Where a cross-language comparison earns its place it is **prose in a
 | | |
 |---|---|
 | **Phases complete** | 0 — Skeleton · 1 — The tool chain |
-| **Next phase** | 2 — The question bank, core half (~355 questions across 10 topics) |
-| **Last commit date used** | 2026-08-22, 18 commits |
-| **Next active day** | 2026-08-23 |
+| **Phase in progress** | 2 — The question bank, core half. 3 of 10 topics, 99 of ~355 questions |
+| **Topics authored** | `java-language` 44 · `collections` 26 · `concurrency` 29 |
+| **Topics remaining in Phase 2** | `spring-core`, `spring-boot`, `aop-proxies`, `rest-api`, `jpa-hibernate`, `transactions`, `sql-databases` |
+| **Last commit date used** | 2026-08-23, 16 commits |
+| **Next active day** | 2026-08-24 |
 
 ### Phase gates recorded
 
@@ -149,6 +151,14 @@ gutter and the code source agree on line count exactly. `grep -nE
 '#[0-9a-fA-F]{3,8}\b|rgba?\(' css/*.css | grep -v themes.css` returns nothing
 — it caught eighteen literals in `print.css` on the day it was written, which
 were moved into the token layer as `--print-*` primitives.
+
+**Phase 2 — The question bank, core half.** IN PROGRESS, gate not yet run.
+Three of ten topics. What has already been confirmed by hand: every authored
+topic renders in both themes, the tier filter is shareable through `?tier=`
+and does not renumber the cards, a legacy bare segment such as
+`#collections` normalises to `#questions/collections` with `replaceState`,
+the code gutter and the code source agree on line count, and all nine
+highlighter grammars re-emit their input byte for byte.
 
 **Phase 1 — The tool chain.** PASSED. `node tools/validate-questions.js` exits
 0, and every one of its seven checks was broken on purpose and confirmed to
@@ -170,3 +180,15 @@ inline event handler.
 - `validate-questions.js` check 4 (images) has been exercised against a
   synthetic failure but no real figure exists in the corpus yet. Re-confirm it
   against the first vendored figure rather than assuming.
+- **There is no JDK on the machine this deck is being built on.** `java -version`
+  fails. So `run-snippets.js` cannot actually execute anything yet, and every
+  `kind: 'stdout'` authored so far is a claim the toolchain has not verified —
+  the validator only checks that the *language* is runnable, which is a
+  different assertion. Phase 9 does not start until a JDK is installed and
+  `run-snippets.js --selftest` has been run against the whole corpus. Until
+  then, prefer `trace` whenever the output is not certain, and never write an
+  output pane for anything timing-dependent, machine-dependent or racy.
+- CSS custom properties fail *silently* when the name is wrong: `var(--typo)`
+  is an unset property, not an error. The colour grep cannot catch it and
+  neither validator looks at CSS. One such typo shipped in Phase 2 and was
+  found only by looking at the rendered page. Look at the page.
