@@ -132,9 +132,19 @@
 <script src="data/placeholder.js"></script>
 <script src="data/index.js"></script>
 
-<!-- js: leaves first, app.js last -->
+<!-- js: leaves first, app.js last.
+
+     code-highlight.js, diagrams.js and progress.js are leaves: they declare a
+     global and call nothing. navigation.js calls topicById() from data, which
+     is above it, and calls the mode handlers, which are below it — the
+     forward reference is safe because dispatch only ever runs from start() or
+     from a hashchange, both of which happen after app.js has registered. -->
 <script src="js/theme.js"></script>
 <script src="js/three-bg.js"></script>
+<script src="js/code-highlight.js"></script>
+<script src="js/diagrams.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/navigation.js"></script>
 <script src="js/app.js"></script>
 
 </body>
