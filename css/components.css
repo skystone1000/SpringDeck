@@ -482,6 +482,80 @@
 }
 .diagram svg { display: block; width: 100%; height: auto; }
 
+/* ---- Diagram parts ------------------------------------------------------
+   diagrams.js emits geometry and class names and NOT ONE COLOUR. Everything
+   visible is decided here, out of the five --diagram-* tokens, which is why
+   the same SVG string is correct in both themes and why nothing anywhere
+   inverts an image.
+
+   The node kinds are a closed set of five. They are semantic — a trap is the
+   thing the question is warning about, a fix is the thing that resolves it —
+   so the same shape means the same thing across every diagram in the deck.
+   -------------------------------------------------------------------------- */
+
+.diagram svg text {
+    font-family: var(--font-body);
+    font-size: var(--text-micro);
+    fill: var(--diagram-label);
+}
+
+.dg-node rect {
+    fill: var(--diagram-node-bg);
+    stroke: var(--diagram-node-border);
+    stroke-width: 1;
+}
+.dg-node-label { fill: var(--ds-text); font-weight: 500; }
+
+.dg-node[data-kind="start"] rect,
+.dg-node[data-kind="fix"] rect   { stroke: var(--diagram-accent); }
+.dg-node[data-kind="fix"] .dg-node-label { fill: var(--diagram-accent); }
+
+.dg-node[data-kind="trap"] rect  { stroke: var(--state-danger); }
+.dg-node[data-kind="trap"] .dg-node-label { fill: var(--state-danger); }
+
+.dg-node[data-kind="decision"] rect { stroke-dasharray: 4 3; }
+
+/* Edges and messages share one stroke rule, so an arrow means the same thing
+   in a flowchart and in a sequence diagram. The arrowhead inherits it through
+   context-stroke and never names a colour of its own. */
+.diagram .edge .draw,
+.dg-message .draw {
+    fill: none;
+    stroke: var(--diagram-line);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.dg-message[data-kind="return"] .draw { stroke-dasharray: 5 4; }
+.dg-message[data-kind="async"] .draw  { stroke: var(--diagram-accent); }
+
+.dg-edge-label { fill: var(--diagram-label); }
+
+.dg-lifeline {
+    stroke: var(--diagram-line);
+    stroke-width: 1;
+    stroke-dasharray: 3 4;
+}
+
+/* The animation track. Its dots carry the accent because the numbers are the
+   reading order, and the reading order is the content of that diagram type. */
+.dg-track {
+    fill: none;
+    stroke: var(--diagram-line);
+    stroke-width: 1.5;
+}
+.dg-step-dot {
+    fill: var(--diagram-node-bg);
+    stroke: var(--diagram-accent);
+    stroke-width: 1.5;
+}
+.dg-step-n {
+    fill: var(--diagram-accent);
+    font-family: var(--font-mono);
+    font-weight: 500;
+}
+.dg-caption { fill: var(--ds-faint); }
+
 /* ---- Empty and error states --------------------------------------------- */
 
 .empty-state {
