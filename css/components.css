@@ -494,7 +494,7 @@
    -------------------------------------------------------------------------- */
 
 .diagram svg text {
-    font-family: var(--font-body);
+    font-family: var(--font-sans);
     font-size: var(--text-micro);
     fill: var(--diagram-label);
 }
