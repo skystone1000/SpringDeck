@@ -466,19 +466,28 @@ theory_tracks:
 
 ## 4.1 Question topics
 
-Nineteen topics. **These are not the theory modules** — they are shaped for
+Twenty-six topics. **These are not the theory modules** — they are shaped for
 lookup ("where would I file this question?"), and several deliberately cut
-across the reading order. `estimated_questions` is a target for Phase 4, not a
-promise; the hard totals in `validate-nav.js` are whatever is actually authored.
+across the reading order. `estimated_questions` is a target, not a promise; the
+hard totals in `validate-nav.js` are whatever is actually authored, and where a
+topic has been authored the real count is recorded beside the estimate.
+
+**Subsections are revised as topics are written, not before.** They are a
+filing decision, and a filing decision is only testable once the questions
+exist. `java-language` gained a fifth subsection — `errors` — during Phase 2,
+because the exception hierarchy is in that topic's key topics and belongs
+under neither "OOP & Design" nor "equals, hashCode & Immutability". Keeping
+the count at four would have meant filing it under a heading that did not
+describe it.
 
 ```yaml
 question_topics:
   - id: "java-language"
     title: "Java Language & OOP"
     track: "java-platform"
-    subsections: [{ id: "oop", title: "OOP & Design" }, { id: "object-contract", title: "equals, hashCode & Immutability" }, { id: "generics", title: "Generics & Erasure" }, { id: "modern", title: "Records, Sealed Types & Pattern Matching" }]
+    subsections: [{ id: "oop", title: "OOP & Design" }, { id: "object-contract", title: "equals, hashCode & Immutability" }, { id: "generics", title: "Generics & Erasure" }, { id: "modern", title: "Records, Sealed Types & Pattern Matching" }, { id: "errors", title: "Exceptions & Errors" }]
     keyTopics: ["inheritance vs composition", "abstract class vs interface", "equals/hashCode contract", "immutability", "generics erasure", "variance", "records", "sealed interfaces", "pattern matching for switch", "exception hierarchy"]
-    estimated_questions: 45
+    estimated_questions: 45   # authored in Phase 2: 44
 
   - id: "collections"
     title: "Collections Framework"
