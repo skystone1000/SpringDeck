@@ -237,6 +237,20 @@ const diagrams = (function () {
         var height = top + messages.length * step + GEO.margin + 10;
         var width  = x - GEO.gapX * 2 + GEO.margin;
 
+        /* A self-call draws a loop to the RIGHT of its lifeline and hangs its
+           label off that, so it can extend past the rightmost actor. The
+           width has to account for it before anything is drawn — the svg now
+           carries an intrinsic size, so anything past the edge is clipped
+           rather than merely overflowing. This was clipping the label on the
+           self-invocation diagram, which is the one where the label is the
+           whole point. */
+        messages.forEach(function (m) {
+            if (m.from !== m.to || !byId[m.from]) return;
+            var reach = byId[m.from].cx + 22 + 8 +
+                        Math.round(String(m.label || '').length * GEO.charWidth);
+            width = Math.max(width, reach + GEO.margin);
+        });
+
         var svg = [arrowMarkers()];
 
         // Lifelines first, so every arrow sits on top of them.
@@ -348,12 +362,19 @@ const diagrams = (function () {
         '</defs>';
     }
 
-    /* preserveAspectRatio is left at its default and width/height are omitted:
-       components.css gives the svg width:100% and height:auto, so the viewBox
-       alone decides the aspect ratio and the diagram scales into a phone
-       column without a media query. */
+    /* width and height are emitted ALONGSIDE the viewBox, which is what gives
+       the svg an intrinsic size. With only a viewBox the element has no
+       natural width, so a stylesheet asking for 100% stretches a 380-unit
+       diagram across an 800px column and scales 12px labels to 25px — the
+       diagram ends up shouting at the paragraph next to it.
+
+       With both, components.css can say max-width:100% and height:auto: the
+       diagram draws at the size it was laid out for, and only shrinks, never
+       grows. preserveAspectRatio is left at its default, which is the
+       behaviour that keeps it undistorted while it shrinks. */
     function frame(width, height, body, title) {
-        return '<svg viewBox="0 0 ' + Math.ceil(width) + ' ' + Math.ceil(height) + '" ' +
+        var w = Math.ceil(width), h = Math.ceil(height);
+        return '<svg viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" ' +
                'role="img"' + (title ? ' aria-label="' + esc(title) + '"' : '') + '>' +
                body + '</svg>';
     }

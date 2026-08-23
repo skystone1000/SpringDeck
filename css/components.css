@@ -480,7 +480,10 @@
     border-radius: var(--radius-row);
     background: var(--ds-surface);
 }
-.diagram svg { display: block; width: 100%; height: auto; }
+/* max-width, not width. diagrams.js emits an intrinsic size, so a diagram
+   draws at the size it was laid out for and shrinks on a narrow column
+   rather than being stretched to fill a wide one. */
+.diagram svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
 
 /* ---- Diagram parts ------------------------------------------------------
    diagrams.js emits geometry and class names and NOT ONE COLOUR. Everything
