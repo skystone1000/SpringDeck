@@ -58,9 +58,12 @@ const DECLARED = [
     // question corpus
     'topics', 'topicTracks', 'languages', 'runnableLanguages',
     'topicsInTrack', 'topicById',
-    // theory corpus
-    'theoryTracks', 'theoryModules', 'theoryByModuleId',
-    'subjectTracks', 'modulesInTrack', 'blocksOfTypeInTrack',
+    // the track registry, shared by both corpora
+    'tracks', 'trackById', 'subjectTracks',
+    // theory corpus. subjectTracks() moved up to the track registry in
+    // Phase 2; the theory corpus consumes it rather than declaring its own.
+    'theoryModules', 'theoryByModuleId',
+    'modulesInTrack', 'blocksOfTypeInTrack',
     // the mode registry
     'appModes', 'modeById', 'modeForRoute', 'modeForKey'
 ];
