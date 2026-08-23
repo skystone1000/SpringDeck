@@ -28,7 +28,7 @@ const path = require('path');
 const { loadCorpus, ROOT } = require('./load-corpus');
 const {
     TIERS, LANGUAGES, RUNNABLE_LANGUAGES, DIAGRAM_TYPES, OUTPUT_KINDS,
-    KEBAB, RESERVED_SEGMENTS, htmlIssues, makeReport
+    ALLOWED_TAGS, KEBAB, RESERVED_SEGMENTS, htmlIssues, makeReport
 } = require('./schema');
 
 /* -----------------------------------------------------------------------
@@ -122,7 +122,27 @@ function run() {
             if (typeof question.question !== 'string' || !question.question.trim()) {
                 report.error(`${q}: question text is empty`);
             }
-            if (/[<>]/.test(question.question || '')) {
+            /* Question text is rendered through escapeHtml, so markup in it
+               shows up literally instead of as formatting. This catches an
+               author who wrote <code> in a question the way they would in an
+               answer.
+
+               It does NOT reject every angle bracket, which is what it did
+               until the Java topic was authored against it. "List<String>",
+               "Map<K, V>" and "List<?>" are ordinary prose in a Java deck,
+               and a check that forbade them would be a check authors route
+               around by rephrasing questions worse — which is how a validator
+               ends up making the corpus worse than no validator would.
+
+               So it looks for an ALLOWED TAG NAME specifically. Those are the
+               tags an author writes by habit; a generic type argument is
+               never one of them. Note this is a presentation check and not a
+               security one: escapeHtml already makes anything in this field
+               inert. */
+            const strayTag = new RegExp(
+                '<\\/?(' + ALLOWED_TAGS.join('|') + ')(\\s[^<>]*)?\\/?>', 'i'
+            );
+            if (strayTag.test(question.question || '')) {
                 report.error(`${q}: question text must be plain, with no markup`);
             }
 
