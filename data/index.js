@@ -19,7 +19,8 @@ const topics = [
     springCoreData,
     springBootData,
     aopProxiesData,
-    restApiData
+    restApiData,
+    jpaHibernateData
 ];
 
 /* The languages the highlighter knows, and the only ones a snippet may
@@ -82,7 +83,8 @@ const topicTracks = {
     'spring-core':   'spring-core',
     'spring-boot':   'spring-core',
     'aop-proxies':   'spring-core',
-    'rest-api':      'web-api'
+    'rest-api':      'web-api',
+    'jpa-hibernate': 'persistence'
 };
 
 function trackById(id) {
