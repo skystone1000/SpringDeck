@@ -92,9 +92,24 @@ const progressStore = (function () {
         notify(mode);
     }
 
+    /* A listener that throws must not stop the others — but it must not
+       vanish either. The original version had a bare catch, and a subscriber
+       that failed left no evidence at all: the UI simply stopped updating and
+       nothing appeared anywhere. That cost an afternoon of looking in the
+       wrong place, so the swallow now reports.
+
+       console.error rather than a rethrow: rethrowing here would let one
+       broken subscriber break the write for every other one, which is the
+       failure the catch exists to prevent. */
     function notify(mode) {
         listeners.forEach(function (fn) {
-            try { fn(mode); } catch (e) { /* one bad listener must not stop the rest */ }
+            try {
+                fn(mode);
+            } catch (e) {
+                if (typeof console !== 'undefined' && console.error) {
+                    console.error('progressStore: a listener threw for mode "' + mode + '"', e);
+                }
+            }
         });
     }
 
