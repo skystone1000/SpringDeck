@@ -578,6 +578,10 @@
        Route handler
        ====================================================================== */
 
+    function container() {
+        return document.getElementById('topicContainer');
+    }
+
     function handleQuestions(route) {
         var topicId = route.segments[0] || (topics[0] && topics[0].id);
         var topic   = topicById(topicId);
@@ -594,7 +598,33 @@
         if (questionId) {
             var card = document.querySelector('.question-card[data-question-id="' +
                                               cssEscape(questionId) + '"]');
-            if (card && !card.hidden) {
+            if (card) {
+                /* THE DEEP LINK WINS OVER THE FILTER.
+
+                   Both halves of the address are shareable and they can
+                   disagree: ?tier=must-know names a filter, and the fragment
+                   names one card, which may be a should-know. Before this,
+                   the filter won and the page showed nothing at all — a
+                   shared link that silently resolves to an empty screen,
+                   which is the worst of the available behaviours because
+                   nothing indicates anything was suppressed.
+
+                   The fragment is the more specific instruction, so the
+                   card's tier is switched on rather than the card being
+                   revealed alone. Widening keeps the chips, the query string
+                   and the visible cards consistent with each other, the
+                   change is visible because the chip lights up, and the
+                   reader still gets the neighbouring cards for context. */
+                if (card.hidden) {
+                    var active = (router.flags().tiers || TIERS.slice()).slice();
+                    var tier = card.getAttribute('data-tier');
+                    if (active.indexOf(tier) === -1) {
+                        active.push(tier);
+                        router.setTiers(active);
+                        applyTierFilter(container(), active);
+                    }
+                }
+
                 var head = card.querySelector('.question-head');
                 if (head && !card.classList.contains('is-open')) {
                     card.classList.add('is-open');
