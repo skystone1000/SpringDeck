@@ -117,7 +117,8 @@
 
     .topic-title, .track-title { break-after: avoid; }
 
-    /* Code has to stay legible and must not be clipped at the margin. */
+    /* Code has to stay legible and must not be clipped at the margin, so
+       long lines wrap. */
     .code-source, .code-output-lines {
         overflow: visible;
         white-space: pre-wrap;
@@ -125,6 +126,28 @@
         font-size: 8.5pt;
     }
     .code-block { break-inside: avoid; }
+
+    /* THE GUTTER IS HIDDEN ON PAPER, and this is the reason.
+
+       On screen the gutter and the source agree exactly, and the Phase 0 gate
+       checks that they do — one number per source line, no wrapping, because
+       the column scrolls horizontally instead.
+
+       Print cannot scroll, so the source wraps. The moment one line wraps, it
+       occupies two visual rows against one gutter number, and EVERY NUMBER
+       BELOW IT IS WRONG. Silently: the sheet looks right, and line 40 is
+       labelled 38.
+
+       Measured at 8.5pt in JetBrains Mono, an A4 column with the margins set
+       above fits about ninety-two characters once the gutter is accounted
+       for, and the longest line currently in the corpus is ninety-two. That
+       is a margin of zero, held by luck, with no check watching it — so the
+       question is not whether this breaks but when.
+
+       Numbers that lie are worse than no numbers, and line numbers are the
+       least valuable part of a code block on a revision sheet. The source
+       itself is complete either way. */
+    .code-gutter { display: none !important; }
 
     /* Reference links are useless as underlined text on paper; print the URL
        once, after the label. */
