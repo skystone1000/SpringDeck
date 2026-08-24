@@ -17,7 +17,8 @@ const topics = [
     collectionsData,
     concurrencyData,
     springCoreData,
-    springBootData
+    springBootData,
+    aopProxiesData
 ];
 
 /* The languages the highlighter knows, and the only ones a snippet may
@@ -78,7 +79,8 @@ const topicTracks = {
     'collections':   'java-platform',
     'concurrency':   'java-platform',
     'spring-core':   'spring-core',
-    'spring-boot':   'spring-core'
+    'spring-boot':   'spring-core',
+    'aop-proxies':   'spring-core'
 };
 
 function trackById(id) {
