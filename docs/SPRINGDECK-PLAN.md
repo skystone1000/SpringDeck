@@ -494,7 +494,7 @@ question_topics:
     track: "java-platform"
     subsections: [{ id: "lists-sets", title: "Lists & Sets" }, { id: "maps", title: "Maps & Hashing" }, { id: "concurrent", title: "Concurrent Collections" }]
     keyTopics: ["HashMap internals", "treeify threshold", "ArrayList vs LinkedList", "TreeMap ordering", "fail-fast iterators", "ConcurrentHashMap", "CopyOnWriteArrayList", "immutable collections"]
-    estimated_questions: 32
+    estimated_questions: 32   # authored in Phase 2: 26
 
   - id: "streams-functional"
     title: "Streams, Lambdas & Optional"
@@ -508,7 +508,7 @@ question_topics:
     track: "java-platform"
     subsections: [{ id: "basics", title: "Threads & the Memory Model" }, { id: "executors", title: "Executors & Futures" }, { id: "virtual", title: "Virtual Threads & Structured Concurrency" }]
     keyTopics: ["happens-before", "volatile", "synchronized", "ExecutorService", "pool sizing", "CompletableFuture", "deadlock", "virtual threads", "pinning", "StructuredTaskScope", "scoped values", "ThreadLocal leaks"]
-    estimated_questions: 42
+    estimated_questions: 42   # authored in Phase 2: 29
 
   - id: "jvm-memory"
     title: "JVM, Memory & Garbage Collection"
@@ -522,28 +522,28 @@ question_topics:
     track: "spring-core"
     subsections: [{ id: "container", title: "Container & Context" }, { id: "beans", title: "Beans, Scopes & Lifecycle" }, { id: "wiring", title: "Wiring & Circular Dependencies" }]
     keyTopics: ["IoC", "constructor vs field injection", "bean scopes", "bean lifecycle callbacks", "BeanFactory vs ApplicationContext", "@Component vs @Bean", "@Primary and @Qualifier", "circular dependency", "BeanPostProcessor"]
-    estimated_questions: 38
+    estimated_questions: 38   # authored in Phase 2: 27
 
   - id: "spring-boot"
     title: "Spring Boot & Auto-Configuration"
     track: "spring-core"
     subsections: [{ id: "autoconfig", title: "Auto-Configuration" }, { id: "config", title: "External Configuration & Profiles" }, { id: "versions", title: "Boot 2 → 3 → 4" }]
     keyTopics: ["@SpringBootApplication", "@EnableAutoConfiguration", "AutoConfiguration.imports", "@Conditional", "starters", "custom starter", "property precedence", "@ConfigurationProperties", "profiles", "javax to jakarta", "SpringApplication.run lifecycle"]
-    estimated_questions: 36
+    estimated_questions: 36   # authored in Phase 2: 24
 
   - id: "aop-proxies"
     title: "AOP, Proxies & Annotations"
     track: "spring-core"
     subsections: null
     keyTopics: ["JDK dynamic proxy vs CGLIB", "self-invocation", "advice types", "pointcut expressions", "proxy-target-class", "@Async", "@Cacheable", "@Retryable", "custom annotations"]
-    estimated_questions: 22
+    estimated_questions: 22   # authored in Phase 2: 14
 
   - id: "rest-api"
     title: "REST APIs & Spring MVC"
     track: "web-api"
     subsections: [{ id: "mvc", title: "MVC & the Request Lifecycle" }, { id: "design", title: "API Design" }, { id: "errors", title: "Validation & Error Handling" }, { id: "json", title: "Jackson & Serialization" }]
     keyTopics: ["DispatcherServlet", "HandlerMapping", "@RestController", "filters vs interceptors", "content negotiation", "HTTP status codes", "idempotent methods", "pagination", "API versioning", "@ControllerAdvice", "Bean Validation", "ProblemDetail", "Jackson annotations"]
-    estimated_questions: 44
+    estimated_questions: 44   # authored in Phase 2: 22
 
   - id: "beyond-rest"
     title: "Beyond REST: gRPC, GraphQL, WebSockets & Reactive"
@@ -564,21 +564,21 @@ question_topics:
     track: "persistence"
     subsections: [{ id: "mapping", title: "Mapping & Relationships" }, { id: "context", title: "Persistence Context" }, { id: "fetching", title: "Fetching & N+1" }, { id: "caching", title: "Caching" }]
     keyTopics: ["entity lifecycle states", "cascade types", "orphanRemoval", "LAZY vs EAGER", "LazyInitializationException", "N+1", "join fetch", "@EntityGraph", "batch fetch size", "dirty checking", "flush modes", "first-level cache", "second-level cache", "entity equals and hashCode", "Spring Data derived queries", "projections"]
-    estimated_questions: 46
+    estimated_questions: 46   # authored in Phase 2: 21
 
   - id: "transactions"
     title: "Transactions & Concurrency Control"
     track: "persistence"
-    subsections: null
+    subsections: null   # confirmed while authoring: the topic reads as one sequence
     keyTopics: ["ACID", "isolation levels", "dirty read", "non-repeatable read", "phantom read", "propagation", "REQUIRES_NEW", "NESTED and savepoints", "rollback rules", "self-invocation", "readOnly", "optimistic locking with @Version", "pessimistic locking", "deadlock"]
-    estimated_questions: 30
+    estimated_questions: 30   # authored in Phase 2: 16
 
   - id: "sql-databases"
     title: "SQL & Database Design"
     track: "persistence"
     subsections: [{ id: "querying", title: "Querying" }, { id: "modelling", title: "Modelling & Normalisation" }, { id: "performance", title: "Indexes & Plans" }, { id: "ops", title: "Pooling, Migration & Scale" }]
     keyTopics: ["joins", "GROUP BY and HAVING", "window functions", "NULL semantics", "B-tree indexes", "composite index column order", "covering index", "EXPLAIN ANALYZE", "sequential vs index scan", "join algorithms", "normalisation", "HikariCP sizing", "pool exhaustion", "Flyway", "read replicas", "sharding"]
-    estimated_questions: 44
+    estimated_questions: 44   # authored in Phase 2: 21
 
   - id: "microservices"
     title: "Microservices & Distributed Patterns"
@@ -675,9 +675,15 @@ The blueprint requires these as **hard numbers in `validate-nav.js`**, updated b
 hand in the same commit that changes the corpus. The values below are *targets*
 for planning; the committed numbers are always whatever is actually authored.
 
+**Phase 2 actual, for the ten core topics:** 244 questions — 93 must-know, 101
+should-know, 50 good-to-know — with 49 code snippets (41 Java, 4 SQL, 2
+properties, 1 YAML, 1 Dockerfile) and 14 diagrams. 28 snippets claim a console
+output and 21 record a trace instead. Every SQL snippet is a trace, because the
+runner executes Java only.
+
 ```yaml
 totals:                       # targets, not commitments
-  questions: 853              # across all 26 topics
+  questions: 853              # across all 26 topics; 244 authored in Phase 2
   theory:    687              # chapters in the SUBJECT tracks only
   synthesis:  46              # drill blocks
   predict:    81              # predict blocks
