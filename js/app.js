@@ -552,6 +552,28 @@
         });
     }
 
+    /* Marking a card answered has to move the number beside its topic in the
+       sidebar, and it did not: the sidebar was rendered once per route change
+       and nothing told it anything had happened.
+
+       This updates the counts in place rather than re-rendering the sidebar.
+       Re-rendering would rebuild every link and rebind every handler on every
+       click of a checkbox, and it would also discard the drawer's scroll
+       position on a phone — a lot of work to change two digits. */
+    function refreshSidebarCounts() {
+        var nav = document.getElementById('sidebarNav');
+        if (!nav) return;
+
+        nav.querySelectorAll('.sidebar-link').forEach(function (link) {
+            var route = router.parse(link.getAttribute('href'));
+            var topic = topicById(route.segments[0]);
+            var count = link.querySelector('.sidebar-count');
+            if (topic && count) {
+                count.textContent = progressStore.answeredInTopic(topic) + '/' + topic.questions.length;
+            }
+        });
+    }
+
     /* ======================================================================
        Route handler
        ====================================================================== */
@@ -647,6 +669,14 @@
         if (typeof initBackground === 'function') initBackground();
 
         bindShell();
+
+        /* One subscription, registered before the first route is dispatched.
+           The store notifies on every write, so the sidebar stays in step
+           with the cards without either of them knowing about the other. */
+        progressStore.subscribe(function (mode) {
+            if (mode === 'questions') refreshSidebarCounts();
+        });
+
         router.register('questions', handleQuestions);
         router.start();
     }
