@@ -137,12 +137,11 @@ Where a cross-language comparison earns its place it is **prose in a
 
 | | |
 |---|---|
-| **Phases complete** | 0 — Skeleton · 1 — The tool chain |
-| **Phase in progress** | 2 — The question bank, core half. 3 of 10 topics, 99 of ~355 questions |
-| **Topics authored** | `java-language` 44 · `collections` 26 · `concurrency` 29 |
-| **Topics remaining in Phase 2** | `spring-core`, `spring-boot`, `aop-proxies`, `rest-api`, `jpa-hibernate`, `transactions`, `sql-databases` |
-| **Last commit date used** | 2026-08-23, 16 commits |
-| **Next active day** | 2026-08-24 |
+| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half |
+| **Next phase** | 3 — Theory, tracks 1–4 (~320 chapters across 41 modules) |
+| **Corpus** | 10 topics, 244 questions, 49 snippets, 14 diagrams |
+| **Last commit date used** | 2026-08-24, 16 commits |
+| **Next active day** | 2026-08-27 — 25 and 26 are skipped |
 
 ### Phase gates recorded
 
@@ -152,13 +151,27 @@ gutter and the code source agree on line count exactly. `grep -nE
 — it caught eighteen literals in `print.css` on the day it was written, which
 were moved into the token layer as `--print-*` primitives.
 
-**Phase 2 — The question bank, core half.** IN PROGRESS, gate not yet run.
-Three of ten topics. What has already been confirmed by hand: every authored
-topic renders in both themes, the tier filter is shareable through `?tier=`
-and does not renumber the cards, a legacy bare segment such as
-`#collections` normalises to `#questions/collections` with `replaceState`,
-the code gutter and the code source agree on line count, and all nine
-highlighter grammars re-emit their input byte for byte.
+**Phase 2 — The question bank, core half.** PASSED. Ten topics, 244 questions.
+Every gate criterion was checked against the running page rather than argued:
+
+- **Every topic renders.** All ten, with the right card count, the right track
+  eyebrow and the right hue; card numbering is 1..n in every one.
+- **The tier filter works and is shareable.** Toggling chips rewrites `?tier=`
+  with `replaceState`, the filter survives navigation to another topic, and
+  the card numbers do not move — card 27 is still card 27 with the first
+  twenty-six hidden.
+- **Progress works.** Keys are `topicId:questionId` in `localStorage`, the
+  sidebar count, the header bar and the rail meter all follow a toggle, and
+  `progressStore` still contains no function that adds the five modes together.
+- **All 14 diagrams mount**, one per `hasDiagram` question.
+- **Every legacy bare segment normalises** — all ten tested, `#collections`
+  to `#questions/collections`; an unknown segment gives the empty state rather
+  than a blank page.
+- **The gutter and the source agree** on every code block in the corpus.
+- `node tools/validate-questions.js` exits 0, and it fired on real content
+  eleven times during the phase: nine must-know questions with no reference
+  link, one camelCase id, and two questions whose text tripped an
+  over-broad markup check that was then narrowed.
 
 **Phase 1 — The tool chain.** PASSED. `node tools/validate-questions.js` exits
 0, and every one of its seven checks was broken on purpose and confirmed to
@@ -192,3 +205,13 @@ inline event handler.
   is an unset property, not an error. The colour grep cannot catch it and
   neither validator looks at CSS. One such typo shipped in Phase 2 and was
   found only by looking at the rendered page. Look at the page.
+- **Nothing bounds code-snippet line length, and print depends on it.** At
+  8.5pt an A4 column fits about 92 characters; the longest line in the corpus
+  is 92. The gutter is now hidden when printing so a wrapped line cannot
+  misnumber the rest, but wide snippets still read badly on paper. If a
+  validator check is ever added for this, ~78 characters is the comfortable
+  bound.
+- **A same-URL navigation can serve a cached script even with `no-store`.**
+  A change appeared not to take effect for half an hour during Phase 2 and the
+  code was fine. Reload with a changed query string before believing a fix
+  failed.
