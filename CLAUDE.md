@@ -36,6 +36,13 @@ navigation:
 node tools/validate-theory.js && node tools/validate-questions.js && node tools/validate-nav.js
 ```
 
+`check-offline.js` is fast too, and belongs in any commit touching `index.html`,
+the stylesheets or the load order:
+
+```bash
+node tools/check-offline.js
+```
+
 Two more are slower and run **per phase**, not per commit:
 
 ```bash
@@ -172,6 +179,13 @@ Every gate criterion was checked against the running page rather than argued:
   eleven times during the phase: nine must-know questions with no reference
   link, one camelCase id, and two questions whose text tripped an
   over-broad markup check that was then narrowed.
+- **`file://`: the static half passed, the manual half did not run.**
+  `check-offline.js` was written during this phase and passes — every local
+  reference relative and present with exact case, every remote reference
+  optional, no network APIs, all eleven `localStorage` accesses guarded. The
+  page itself was **not** opened from disk, because the in-app browser
+  declines to navigate to a `file://` URL. **Do this by hand before the Phase 3
+  gate**, and read a question, a code block and a diagram while there.
 
 **Phase 1 — The tool chain.** PASSED. `node tools/validate-questions.js` exits
 0, and every one of its seven checks was broken on purpose and confirmed to
