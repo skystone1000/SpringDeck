@@ -141,19 +141,30 @@
 <script src="data/sql-databases.js"></script>
 <script src="data/index.js"></script>
 
+<!-- data/theory: one global per module, in reading order, then the registry
+     that assembles them. data/index.js is above because both corpora share
+     the one track registry it declares. -->
+<script src="data/theory/index.js"></script>
+
 <!-- js: leaves first, app.js last.
 
      code-highlight.js, diagrams.js and progress.js are leaves: they declare a
      global and call nothing. navigation.js calls topicById() from data, which
      is above it, and calls the mode handlers, which are below it — the
      forward reference is safe because dispatch only ever runs from start() or
-     from a hashchange, both of which happen after app.js has registered. -->
+     from a hashchange, both of which happen after app.js has registered.
+
+     theory.js sits between them because it registers its own route handler at
+     parse time and app.js is what calls router.start(). A mode is therefore a
+     file and a script tag, and app.js never learns the names of the other
+     four. -->
 <script src="js/theme.js"></script>
 <script src="js/three-bg.js"></script>
 <script src="js/code-highlight.js"></script>
 <script src="js/diagrams.js"></script>
 <script src="js/progress.js"></script>
 <script src="js/navigation.js"></script>
+<script src="js/theory.js"></script>
 <script src="js/app.js"></script>
 
 </body>
