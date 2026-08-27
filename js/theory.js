@@ -333,8 +333,8 @@
             '<ul>' + docs.map(function (doc) {
                 return '<li><a href="' + esc(doc.url) + '" target="_blank" ' +
                        'rel="noopener noreferrer">' + esc(doc.title) + '</a>' +
-                       (doc.kind ? ' <span class="term-chip" data-kind="asked">' +
-                                   esc(doc.kind) + '</span>' : '') + '</li>';
+                       (doc.kind ? ' <span class="doc-kind">' + esc(doc.kind) + '</span>' : '') +
+                       '</li>';
             }).join('') + '</ul>' +
         '</div>';
     }

@@ -525,6 +525,21 @@
 .term-chip[data-kind="asked"]      { background: var(--accent-wash);   color: var(--accent-work); }
 .term-chip[data-kind="annotation"] { background: var(--hue-teal-bg);   color: var(--hue-teal-ink); }
 
+/* A chapter's reference list marks each link guide / api / sample. It looks
+   like the ASKED chip and is deliberately NOT that chip: ASKED is a claim
+   about the question bank, and restyling it should not silently restyle
+   something that means "this link is an API page". */
+.doc-kind {
+    padding: 0 var(--space-2);
+    border-radius: var(--radius-pill);
+    background: var(--ds-sunken);
+    color: var(--ds-faint);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
 /* ==========================================================================
    Cram banner — the filter lives in the hash, so it spans modules and is
    shareable. A filter that reset on navigation would be useless for revision.
