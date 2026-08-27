@@ -31,6 +31,23 @@ body {
     overflow-x: hidden;
 }
 
+/* THE hidden PROPERTY WINS, EVERYWHERE, OVER ANY LAYOUT RULE.
+
+   The browser's own rule for this is `[hidden] { display: none }` in the UA
+   stylesheet, and any author rule that sets display on a class beats it —
+   author beats UA at equal specificity, and every component here sets display
+   on a class. So `element.hidden = true` silently did nothing to a flex or
+   grid component, and the cram banner sat on the page in both modes from the
+   day it was written, announcing a filter that was not applied.
+
+   Both filters and both empty states toggle this property, so the rule is
+   stated once, here, rather than as a per-component escape hatch that the
+   thirteenth component forgets. !important is the correct tool for exactly
+   this: hidden is not a layout hint, it is an assertion that the element is
+   not currently relevant, and nothing about a component's own display should
+   be able to argue with it. */
+[hidden] { display: none !important; }
+
 h1, h2, h3, h4, h5, h6 { margin: 0; font-weight: 600; line-height: 1.25; }
 p { margin: 0 0 var(--space-3); }
 p:last-child { margin-bottom: 0; }
