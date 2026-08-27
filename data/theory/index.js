@@ -26,7 +26,8 @@ const theoryModules = [
     howJavaRunsModule,
     objectsAndContractsModule,
     inheritanceAndInterfacesModule,
-    exceptionsAndFailureModule
+    exceptionsAndFailureModule,
+    genericsAndErasureModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
