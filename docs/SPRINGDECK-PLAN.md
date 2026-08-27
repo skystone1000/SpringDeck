@@ -996,6 +996,118 @@ same commit as the content, by hand, every time.
 person authors well in a single push. §8.1 defines a minimum viable deck that is
 genuinely useful at about a third of it.
 
+## 5.11 The resolved sequence
+
+The single pass §5.10 calls for, **run once and now generated rather than
+authored**. Each module keeps the number below for the life of the project;
+Phase 7 fills the gaps that tracks 5–8 and the §5.9 insertions left in the
+Phase 3 numbering rather than renumbering anything.
+
+Two facts fell out of the pass and both are checks on it: the sequence is
+**83 modules and 687 chapters**, which is what §5.10 states independently, and
+every prerequisite in §5.1–5.9 resolves to a strictly lower number, which is
+what `validate-theory.js` will refuse to let drift.
+
+The gaps in the Phase 3 numbering are not a mistake to tidy up later. A module
+authored in Phase 3 sits at its FINAL position in the reading path, so a reader
+working through track 1 in Phase 3 is reading it in the same order they will
+read it once the other forty-two modules exist. Renumbering later would silently
+invalidate every prerequisite already checked.
+
+```
+ord  track          module id
+  1 java-platform  how-java-runs
+  2 production     build-and-dependencies
+  3 java-platform  objects-and-contracts
+  4 java-platform  strings-and-text
+  5 java-platform  inheritance-and-interfaces
+  6 java-platform  enums-and-nested-types
+  7 craft          solid-and-ood
+  8 craft          patterns-that-get-asked
+  9 craft          lld-method
+ 10 java-platform  exceptions-and-failure
+ 11 java-platform  generics-and-erasure
+ 12 java-platform  collections-choosing
+ 13 java-platform  hashmap-internals
+ 14 java-platform  streams-and-lambdas
+ 15 java-platform  modern-java
+ 16 java-platform  dates-and-times
+ 17 java-platform  io-and-serialization
+ 18 java-platform  reflection-and-annotations
+ 19 java-platform  threads-and-memory-model
+ 20 java-platform  locks-and-synchronizers
+ 21 java-platform  executors-and-futures
+ 22 java-platform  virtual-threads
+ 23 java-platform  heap-and-gc
+ 24 java-platform  jvm-diagnostics
+ 25 spring-core    ioc-and-the-container
+ 26 spring-core    wiring-beans
+ 27 spring-core    configuration-and-profiles
+ 28 spring-core    aop-and-proxies
+ 29 spring-core    autoconfiguration
+ 30 craft          patterns-in-spring
+ 31 craft          application-architecture
+ 32 spring-core    application-lifecycle
+ 33 spring-core    spring-generations
+ 34 web-api        http-foundations
+ 35 web-api        dispatcher-lifecycle
+ 36 web-api        rest-api-design
+ 37 web-api        api-styles
+ 38 web-api        validation-and-errors
+ 39 web-api        serialization
+ 40 web-api        async-and-scheduling
+ 41 web-api        reactive-and-webflux
+ 42 persistence    relational-foundations
+ 43 persistence    sql-you-are-asked
+ 44 persistence    indexes-and-plans
+ 45 persistence    transactions-and-isolation
+ 46 persistence    locking-and-deadlocks
+ 47 persistence    jdbc-and-pooling
+ 48 persistence    jpa-mapping
+ 49 persistence    persistence-context
+ 50 persistence    fetching-and-n-plus-one
+ 51 persistence    spring-transactional
+ 52 persistence    spring-data-jpa
+ 53 persistence    second-level-cache
+ 54 persistence    schema-and-scale
+ 55 persistence    nosql-stores
+ 56 security       auth-foundations
+ 57 security       security-filter-chain
+ 58 security       jwt-in-practice
+ 59 security       oauth2-and-oidc
+ 60 security       method-security
+ 61 security       api-hardening
+ 62 distributed    service-boundaries
+ 63 craft          ddd-tactical
+ 64 distributed    sync-communication
+ 65 distributed    resilience-patterns
+ 66 distributed    idempotency
+ 67 distributed    messaging-foundations
+ 68 distributed    kafka-mechanics
+ 69 distributed    delivery-and-outbox
+ 70 distributed    saga-and-consistency
+ 71 craft          cqrs-and-event-sourcing
+ 72 distributed    caching-strategies
+ 73 distributed    scaling-data
+ 74 distributed    platform-concerns
+ 75 production     testing-pyramid
+ 76 production     testing-spring
+ 77 production     actuator-and-health
+ 78 production     metrics-and-tracing
+ 79 production     logging-well
+ 80 production     containers-and-k8s
+ 81 production     cloud-for-java-services
+ 82 production     performance-tuning
+ 83 production     release-and-incidents
+```
+
+**Phase 3 authors 41 of these — the ones in tracks 1–4 that are not §5.9
+insertions — for 318 chapters.** The insertions (`strings-and-text`,
+`enums-and-nested-types`, `locks-and-synchronizers`, `dates-and-times`,
+`io-and-serialization`, `reflection-and-annotations`, `api-styles`,
+`nosql-stores`) belong to tracks 1–4 by `track` but to Phase 7 by §8, and
+they are the reason track 1 runs 1 → 24 with only fourteen modules in it.
+
 ---
 
 # PART 6 — The drill catalogue (Synthesis mode)
