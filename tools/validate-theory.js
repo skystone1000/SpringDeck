@@ -28,7 +28,9 @@
      9  the drill catalogue and the predict-set catalogue are HELD HERE
     10  the modules that must carry a version block do carry one
 
-   Warnings never fail a run. They are meant to be read.
+   Warnings never fail a run. They are meant to be READ, which is why the
+   three families that are legitimately loud for most of the build are
+   summarised to a count and listed only under --verbose.
    ========================================================================== */
 
 'use strict';
@@ -39,6 +41,33 @@ const {
     PREDICT_ARTEFACTS, VERSION_STATES, BLOCK_TYPES, KEBAB, RESERVED_SEGMENTS,
     htmlIssues, makeReport
 } = require('./schema');
+
+/* --------------------------------------------------------------------------
+   THREE FAMILIES OF WARNING ARE EXPECTED TO BE LOUD FOR MOST OF THE BUILD,
+   AND THAT IS WHY THEY ARE COUNTED RATHER THAN LISTED.
+
+   Forty-six catalogued drills, eleven predict sets and several hundred
+   keyTopics are all legitimately unwritten until the phase that writes them.
+   Enumerating every one of them prints a hundred and seventy lines over a
+   corpus of four chapters, and a hundred and seventy warnings is not a
+   warning — it is a wall, and the two lines in it that matter (a duplicate
+   glossary term, a prerequisite that does not resolve) are invisible inside
+   it. A validator nobody reads catches nothing, which is the same failure as
+   a validator nobody runs.
+
+   So an expected absence is summarised to one line with a count, and --verbose
+   prints the list when someone actually wants to work through it.
+   -------------------------------------------------------------------------- */
+const VERBOSE = process.argv.includes('--verbose');
+
+function warnMany(report, items, summary) {
+    if (!items.length) return;
+    if (VERBOSE) {
+        items.forEach(item => report.warn(item));
+        return;
+    }
+    report.warn(`${items.length} ${summary} — run with --verbose to list them`);
+}
 
 /* --------------------------------------------------------------------------
    CHECK 9. THE CATALOGUES LIVE HERE, NOT IN THE CORPUS.
@@ -482,18 +511,30 @@ function run() {
         }
     });
 
-    /* ---- CHECK 9 — the catalogues, reconciled --------------------------- */
-    Object.keys(DRILL_CATALOGUE).forEach(id => {
-        if (!drillsSeen.has(id)) report.warn(`drill "${id}" is in the catalogue but not authored yet`);
-    });
+    /* ---- CHECK 9 — the catalogues, reconciled ---------------------------
+       The half that fails the build is above, per drill and per predict: an
+       id outside the catalogue, a duplicate, a tier that disagrees. What is
+       left here is the other direction — catalogued and unwritten — which is
+       a fact about the phase rather than a defect. */
+    warnMany(
+        report,
+        Object.keys(DRILL_CATALOGUE)
+            .filter(id => !drillsSeen.has(id))
+            .map(id => `drill "${id}" is in the catalogue but not authored yet`),
+        `of ${Object.keys(DRILL_CATALOGUE).length} catalogued drills are not authored yet`
+    );
+
     const setsWritten = new Set();
     predictsSeen.forEach((_, id) => {
         const set = PREDICT_SETS.find(prefix => id.indexOf(prefix) === 0);
         if (set) setsWritten.add(set);
     });
-    PREDICT_SETS.forEach(set => {
-        if (!setsWritten.has(set)) report.warn(`predict set "${set}" has no puzzles yet`);
-    });
+    warnMany(
+        report,
+        PREDICT_SETS.filter(set => !setsWritten.has(set))
+            .map(set => `predict set "${set}" has no puzzles yet`),
+        `of ${PREDICT_SETS.length} predict sets have no puzzles yet`
+    );
 
     /* ---- keyTopics coverage, warned ------------------------------------
        Every question topic claims to cover a list of subjects. If a
@@ -502,13 +543,15 @@ function run() {
        than an error because a keyTopic may legitimately be a question-bank
        subject with no chapter of its own. */
     const haystack = JSON.stringify(modules).toLowerCase();
+    const uncovered = [];
     topics.forEach(topic => {
         (topic.keyTopics || []).forEach(key => {
             if (haystack.indexOf(String(key).toLowerCase()) === -1) {
-                report.warn(`keyTopic "${key}" (${topic.id}) appears nowhere in the theory corpus`);
+                uncovered.push(`keyTopic "${key}" (${topic.id}) appears nowhere in the theory corpus`);
             }
         });
     });
+    warnMany(report, uncovered, 'keyTopics are not covered by the theory corpus yet');
 
     report.finish(
         `${modules.length} module(s), ${chapterCount} chapter(s), ${blockCount} block(s), ` +
