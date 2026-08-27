@@ -24,7 +24,8 @@
 
 const theoryModules = [
     howJavaRunsModule,
-    objectsAndContractsModule
+    objectsAndContractsModule,
+    inheritanceAndInterfacesModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
