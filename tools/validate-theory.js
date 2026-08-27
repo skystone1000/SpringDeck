@@ -17,7 +17,8 @@
      3  chapter shape: kebab id unique within the module; importance from
         TIERS; summary and interviewAngle present; buildsOn resolves to an
         EARLIER chapter of the same module
-     4  every must-know chapter carries at least one docs[] entry
+     4  every must-know chapter carries at least one docs[] entry, and a
+        docs entry is a full https URL
      5  block shapes, all twelve of them
      6  snippet languages are ones the highlighter knows, and stdout is
         REFUSED for any language the runner cannot execute
@@ -301,8 +302,20 @@ function run() {
                 report.error(`${c}: must-know with no docs[] — the same rule the question bank applies`);
             }
             docs.forEach(doc => {
-                if (!doc.title || !doc.path) {
-                    report.error(`${c}: a docs entry is missing a title or a path`);
+                /* A FULL URL, not a path against docHub.
+
+                   The blueprint's docs[] carries a path resolved against one
+                   base, which is right for a subject with one documentation
+                   site. This one has five that matter — Oracle, Spring,
+                   Hibernate, PostgreSQL, the JEP index — and they do not
+                   share a base, so a path would have to name its base anyway.
+                   A full https URL is also what check-doc-links.js can
+                   actually resolve in Phase 9, and what the question bank's
+                   referenceLinks already are. */
+                if (!doc.title || !doc.url) {
+                    report.error(`${c}: a docs entry is missing a title or a url`);
+                } else if (!/^https:\/\//.test(doc.url)) {
+                    report.error(`${c}: docs url "${doc.url}" is not https`);
                 }
                 if (doc.kind && !['guide', 'api', 'codelab', 'sample', 'course'].includes(doc.kind)) {
                     report.error(`${c}: docs kind "${doc.kind}" is not one this deck knows`);

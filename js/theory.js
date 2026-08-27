@@ -331,7 +331,7 @@
         return '<div class="block block-prose chapter-docs">' +
             '<span class="watch-for-label">Reference</span>' +
             '<ul>' + docs.map(function (doc) {
-                return '<li><a href="' + esc(doc.url || doc.path) + '" target="_blank" ' +
+                return '<li><a href="' + esc(doc.url) + '" target="_blank" ' +
                        'rel="noopener noreferrer">' + esc(doc.title) + '</a>' +
                        (doc.kind ? ' <span class="term-chip" data-kind="asked">' +
                                    esc(doc.kind) + '</span>' : '') + '</li>';
