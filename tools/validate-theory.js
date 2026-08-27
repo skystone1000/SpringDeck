@@ -223,8 +223,8 @@ function run() {
         if (!Number.isInteger(module.estimatedMinutes) || module.estimatedMinutes < 5) {
             report.error(`${m}: estimatedMinutes is missing or implausible`);
         }
-        if (module.docHub && (!module.docHub.title || !module.docHub.path)) {
-            report.error(`${m}: docHub needs both a title and a path`);
+        if (module.docHub && (!module.docHub.title || !module.docHub.url)) {
+            report.error(`${m}: docHub needs both a title and a url`);
         }
 
         /* ---- CHECK 2 — prerequisites resolve, and DOWNWARDS -----------
