@@ -36,6 +36,52 @@ const path = require('path');
 const { ROOT } = require('./load-corpus');
 const { makeReport } = require('./schema');
 
+/* Replace the contents of every string literal and comment with spaces,
+   preserving length and line breaks so that offsets and line numbers computed
+   against the result still line up with the original file.
+
+   This exists because a corpus file is a JavaScript wrapper around content in
+   other languages. Anything that greps this project's data files for a
+   JavaScript idiom is really grepping Java, SQL, YAML and English prose at the
+   same time, and will find them. */
+function blankLiterals(src) {
+    let out = '';
+    let i = 0;
+
+    while (i < src.length) {
+        const ch = src[i];
+        const next = src[i + 1];
+
+        if (ch === '/' && next === '/') {
+            while (i < src.length && src[i] !== '\n') { out += ' '; i++; }
+            continue;
+        }
+        if (ch === '/' && next === '*') {
+            out += '  '; i += 2;
+            while (i < src.length && !(src[i] === '*' && src[i + 1] === '/')) {
+                out += src[i] === '\n' ? '\n' : ' ';
+                i++;
+            }
+            out += '  '; i += 2;
+            continue;
+        }
+        if (ch === '\'' || ch === '"' || ch === '`') {
+            const quote = ch;
+            out += quote; i++;
+            while (i < src.length && src[i] !== quote) {
+                if (src[i] === '\\') { out += '  '; i += 2; continue; }
+                out += src[i] === '\n' ? '\n' : ' ';
+                i++;
+            }
+            out += quote; i++;
+            continue;
+        }
+        out += ch;
+        i++;
+    }
+    return out;
+}
+
 /* The remote resources the page is allowed to reference, each with the reason
    it is safe to lose. A new entry here is a decision that has to be argued:
    anything the page NEEDS from a network breaks the invariant outright. */
@@ -146,14 +192,25 @@ function run() {
         const rel = path.relative(ROOT, file);
         const ranges = tryRanges(src);
 
-        /* Network APIs. Checked on a call shape — `fetch(` — rather than on the
-           bare word, because the corpus is full of prose about JPA fetching and
-           a check that fires on that would be switched off within a day. */
+        /* Network APIs. Checked on a call shape — `fetch(` — rather than on
+           the bare word, because the corpus is full of prose about JPA
+           fetching and a check that fires on that would be switched off
+           within a day.
+
+           And checked against the source with its STRING LITERALS BLANKED,
+           because the call shape is not enough either. Every code snippet in
+           this deck is another language stored inside a JavaScript string,
+           and Java has methods called fetch() — `remote.fetch(key)` in a
+           snippet about virtual threads is what found this. A real call is
+           never inside a string literal, so blanking them removes the whole
+           class of false positive without weakening the check. */
+        const code = blankLiterals(src);
         for (const api of ['fetch(', 'new XMLHttpRequest(', 'new EventSource(', 'new WebSocket(']) {
-            let at = src.indexOf(api);
+            let at = code.indexOf(api);
             while (at !== -1) {
-                report.error(`${rel}: uses ${api.replace('(', '')} — blocked under file://`);
-                at = src.indexOf(api, at + 1);
+                const line = code.slice(0, at).split('\n').length;
+                report.error(`${rel}:${line}: uses ${api.replace('(', '')} — blocked under file://`);
+                at = code.indexOf(api, at + 1);
             }
         }
 
