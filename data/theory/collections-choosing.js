@@ -51,7 +51,7 @@ const collectionsChoosingModule = {
                 }
             ],
             docs: [
-                { title: 'JEP 431: Sequenced Collections', url: 'https://openjdk.org/jeps/431', kind: 'guide' }
+                { title: 'JEP 431: Sequenced Collections', url: 'https://openjdk.org/jeps/431', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'collections', questionId: 'sequenced-collections' },

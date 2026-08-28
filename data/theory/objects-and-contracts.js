@@ -330,7 +330,7 @@ const objectsAndContractsModule = {
             ],
             docs: [
                 { title: 'Record Classes', url: 'https://docs.oracle.com/en/java/javase/21/language/records.html', kind: 'guide' },
-                { title: 'JLS 17.5 — final Field Semantics', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.5', kind: 'guide' }
+                { title: 'JLS 17.5 — final Field Semantics', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.5', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'java-language', questionId: 'immutability-recipe' },

@@ -59,7 +59,7 @@ const modernJavaModule = {
                 }
             ],
             docs: [
-                { title: 'JEP 395: Records', url: 'https://openjdk.org/jeps/395', kind: 'guide' },
+                { title: 'JEP 395: Records', url: 'https://openjdk.org/jeps/395', kind: 'spec' },
                 { title: 'Record Classes', url: 'https://docs.oracle.com/en/java/javase/21/language/records.html', kind: 'guide' }
             ],
             relatedQuestions: [
@@ -103,7 +103,7 @@ const modernJavaModule = {
                 }
             ],
             docs: [
-                { title: 'JEP 409: Sealed Classes', url: 'https://openjdk.org/jeps/409', kind: 'guide' }
+                { title: 'JEP 409: Sealed Classes', url: 'https://openjdk.org/jeps/409', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'java-language', questionId: 'sealed-interfaces' }
@@ -153,8 +153,8 @@ const modernJavaModule = {
                 }
             ],
             docs: [
-                { title: 'JEP 441: Pattern Matching for switch', url: 'https://openjdk.org/jeps/441', kind: 'guide' },
-                { title: 'JEP 440: Record Patterns', url: 'https://openjdk.org/jeps/440', kind: 'guide' }
+                { title: 'JEP 441: Pattern Matching for switch', url: 'https://openjdk.org/jeps/441', kind: 'spec' },
+                { title: 'JEP 440: Record Patterns', url: 'https://openjdk.org/jeps/440', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'java-language', questionId: 'pattern-matching-for-switch' },
@@ -187,7 +187,7 @@ const modernJavaModule = {
                 }
             ],
             docs: [
-                { title: 'JEP 378: Text Blocks', url: 'https://openjdk.org/jeps/378', kind: 'guide' }
+                { title: 'JEP 378: Text Blocks', url: 'https://openjdk.org/jeps/378', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'java-language', questionId: 'text-blocks' }
@@ -230,7 +230,7 @@ const modernJavaModule = {
                 }
             ],
             docs: [
-                { title: 'JEP 286: Local-Variable Type Inference', url: 'https://openjdk.org/jeps/286', kind: 'guide' }
+                { title: 'JEP 286: Local-Variable Type Inference', url: 'https://openjdk.org/jeps/286', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'java-language', questionId: 'var-and-where-not-to-use-it' }
@@ -273,7 +273,7 @@ const modernJavaModule = {
             ],
             docs: [
                 { title: 'JDK Release Notes', url: 'https://www.oracle.com/java/technologies/javase/jdk-relnotes-index.html', kind: 'guide' },
-                { title: 'JEP 491: Synchronize Virtual Threads without Pinning', url: 'https://openjdk.org/jeps/491', kind: 'guide' }
+                { title: 'JEP 491: Synchronize Virtual Threads without Pinning', url: 'https://openjdk.org/jeps/491', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'spring-boot', questionId: 'version-support-windows' },
@@ -306,7 +306,7 @@ const modernJavaModule = {
                 }
             ],
             docs: [
-                { title: 'JEP 431: Sequenced Collections', url: 'https://openjdk.org/jeps/431', kind: 'guide' }
+                { title: 'JEP 431: Sequenced Collections', url: 'https://openjdk.org/jeps/431', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'collections', questionId: 'sequenced-collections' }

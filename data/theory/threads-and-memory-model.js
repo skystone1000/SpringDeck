@@ -94,7 +94,7 @@ const threadsAndMemoryModelModule = {
                 }
             ],
             docs: [
-                { title: 'JLS 17.4 — Memory Model', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4', kind: 'guide' }
+                { title: 'JLS 17.4 — Memory Model', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'concurrency', questionId: 'race-condition-vs-visibility' }
@@ -142,7 +142,7 @@ const threadsAndMemoryModelModule = {
                 }
             ],
             docs: [
-                { title: 'JLS 17.4.5 — Happens-before Order', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4.5', kind: 'guide' }
+                { title: 'JLS 17.4.5 — Happens-before Order', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.4.5', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'concurrency', questionId: 'happens-before' },
@@ -192,7 +192,7 @@ const threadsAndMemoryModelModule = {
                 }
             ],
             docs: [
-                { title: 'JLS 8.3.1.4 — volatile Fields', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.4', kind: 'guide' }
+                { title: 'JLS 8.3.1.4 — volatile Fields', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.3.1.4', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'concurrency', questionId: 'volatile-what-it-does' }
@@ -234,7 +234,7 @@ const threadsAndMemoryModelModule = {
             ],
             docs: [
                 { title: 'Object.wait', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()', kind: 'api' },
-                { title: 'JEP 374: Deprecate and Disable Biased Locking', url: 'https://openjdk.org/jeps/374', kind: 'guide' }
+                { title: 'JEP 374: Deprecate and Disable Biased Locking', url: 'https://openjdk.org/jeps/374', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'concurrency', questionId: 'synchronized-vs-lock' },

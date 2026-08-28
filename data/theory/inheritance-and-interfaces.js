@@ -59,7 +59,7 @@ const inheritanceAndInterfacesModule = {
             ],
             docs: [
                 { title: 'Default Methods', url: 'https://docs.oracle.com/javase/tutorial/java/IandI/defaultmethods.html', kind: 'guide' },
-                { title: 'JEP 213: Milling Project Coin (private interface methods)', url: 'https://openjdk.org/jeps/213', kind: 'guide' }
+                { title: 'JEP 213: Milling Project Coin (private interface methods)', url: 'https://openjdk.org/jeps/213', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'java-language', questionId: 'abstract-class-vs-interface' },
@@ -165,7 +165,7 @@ const inheritanceAndInterfacesModule = {
                 }
             ],
             docs: [
-                { title: 'JLS 9.4.1 — Inheritance and Overriding', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-9.html#jls-9.4.1', kind: 'guide' }
+                { title: 'JLS 9.4.1 — Inheritance and Overriding', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-9.html#jls-9.4.1', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'java-language', questionId: 'default-methods-and-the-diamond' },
@@ -229,7 +229,7 @@ const inheritanceAndInterfacesModule = {
                 }
             ],
             docs: [
-                { title: 'JLS 15.12.2 — Compile-Time Step 2: Determine Method Signature', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.12.2', kind: 'guide' }
+                { title: 'JLS 15.12.2 — Compile-Time Step 2: Determine Method Signature', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.12.2', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'java-language', questionId: 'overloading-vs-overriding' },
@@ -272,7 +272,7 @@ const inheritanceAndInterfacesModule = {
                 }
             ],
             docs: [
-                { title: 'JLS 8.4.8.2 — Hiding (by Class Methods)', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.4.8.2', kind: 'guide' }
+                { title: 'JLS 8.4.8.2 — Hiding (by Class Methods)', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.4.8.2', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'java-language', questionId: 'static-binding-vs-dynamic-dispatch' },

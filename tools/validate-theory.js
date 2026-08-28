@@ -346,7 +346,7 @@ function run() {
                 } else if (!/^https:\/\//.test(doc.url)) {
                     report.error(`${c}: docs url "${doc.url}" is not https`);
                 }
-                if (doc.kind && !['guide', 'api', 'codelab', 'sample', 'course'].includes(doc.kind)) {
+                if (doc.kind && !['spec', 'guide', 'api', 'codelab', 'sample', 'course'].includes(doc.kind)) {
                     report.error(`${c}: docs kind "${doc.kind}" is not one this deck knows`);
                 }
             });

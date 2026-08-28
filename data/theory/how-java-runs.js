@@ -79,8 +79,8 @@ const howJavaRunsModule = {
                 }
             ],
             docs: [
-                { title: 'The Java Virtual Machine Specification, Java SE 21', url: 'https://docs.oracle.com/javase/specs/jvms/se21/html/index.html', kind: 'guide' },
-                { title: 'JEP 220: Modular Run-Time Images', url: 'https://openjdk.org/jeps/220', kind: 'guide' }
+                { title: 'The Java Virtual Machine Specification, Java SE 21', url: 'https://docs.oracle.com/javase/specs/jvms/se21/html/index.html', kind: 'spec' },
+                { title: 'JEP 220: Modular Run-Time Images', url: 'https://openjdk.org/jeps/220', kind: 'spec' }
             ],
             relatedQuestions: []
         },
@@ -132,7 +132,7 @@ const howJavaRunsModule = {
                 }
             ],
             docs: [
-                { title: 'The class File Format (JVMS chapter 4)', url: 'https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html', kind: 'guide' },
+                { title: 'The class File Format (JVMS chapter 4)', url: 'https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html', kind: 'spec' },
                 { title: 'javac reference', url: 'https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html', kind: 'api' }
             ],
             relatedQuestions: [
@@ -206,8 +206,8 @@ const howJavaRunsModule = {
                 }
             ],
             docs: [
-                { title: 'JEP 483: Ahead-of-Time Class Loading & Linking', url: 'https://openjdk.org/jeps/483', kind: 'guide' },
-                { title: 'JEP 515: Ahead-of-Time Method Profiling', url: 'https://openjdk.org/jeps/515', kind: 'guide' },
+                { title: 'JEP 483: Ahead-of-Time Class Loading & Linking', url: 'https://openjdk.org/jeps/483', kind: 'spec' },
+                { title: 'JEP 515: Ahead-of-Time Method Profiling', url: 'https://openjdk.org/jeps/515', kind: 'spec' },
                 { title: 'JMH — the Java Microbenchmark Harness', url: 'https://github.com/openjdk/jmh', kind: 'sample' }
             ],
             relatedQuestions: [

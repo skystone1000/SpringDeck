@@ -204,7 +204,7 @@ const exceptionsAndFailureModule = {
                 }
             ],
             docs: [
-                { title: 'JLS 14.20.2 — Execution of try-finally', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.20.2', kind: 'guide' }
+                { title: 'JLS 14.20.2 — Execution of try-finally', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.20.2', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'java-language', questionId: 'finally-swallows-return' }
