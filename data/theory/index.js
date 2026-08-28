@@ -34,7 +34,8 @@ const theoryModules = [
     modernJavaModule,
     threadsAndMemoryModelModule,
     executorsAndFuturesModule,
-    virtualThreadsModule
+    virtualThreadsModule,
+    heapAndGcModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
