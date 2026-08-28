@@ -34,6 +34,12 @@
     gap: var(--space-4);
 }
 
+/* The whole card is one anchor, so the tagline, the counts and the minutes
+   are all inside a link and inherited the underline and the accent colour
+   from the base `a` rule. A card is a surface you click, not a phrase in a
+   sentence, so it opts out of both and lets its own parts set their colours.
+   Focus is not opted out of: the ring comes from :focus-visible in
+   styles.css and a keyboard user has nothing else to go on here. */
 .module-card {
     display: flex;
     flex-direction: column;
@@ -42,7 +48,9 @@
     border: 1px solid var(--ds-border);
     border-radius: var(--radius-card);
     background: var(--ds-surface);
+    color: var(--ds-text);
     text-align: left;
+    text-decoration: none;
     cursor: pointer;
     transition: border-color var(--transition-hover) var(--ease-standard),
                 box-shadow var(--transition-hover) var(--ease-standard);
@@ -55,7 +63,7 @@
     font-variant-numeric: tabular-nums;
     color: var(--ds-faint);
 }
-.module-title { font-size: var(--text-body); font-weight: 600; }
+.module-title { font-size: var(--text-body); font-weight: 600; color: var(--ds-text); }
 .module-tagline { font-size: var(--text-small); color: var(--ds-muted); }
 
 .module-foot {
@@ -89,7 +97,10 @@
     padding: 0 var(--space-2);
     border-radius: var(--radius-input);
     background: var(--ds-sunken);
+    color: var(--ds-muted);
+    text-decoration: none;
 }
+.module-prereq:hover { color: var(--ds-text); }
 
 /* ---- Chapter ------------------------------------------------------------ */
 
