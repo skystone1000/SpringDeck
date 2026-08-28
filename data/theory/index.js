@@ -32,7 +32,8 @@ const theoryModules = [
     hashmapInternalsModule,
     streamsAndLambdasModule,
     modernJavaModule,
-    threadsAndMemoryModelModule
+    threadsAndMemoryModelModule,
+    executorsAndFuturesModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
