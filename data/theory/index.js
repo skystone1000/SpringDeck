@@ -30,7 +30,8 @@ const theoryModules = [
     genericsAndErasureModule,
     collectionsChoosingModule,
     hashmapInternalsModule,
-    streamsAndLambdasModule
+    streamsAndLambdasModule,
+    modernJavaModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
