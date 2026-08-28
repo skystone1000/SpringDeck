@@ -29,7 +29,8 @@ const theoryModules = [
     exceptionsAndFailureModule,
     genericsAndErasureModule,
     collectionsChoosingModule,
-    hashmapInternalsModule
+    hashmapInternalsModule,
+    streamsAndLambdasModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
