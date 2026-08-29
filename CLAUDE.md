@@ -145,10 +145,12 @@ Where a cross-language comparison earns its place it is **prose in a
 | | |
 |---|---|
 | **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half |
-| **Next phase** | 3 — Theory, tracks 1–4 (~320 chapters across 41 modules) |
-| **Corpus** | 10 topics, 244 questions, 49 snippets, 14 diagrams |
-| **Last commit date used** | 2026-08-24, 16 commits |
-| **Next active day** | 2026-08-27 — 25 and 26 are skipped |
+| **Next phase** | 3 — Theory, tracks 1–4. **In progress: 28 of 41 modules.** |
+| **Corpus** | Questions: 10 topics, 244 questions, 49 snippets, 14 diagrams |
+| | Theory: 28 modules, 208 chapters, 727 blocks, 39 glossary terms |
+| **Phase 3 remaining** | `persistence` — 42 relational-foundations, 43 sql-you-are-asked, 44 indexes-and-plans, 45 transactions-and-isolation, 46 locking-and-deadlocks, 47 jdbc-and-pooling, 48 jpa-mapping, 49 persistence-context, 50 fetching-and-n-plus-one, 51 spring-transactional, 52 spring-data-jpa, 53 second-level-cache, 54 schema-and-scale |
+| **Last commit date used** | 2026-08-29, 15 commits |
+| **Next active day** | 2026-09-01 — 30 and 31 are skipped |
 
 ### Phase gates recorded
 
@@ -229,3 +231,32 @@ inline event handler.
   A change appeared not to take effect for half an hour during Phase 2 and the
   code was fine. Reload with a changed query string before believing a fix
   failed.
+- **`file://` still has not been opened by hand, and the reason changed.** The
+  in-app preview pane rewrites a local file into a `data:` URL — `protocol`
+  reads `data:`, `typeof topics` is `undefined`, nothing renders — so no
+  relative `<script src="js/…">` can resolve. That is a limitation of the
+  harness, not a finding about the deck, and it must be recorded as neither a
+  pass nor a failure. `check-offline.js` still covers the mechanical half.
+  **Open `index.html` from a real browser's File → Open before the Phase 3
+  gate**, and read a question, a chapter, a code block and a diagram there.
+- **Every diagram renderer fails soft, and so does anything else that returns
+  a string.** `flowchart`, `sequence` and `animation` each `return ''` when
+  their config is empty, which is right at run time — a half-drawn diagram must
+  not take a page down — and it means a config with the wrong key names mounts
+  as an empty box with nothing in the console. `checkDiagram` in `schema.js`
+  now catches it for both corpora. The general lesson is the one to keep:
+  **anything that fails soft in the renderer needs a hard check in the
+  toolchain**, because the page will not tell you.
+- **A long unbreakable token overflows a narrow grid track silently.** The
+  `types` and `comparison` blocks both put a name in a `minmax()` column that
+  shrinks on a narrow viewport, and Java identifiers do not shrink with it —
+  `postProcessBeforeInitialization` needed 242px in a 167px track and ran
+  underneath the next column. Fixed with `overflow-wrap: break-word` on both,
+  and a `.table-scroll` container for wide tables. Watch for the same shape in
+  any new block type that has a fixed-width column.
+- **`element.hidden` does nothing to a component whose class sets `display`.**
+  The UA stylesheet's `[hidden]` loses to any author rule, and every component
+  here sets `display` on a class. `styles.css` now carries
+  `[hidden] { display: none !important; }`. The Phase 2 symptom: leaving cram
+  mode widened the filter and cleared the query string but left the banner on
+  screen claiming cram mode was still on.
