@@ -223,6 +223,17 @@
 
 /* 5 — table. */
 .block-table { max-width: none; }
+
+/* The table scrolls inside its own box rather than widening the page.
+
+   A table is laid out to its content: width 100% is a preference, and a row
+   whose min-content width exceeds the column wins anyway. Long code tokens
+   in a cell -- AsyncUncaughtExceptionHandler in the AOP module is the one
+   that found this -- pushed the table past the main column and gave the
+   whole DOCUMENT a horizontal scrollbar, which moves the header and the
+   rail as well. Wide content scrolls in its own container; the page never
+   scrolls sideways. Same rule the code block already follows. */
+.table-scroll { overflow-x: auto; }
 .block-table table { width: 100%; border-collapse: collapse; font-size: var(--text-small); }
 .block-table th, .block-table td {
     padding: var(--space-2) var(--space-3);
