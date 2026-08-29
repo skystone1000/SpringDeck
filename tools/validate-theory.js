@@ -39,6 +39,7 @@ const { loadCorpus } = require('./load-corpus');
 const {
     TIERS, LANGUAGES, RUNNABLE_LANGUAGES, DIAGRAM_TYPES, OUTPUT_KINDS,
     PREDICT_ARTEFACTS, VERSION_STATES, BLOCK_TYPES, KEBAB, RESERVED_SEGMENTS,
+    checkDiagram,
     htmlIssues, makeReport
 } = require('./schema');
 
@@ -456,8 +457,9 @@ function run() {
                     case 'diagram':
                         if (DIAGRAM_TYPES.indexOf(block.diagramType) === -1) {
                             report.error(`${b}: diagramType "${block.diagramType}" is unknown`);
+                        } else {
+                            checkDiagram(report, b, block.diagramType, block.diagramConfig);
                         }
-                        if (!block.diagramConfig) report.error(`${b}: no diagramConfig`);
                         break;
 
                     case 'syntax':

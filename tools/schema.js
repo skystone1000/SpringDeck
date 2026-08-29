@@ -138,8 +138,82 @@ function makeReport(name) {
     };
 }
 
+/* ==========================================================================
+   checkDiagram — the shape each renderer actually reads
+
+   Both validators checked that diagramType was known and that diagramConfig
+   existed, and neither looked inside it. That is not enough, because every
+   renderer in diagrams.js FAILS SOFT by design: `if (!nodes.length) return
+   ''` for a flowchart, the same for actors and for steps. A config with the
+   wrong key names produces an empty string, which mounts as an empty box in
+   a page that is otherwise correct — no console error, no failed validator,
+   nothing to notice unless someone scrolls past that exact block.
+
+   That happened: a sequence diagram authored with `steps` instead of
+   `messages` passed both validators and rendered nothing.
+
+   The soft failure in the renderer is right — a half-drawn diagram must not
+   take a page down at run time. This is where it should be caught instead.
+   ========================================================================== */
+function checkDiagram(report, where, type, config) {
+    if (!config) {
+        report.error(`${where}: no diagramConfig`);
+        return;
+    }
+
+    function idsOf(list, field) {
+        const ids = new Set();
+        (config[list] || []).forEach((item, i) => {
+            if (!item || !item.id)    report.error(`${where}.${list}[${i}]: no id`);
+            else if (ids.has(item.id)) report.error(`${where}.${list}[${i}]: duplicate id "${item.id}"`);
+            else ids.add(item.id);
+            if (!item || !item.label)  report.error(`${where}.${list}[${i}]: no label`);
+        });
+        if (!ids.size) report.error(`${where}: no ${list}[] — ${field} renders nothing without them`);
+        return ids;
+    }
+
+    /* An edge or a message naming an unknown participant is DROPPED by the
+       renderer rather than drawn, so the diagram is quietly missing a line.
+       Same argument as above: silent is the problem. */
+    function checkLinks(list, ids) {
+        const links = config[list];
+        if (!Array.isArray(links) || !links.length) {
+            report.error(`${where}: no ${list}[]`);
+            return;
+        }
+        links.forEach((link, i) => {
+            ['from', 'to'].forEach(end => {
+                if (!link[end]) {
+                    report.error(`${where}.${list}[${i}]: no ${end}`);
+                } else if (!ids.has(link[end])) {
+                    report.error(
+                        `${where}.${list}[${i}]: ${end} "${link[end]}" is not one of ` +
+                        `the declared ids — this link is silently dropped`
+                    );
+                }
+            });
+        });
+    }
+
+    if (type === 'flowchart') {
+        checkLinks('edges', idsOf('nodes', 'a flowchart'));
+    } else if (type === 'sequence') {
+        checkLinks('messages', idsOf('actors', 'a sequence diagram'));
+    } else if (type === 'animation') {
+        const steps = config.steps;
+        if (!Array.isArray(steps) || !steps.length) {
+            report.error(`${where}: an animation needs steps[]`);
+        } else {
+            steps.forEach((step, i) => {
+                if (!step || !step.label) report.error(`${where}.steps[${i}]: no label`);
+            });
+        }
+    }
+}
+
 module.exports = {
     TIERS, LANGUAGES, RUNNABLE_LANGUAGES, DIAGRAM_TYPES, OUTPUT_KINDS,
     PREDICT_ARTEFACTS, VERSION_STATES, BLOCK_TYPES, ALLOWED_TAGS, KEBAB,
-    RESERVED_SEGMENTS, htmlIssues, makeReport
+    RESERVED_SEGMENTS, htmlIssues, checkDiagram, makeReport
 };

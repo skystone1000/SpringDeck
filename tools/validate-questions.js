@@ -28,7 +28,7 @@ const path = require('path');
 const { loadCorpus, ROOT } = require('./load-corpus');
 const {
     TIERS, LANGUAGES, RUNNABLE_LANGUAGES, DIAGRAM_TYPES, OUTPUT_KINDS,
-    ALLOWED_TAGS, KEBAB, RESERVED_SEGMENTS, htmlIssues, makeReport
+    ALLOWED_TAGS, KEBAB, RESERVED_SEGMENTS, htmlIssues, checkDiagram, makeReport
 } = require('./schema');
 
 /* -----------------------------------------------------------------------
@@ -222,9 +222,8 @@ function run() {
             if (question.hasDiagram) {
                 if (!DIAGRAM_TYPES.includes(question.diagramType)) {
                     report.error(`${q}: hasDiagram is true but diagramType "${question.diagramType}" is unknown`);
-                }
-                if (!question.diagramConfig) {
-                    report.error(`${q}: hasDiagram is true but diagramConfig is missing`);
+                } else {
+                    checkDiagram(report, q, question.diagramType, question.diagramConfig);
                 }
             }
 
