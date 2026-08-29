@@ -45,7 +45,8 @@ const theoryModules = [
     applicationLifecycleModule,
     springGenerationsModule,
     httpFoundationsModule,
-    dispatcherLifecycleModule
+    dispatcherLifecycleModule,
+    restApiDesignModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
