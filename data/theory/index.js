@@ -42,7 +42,8 @@ const theoryModules = [
     configurationAndProfilesModule,
     aopAndProxiesModule,
     autoconfigurationModule,
-    applicationLifecycleModule
+    applicationLifecycleModule,
+    springGenerationsModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
