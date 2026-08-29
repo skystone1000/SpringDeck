@@ -128,7 +128,10 @@
     function renderTable(block) {
         return '<div class="block block-table">' +
             (block.title ? '<div class="types-title">' + esc(block.title) + '</div>' : '') +
-            '<table><thead><tr>' +
+            /* The scroller wraps the table only, not the title: a heading
+               that slid out of view while you scrolled the rows would be
+               worse than the overflow it is fixing. */
+            '<div class="table-scroll"><table><thead><tr>' +
                 block.headers.map(function (h) { return '<th>' + esc(h) + '</th>'; }).join('') +
             '</tr></thead><tbody>' +
                 block.rows.map(function (row) {
@@ -136,7 +139,7 @@
                         return '<td>' + cell + '</td>';
                     }).join('') + '</tr>';
                 }).join('') +
-            '</tbody></table>' +
+            '</tbody></table></div>' +
         '</div>';
     }
 

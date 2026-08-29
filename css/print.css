@@ -127,6 +127,16 @@
     }
     .code-block { break-inside: avoid; }
 
+    /* Same argument for a wide table. On screen it scrolls inside its own
+       box; on paper there is nowhere to scroll to, and overflow: auto would
+       simply cut the last column off at the margin with nothing to say it
+       had. Let it wrap instead -- an ugly table on paper beats a silently
+       truncated one. */
+    .table-scroll {
+        overflow: visible;
+        word-break: break-word;
+    }
+
     /* THE GUTTER IS HIDDEN ON PAPER, and this is the reason.
 
        On screen the gutter and the source agree exactly, and the Phase 0 gate
