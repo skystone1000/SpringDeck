@@ -48,7 +48,8 @@ const theoryModules = [
     dispatcherLifecycleModule,
     restApiDesignModule,
     validationAndErrorsModule,
-    serializationModule
+    serializationModule,
+    asyncAndSchedulingModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
