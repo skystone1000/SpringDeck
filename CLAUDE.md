@@ -29,11 +29,12 @@ and every file declares one global.
 
 ## Commands
 
-Run the three fast validators before **any** commit touching `data/` or the
-navigation:
+**Three of the seven tools this file used to list do not exist yet.** Run what
+is on disk; `ls tools/` is the authority, not this section. Before **any**
+commit touching `data/`:
 
 ```bash
-node tools/validate-theory.js && node tools/validate-questions.js && node tools/validate-nav.js
+node tools/validate-theory.js && node tools/validate-questions.js
 ```
 
 `check-offline.js` is fast too, and belongs in any commit touching `index.html`,
@@ -43,12 +44,13 @@ the stylesheets or the load order:
 node tools/check-offline.js
 ```
 
-Two more are slower and run **per phase**, not per commit:
+Not yet written, each one a deliverable of the phase that needs it:
 
-```bash
-node tools/check-doc-links.js --all
-node tools/run-snippets.js --selftest
-```
+| Tool | Arrives in | What it will guard |
+|---|---|---|
+| `validate-nav.js` | Phase 4 | the hard totals, and that every mode counts its own noun |
+| `check-doc-links.js` | Phase 9 | every `docs[]` and `referenceLinks[]` URL |
+| `run-snippets.js` | Phase 9 | every `stdout` claim, against a real JDK |
 
 Serve locally (zero dependencies):
 
@@ -144,13 +146,13 @@ Where a cross-language comparison earns its place it is **prose in a
 
 | | |
 |---|---|
-| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half |
-| **Next phase** | 3 — Theory, tracks 1–4. **In progress: 28 of 41 modules.** |
+| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 |
+| **Next phase** | 4 — The rail and the five modes |
 | **Corpus** | Questions: 10 topics, 244 questions, 49 snippets, 14 diagrams |
-| | Theory: 28 modules, 208 chapters, 727 blocks, 39 glossary terms |
-| **Phase 3 remaining** | `persistence` — 42 relational-foundations, 43 sql-you-are-asked, 44 indexes-and-plans, 45 transactions-and-isolation, 46 locking-and-deadlocks, 47 jdbc-and-pooling, 48 jpa-mapping, 49 persistence-context, 50 fetching-and-n-plus-one, 51 spring-transactional, 52 spring-data-jpa, 53 second-level-cache, 54 schema-and-scale |
-| **Last commit date used** | 2026-08-29, 15 commits |
-| **Next active day** | 2026-09-01 — 30 and 31 are skipped |
+| | Theory: 41 modules, 318 chapters, 1,030 blocks, 47 glossary terms, 24 diagrams |
+| | Tracks: java-platform 14/104 · spring-core 7/51 · web-api 7/53 · persistence 13/110 |
+| **Last commit date used** | 2026-09-01, 17 commits |
+| **Next active day** | 2026-09-02 |
 
 ### Phase gates recorded
 
@@ -188,6 +190,35 @@ Every gate criterion was checked against the running page rather than argued:
   page itself was **not** opened from disk, because the in-app browser
   declines to navigate to a `file://` URL. **Do this by hand before the Phase 3
   gate**, and read a question, a code block and a diagram while there.
+
+**Phase 3 — Theory, tracks 1–4.** PASSED, with one item explicitly not run.
+41 modules, 318 chapters, 1,030 blocks, against a plan target of ~320 chapters.
+
+- **Both validators green.** `validate-theory.js` and `validate-questions.js`
+  exit 0, as does `check-offline.js`.
+- **All ten of validate-theory's checks have now been broken on purpose and
+  confirmed to fire**, which was the outstanding item from Phase 1. The ones
+  proved during this phase: duplicate `order`, a `trackId` that is not a
+  subject track, a prerequisite whose order is not strictly lower, `stdout`
+  claimed for SQL, a `relatedQuestions` id that does not resolve, a module in
+  `VERSION_BLOCK_MODULES` with no version block, a module in
+  `VERSION_EVERY_CHAPTER` with a chapter missing one, and a non-`stdout`
+  predict with no `verification` string.
+- **Every one of the 317 `relatedQuestions` references resolves**, and all 361
+  documentation links are full https URLs.
+- **Every module in the version-block list carries one.**
+- **All 24 diagrams mount with non-empty SVGs** — 17 flowchart, 6 sequence,
+  1 animation — checked in the page, not in the data.
+- **All 56 routes were swept for horizontal document overflow at 390px, 768px
+  and 1280px** and are clean. The sweep found two real defects at 390px; see
+  the inline-code blind spot below.
+- **Not one `stdout` claim in the theory corpus.** All 75 outputs are `trace`.
+  That is the correct position while no JDK exists here, and it is recorded in
+  the plan's §4.2 as well.
+- **`file://` was NOT opened by hand.** Third phase gate in a row. The static
+  half passes; the manual half is blocked by the harness, not by the deck, and
+  it is now overdue rather than merely outstanding. **Do it in a real browser
+  before the Phase 4 gate.**
 
 **Phase 1 — The tool chain.** PASSED. `node tools/validate-questions.js` exits
 0, and every one of its seven checks was broken on purpose and confirmed to
@@ -254,6 +285,24 @@ inline event handler.
   underneath the next column. Fixed with `overflow-wrap: break-word` on both,
   and a `.table-scroll` container for wide tables. Watch for the same shape in
   any new block type that has a fixed-width column.
+- **`overflow-wrap: break-word` does not shrink a grid track; `anywhere` does.**
+  The two wrap identically, but only `anywhere` reduces an element's
+  *min-content* width — and a grid track sized `auto` takes its width from
+  min-content. So a `types` item holding one 47-character property key in
+  inline code claimed 378px inside a 310px block and pushed the whole document
+  sideways, with `break-word` already applied and doing nothing. The first fix
+  looked like it worked because it happened to correct one of the two affected
+  pages. `:not(pre) > code` in `styles.css` now uses `anywhere`. **Sweep every
+  route for `documentElement.scrollWidth > clientWidth` at 390px after any
+  content phase** — it is four lines in the console and it found both.
+
+- **This file has told at least one lie about its own tool chain.** The
+  Commands section listed `validate-nav.js`, `check-doc-links.js` and
+  `run-snippets.js` as things to run before a commit, for three phases, and
+  none of the three exists — they are Phase 4 and Phase 9 deliverables. A
+  command that fails with MODULE_NOT_FOUND in the middle of an `&&` chain also
+  masks whether the checks before it passed. `ls tools/` is the authority.
+
 - **`element.hidden` does nothing to a component whose class sets `display`.**
   The UA stylesheet's `[hidden]` loses to any author rule, and every component
   here sets `display` on a class. `styles.css` now carries
