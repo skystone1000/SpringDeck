@@ -51,7 +51,8 @@ const theoryModules = [
     serializationModule,
     asyncAndSchedulingModule,
     reactiveAndWebfluxModule,
-    relationalFoundationsModule
+    relationalFoundationsModule,
+    sqlYouAreAskedModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
