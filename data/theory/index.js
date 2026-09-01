@@ -56,7 +56,8 @@ const theoryModules = [
     indexesAndPlansModule,
     transactionsAndIsolationModule,
     lockingAndDeadlocksModule,
-    jdbcAndPoolingModule
+    jdbcAndPoolingModule,
+    jpaMappingModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
