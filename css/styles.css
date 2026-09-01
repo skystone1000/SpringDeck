@@ -59,6 +59,25 @@ button { font: inherit; color: inherit; }
 a { color: var(--accent-work); text-decoration-thickness: 1px; text-underline-offset: 2px; }
 code, pre, kbd, samp { font-family: var(--font-mono); font-size: var(--code-size); }
 
+/* Inline code is one unbreakable token as often as not — a property key, a
+   fully-qualified class name, a method signature — and a narrow column cannot
+   shrink it. Left alone it pushes the whole DOCUMENT sideways, which moves the
+   fixed header and the rail with it, so the symptom appears nowhere near the
+   cause. Break it instead.
+
+   `anywhere` rather than `break-word`, and the difference is the whole point.
+   Both wrap the same way, but only `anywhere` reduces the element's MIN-CONTENT
+   width — and a grid track sized `auto` is sized from min-content, so with
+   `break-word` the track still claims the full width of the unbroken token and
+   pushes the layout sideways exactly as before. This was found on a 390px
+   viewport, where one 47-character property key widened a types block from
+   310px to 378px and the document with it.
+
+   Deliberately NOT inside pre: a code block scrolls horizontally on purpose,
+   and a wrapped line there would put the gutter out of step with the source
+   for every line after it. */
+:not(pre) > code { overflow-wrap: anywhere; }
+
 /* One ring, on everything, in both themes. */
 :focus-visible {
     outline: 2px solid var(--focus-ring);
