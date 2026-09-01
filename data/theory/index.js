@@ -53,7 +53,8 @@ const theoryModules = [
     reactiveAndWebfluxModule,
     relationalFoundationsModule,
     sqlYouAreAskedModule,
-    indexesAndPlansModule
+    indexesAndPlansModule,
+    transactionsAndIsolationModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
