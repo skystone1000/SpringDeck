@@ -25,7 +25,7 @@ snippets and 14 diagrams.
 | Spring Core & DI | 27 | | SQL & Database Design | 21 |
 | Spring Boot & Auto-Configuration | 24 | | AOP, Proxies & Annotations | 14 |
 
-**Theory mode is three tracks in** — 28 modules and 208 chapters, in one global
+**Theory mode is four tracks in** — 41 modules and 318 chapters, in one global
 dependency order rather than one order per track. The cross-track prerequisites
 are the whole reason that order exists: transactional propagation cannot be
 taught before transactions, and transactions cannot be taught before the
@@ -36,7 +36,14 @@ container that manages them.
 | Java & the JVM | 14 | 104 |
 | The Spring Container & Boot | 7 | 51 |
 | HTTP, REST & the Web Layer | 7 | 53 |
-| Persistence & Data | — | in progress |
+| Persistence & Data | 13 | 110 |
+
+The persistence track ends where a schema meets production: expand and
+contract, backfilling a large table without holding a lock, replication lag,
+partitioning, and the argument for not sharding yet. Every claim about engine
+behaviour names its engine and its version, because most of them are only true
+of one — adding a column with a constant default stopped rewriting the table in
+PostgreSQL 11, and still rewrites it for a volatile one.
 
 A chapter is built from twelve block types — prose, definition, types, syntax,
 table, comparison, pitfall, tip, diagram, drill, predict and version. The last
