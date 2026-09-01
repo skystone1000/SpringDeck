@@ -59,7 +59,8 @@ const theoryModules = [
     jdbcAndPoolingModule,
     jpaMappingModule,
     persistenceContextModule,
-    fetchingAndNPlusOneModule
+    fetchingAndNPlusOneModule,
+    springTransactionalModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
