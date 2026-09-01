@@ -54,7 +54,8 @@ const theoryModules = [
     relationalFoundationsModule,
     sqlYouAreAskedModule,
     indexesAndPlansModule,
-    transactionsAndIsolationModule
+    transactionsAndIsolationModule,
+    lockingAndDeadlocksModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
