@@ -681,20 +681,39 @@ properties, 1 YAML, 1 Dockerfile) and 14 diagrams. 28 snippets claim a console
 output and 21 record a trace instead. Every SQL snippet is a trace, because the
 runner executes Java only.
 
+**Phase 3 actual, for tracks 1–4:** 41 modules, 318 chapters, 1,030 blocks
+against a target of ~320 chapters. By track: Java & the JVM 14/104, the Spring
+container 7/51, HTTP and the web layer 7/53, persistence 13/110. By importance:
+176 must-know, 110 should-know, 32 good-to-know. 166 syntax blocks (123 Java,
+19 SQL, 12 properties, 6 bash, 4 HTTP, 1 YAML, 1 XML), 24 diagrams (17
+flowchart, 6 sequence, 1 animation), 47 definition blocks, 361 documentation
+links and 317 `relatedQuestions` references, all of which resolve.
+
+**Every one of the 75 outputs in the theory corpus is a `trace`. Not one claims
+`stdout`,** which is the honest position while no JDK exists on the build
+machine: the validator only checks that the *language* is runnable, and that is
+a weaker assertion than the output being correct. See the blind spot recorded in
+`CLAUDE.md`.
+
 ```yaml
 totals:                       # targets, not commitments
   questions: 853              # across all 26 topics; 244 authored in Phase 2
-  theory:    687              # chapters in the SUBJECT tracks only
+  theory:    687              # chapters in the SUBJECT tracks only; 318 in Phase 3
   synthesis:  46              # drill blocks
   predict:    81              # predict blocks
-  glossary:  600              # definition blocks — harvested, so this is an estimate
-                              # until Phase 3 lands; count it, do not guess it again
+  glossary:   47              # definition blocks — COUNTED at the end of Phase 3,
+                              # not estimated. Re-set it at the end of Phase 7.
 ```
 
-`glossary` is the one total that cannot be planned honestly: it is harvested
+`glossary` is the one total that could not be planned honestly: it is harvested
 from `definition` blocks, so it is a consequence of how the chapters were
-written, not a decision. Set it to the real count at the end of Phase 3 and
-re-set it at the end of Phase 7.
+written, not a decision. **The 600 written here before any chapter existed was
+wrong by an order of magnitude.** 318 chapters produced 47 terms, and the reason
+is a rule the authoring settled into rather than a shortfall: a `definition`
+block is for a term the reader will meet again in another module, so most
+chapters define nothing and the ones that do define one. Extrapolated over all
+687 subject chapters that is roughly a hundred, not six hundred. Re-count rather
+than re-estimate at the end of Phase 7.
 
 ---
 
@@ -1137,7 +1156,7 @@ tier1:
   - drill-ride-matching-service        # 120m — matching, state machine, cancellation
 ```
 
-Every tier-1 drill's `watchFor` must include, verbatim across all six:
+Every tier-1 drill's `watchFor` must include, verbatim across all eight:
 *"No interface for the thing that will vary"*, *"Business rules inside the
 controller"*, *"Concurrency ignored on the one operation that has contention"*,
 *"No test or driver — the interviewer cannot see it work"*, *"Ran out of time
