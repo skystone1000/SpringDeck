@@ -62,7 +62,8 @@ const theoryModules = [
     fetchingAndNPlusOneModule,
     springTransactionalModule,
     springDataJpaModule,
-    secondLevelCacheModule
+    secondLevelCacheModule,
+    schemaAndScaleModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
