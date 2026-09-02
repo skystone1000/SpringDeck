@@ -72,7 +72,11 @@ const theoryModules = [
        modulesInTrack('synthesis') finds them and subjectTracks() does not,
        so theory.js never has to know they exist. */
     drillsMachineCodingModule,
-    drillsDebugAndReviewModule
+    drillsDebugAndReviewModule,
+    predictJavaCoreModule,
+    predictCollectionsModule,
+    predictStreamsModule,
+    predictConcurrencyModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
