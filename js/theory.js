@@ -433,7 +433,7 @@
             '<header class="topic-header">' +
                 '<div class="topic-eyebrow">Theory</div>' +
                 '<h1 class="topic-title">The reading path</h1>' +
-                '<p class="topic-meta">' + theoryModules.length + ' modules &middot; ' +
+                '<p class="topic-meta">' + pathModules().length + ' modules &middot; ' +
                     countChapters() + ' chapters, in dependency order</p>' +
                 '<p class="chapter-summary">One global order, not one per track. ' +
                     'The cross-track prerequisites are the whole reason the order exists: ' +
@@ -477,8 +477,26 @@
         '</a>';
     }
 
+    /* THE READING PATH IS THE SUBJECT TRACKS AND NOTHING ELSE.
+
+       theoryModules also holds the mode-scope sets — the drill and predict
+       modules that Synthesis and Predict list — because a set is the same
+       shape on disk as a chapter and shares every mechanism: the validator,
+       the block renderers, the progress keys. It is not part of a reading
+       order, though, and counting it here would tell a reader that the path
+       is longer than it is. Filtering by scope rather than keeping a second
+       array is what stops the two lists ever disagreeing. */
+    function pathModules() {
+        var subject = {};
+        (typeof subjectTracks === 'function' ? subjectTracks() : [])
+            .forEach(function (track) { subject[track.id] = true; });
+        return theoryModules.filter(function (module) {
+            return subject[module.trackId] === true;
+        });
+    }
+
     function countChapters() {
-        return theoryModules.reduce(function (n, module) {
+        return pathModules().reduce(function (n, module) {
             return n + module.chapters.length;
         }, 0);
     }
@@ -706,7 +724,7 @@
 
         if (!module) {
             var meta = document.getElementById('modeMeta');
-            if (meta) meta.textContent = theoryModules.length + ' modules';
+            if (meta) meta.textContent = pathModules().length + ' modules';
         }
     }
 
@@ -729,7 +747,7 @@
     function handleTheory(route) {
         var moduleId = route.segments[0];
 
-        if (!theoryModules.length) {
+        if (!pathModules().length) {
             document.getElementById('topicContainer').innerHTML =
                 '<div class="empty-state"><h2>Nothing here yet</h2>' +
                 '<p>The reading path arrives with the theory corpus.</p></div>';
@@ -744,6 +762,23 @@
         }
 
         var module = theoryByModuleId[moduleId];
+
+        /* A mode-scope set resolves in theoryByModuleId — it is a theory
+           module in every mechanical sense — but it is not on the reading
+           path, so #theory/drills-machine-coding is a link to the wrong
+           mode. Send the reader to the mode that owns it rather than
+           rendering a set inside Theory or, worse, refusing a link that
+           names something the deck really does have. */
+        if (module) {
+            var owner = appModes.filter(function (mode) {
+                return mode.trackId === module.trackId;
+            })[0];
+            if (owner) {
+                router.go(owner.route, [module.id]);
+                return;
+            }
+        }
+
         if (!module) {
             document.getElementById('topicContainer').innerHTML =
                 '<div class="empty-state"><h2>No such module</h2>' +

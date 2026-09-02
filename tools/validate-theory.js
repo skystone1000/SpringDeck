@@ -200,10 +200,16 @@ function run() {
         return;
     }
 
-    const trackIds = new Set(
-        (typeof corpus.subjectTracks === 'function' ? corpus.subjectTracks() : [])
-            .map(t => t.id)
+    /* Both scopes, and the scope is kept so check 1 can hold each kind to a
+       different rule. A SUBJECT track carries the reading path. A MODE-SCOPE
+       track — synthesis, output — carries the units a drill mode counts, and
+       its modules are sets rather than chapters of anything. They share this
+       file because a drill and a chapter are the same shape on disk; they do
+       not share the rules, because a set has no place in a reading order. */
+    const trackScope = new Map(
+        (corpus.tracks || []).map(t => [t.id, t.scope])
     );
+    const MODE_TRACK_UNIT = { synthesis: 'drill', output: 'predict' };
 
     /* The question bank, flattened once, for check 8. */
     const questionIds = new Set();
@@ -237,8 +243,33 @@ function run() {
         }
         seenModuleIds.add(module.id);
 
-        if (!trackIds.has(module.trackId)) {
-            report.error(`${m}: trackId "${module.trackId}" is not a subject track`);
+        const scope = trackScope.get(module.trackId);
+        if (!scope) {
+            report.error(`${m}: trackId "${module.trackId}" is not in the track registry`);
+        }
+
+        /* A module on a mode-scope track must actually carry the unit its
+           mode counts. Without this, a set that lost its drills to a bad
+           merge still renders — as a module with a title, a tagline and
+           nothing in it — and the mode's sidebar reports 0/0 as though that
+           were a state somebody chose. */
+        const requiredUnit = MODE_TRACK_UNIT[module.trackId];
+        if (scope === 'mode' && requiredUnit) {
+            const units = (module.chapters || []).reduce(
+                (n, ch) => n + (ch.blocks || []).filter(b => b.type === requiredUnit).length, 0
+            );
+            if (!units) {
+                report.error(
+                    `${m}: a module on the "${module.trackId}" track carries no ` +
+                    `${requiredUnit} block — that track exists to hold them`
+                );
+            }
+        }
+        if (scope === 'mode' && Array.isArray(module.prerequisites) && module.prerequisites.length) {
+            report.error(
+                `${m}: a set has no place in the reading order, so it may not declare ` +
+                `prerequisites — the reader reaches it from a rail mode, not from a path`
+            );
         }
         if (!Number.isInteger(module.order) || module.order < 1) {
             report.error(`${m}: order must be a positive integer, got ${module.order}`);

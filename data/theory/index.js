@@ -63,7 +63,16 @@ const theoryModules = [
     springTransactionalModule,
     springDataJpaModule,
     secondLevelCacheModule,
-    schemaAndScaleModule
+    schemaAndScaleModule,
+
+    /* The mode-scope sets. They are in this array because they are theory
+       modules in every mechanical sense — the validator checks them, the
+       block renderers draw them, progress keys them the same way. They are
+       kept OUT of the reading path by scope rather than by a second array:
+       modulesInTrack('synthesis') finds them and subjectTracks() does not,
+       so theory.js never has to know they exist. */
+    drillsMachineCodingModule,
+    drillsDebugAndReviewModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
