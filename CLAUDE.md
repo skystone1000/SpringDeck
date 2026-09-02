@@ -208,7 +208,10 @@ Every gate criterion was checked against the running page rather than argued:
   documentation links are full https URLs.
 - **Every module in the version-block list carries one.**
 - **All 24 diagrams mount with non-empty SVGs** — 17 flowchart, 6 sequence,
-  1 animation — checked in the page, not in the data.
+  1 animation — checked in the page, not in the data. **That check was not
+  sufficient and three of them were broken.** See the NaN blind spot below;
+  the corrected assertion is that no diagram's markup contains the string
+  `NaN`, which is what is now checked.
 - **All 56 routes were swept for horizontal document overflow at 390px, 768px
   and 1280px** and are clean. The sweep found two real defects at 390px; see
   the inline-code blind spot below.
@@ -285,6 +288,17 @@ inline event handler.
   underneath the next column. Fixed with `overflow-wrap: break-word` on both,
   and a `.table-scroll` container for wide tables. Watch for the same shape in
   any new block type that has a fixed-width column.
+- **A diagram can mount with the right node count, the right edge count and
+  the right labels, and still be geometrically NaN.** Three flowcharts —
+  every one that contains a loop — ranked their nodes over more ranks than
+  they had, left holes in a sparse array, and turned `Math.max` into `NaN`,
+  which propagated to the viewBox and every coordinate. Nothing rendered.
+  The count-and-shape check that has caught every other diagram defect here
+  passed on all three, `checkDiagram` passed because the *config* was fine,
+  and the only signal was a browser console message naming no chapter. **The
+  gate check is `svg.outerHTML.includes('NaN')` over every route**, four
+  lines in the console, and it belongs next to the overflow sweep below.
+
 - **`overflow-wrap: break-word` does not shrink a grid track; `anywhere` does.**
   The two wrap identically, but only `anywhere` reduces an element's
   *min-content* width — and a grid track sized `auto` takes its width from
