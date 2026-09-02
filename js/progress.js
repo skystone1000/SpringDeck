@@ -33,23 +33,27 @@
 const progressStore = (function () {
     'use strict';
 
-    var KEYS = {
-        questions: 'springdeck:progress:questions',
-        theory:    'springdeck:progress:theory',
-        synthesis: 'springdeck:progress:synthesis',
-        predict:   'springdeck:progress:predict',
-        glossary:  'springdeck:progress:glossary'
-    };
+    /* Both maps are DERIVED from data/modes.js rather than repeated here.
+       They were written out in Phase 0 because modes.js did not exist yet,
+       and two hand-maintained copies of "what are the five modes" is exactly
+       the duplication the registry was introduced to remove: a sixth mode
+       added there and forgotten here would store nothing and count nothing,
+       silently.
 
-    /* The noun each mode counts. Written here beside the stores so that
-       adding a store without deciding on its noun is visibly incomplete. */
-    var NOUNS = {
-        questions: { one: 'answered',  many: 'answered'  },
-        theory:    { one: 'chapter',   many: 'chapters'  },
-        synthesis: { one: 'drill',     many: 'drills'    },
-        predict:   { one: 'correct',   many: 'correct'   },
-        glossary:  { one: 'term',      many: 'terms'     }
-    };
+       modes.js is parsed before this file — see the load order in
+       index.html — so the reduction runs at parse time and the maps are
+       complete before any caller exists. */
+    var KEYS = appModes.reduce(function (map, mode) {
+        map[mode.id] = mode.storageKey;
+        return map;
+    }, {});
+
+    /* The noun each mode counts, in its sentence length. The rail's shorter
+       label lives on the same mode object as progressNoun. */
+    var NOUNS = appModes.reduce(function (map, mode) {
+        map[mode.id] = mode.unit;
+        return map;
+    }, {});
 
     var VERDICTS = ['right', 'wrong', 'unanswered'];
 

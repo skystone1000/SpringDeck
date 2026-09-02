@@ -187,6 +187,12 @@
 <script src="data/theory/schema-and-scale.js"></script>
 <script src="data/theory/index.js"></script>
 
+<!-- The mode registry. AFTER both corpora, because a mode's sidebar shape is
+     a claim about the corpus it lists, and before everything in js/ — which
+     is what lets progress.js build its storage keys from it rather than
+     repeating them. -->
+<script src="data/modes.js"></script>
+
 <!-- js: leaves first, app.js last.
 
      code-highlight.js, diagrams.js and progress.js are leaves: they declare a
