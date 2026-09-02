@@ -117,23 +117,57 @@ const diagrams = (function () {
             return byId[e.from] && byId[e.to];
         });
 
-        // Longest-path ranking. The visited guard makes a cycle terminate
-        // rather than recurse forever — a cycle in a corpus diagram is an
-        // authoring error, but it must not hang the page.
+        /* Back edges are found FIRST and kept out of the ranking, because a
+           cycle is a shape this corpus draws on purpose — "verify, and go
+           back and fix the dual write if it disagrees" is a loop — and the
+           relaxation below has no cycle detection of its own. Left in, one
+           loop raises every rank on it by one per pass, so seven nodes end
+           up spread over eleven ranks with four of them empty, and the
+           empty ones become HOLES in a sparse rows array. Math.max over a
+           hole is NaN, and from there every coordinate in the diagram is
+           NaN. The SVG still mounts, with the right element count and
+           nothing visible. */
+        var backEdge = {};
+        (function () {
+            var state = {};                 // undefined = new, 1 = on the stack, 2 = done
+            var outgoing = {};
+            edges.forEach(function (e, i) {
+                (outgoing[e.from] = outgoing[e.from] || []).push(i);
+            });
+            function visit(id) {
+                state[id] = 1;
+                (outgoing[id] || []).forEach(function (i) {
+                    var to = edges[i].to;
+                    if (state[to] === 1) backEdge[i] = true;   // points at an ancestor
+                    else if (!state[to]) visit(to);
+                });
+                state[id] = 2;
+            }
+            nodes.forEach(function (n) { if (!state[n.id]) visit(n.id); });
+        })();
+
+        // Longest-path ranking, over the forward edges only. Acyclic by
+        // construction now, so the loop settles well inside nodes.length
+        // passes; the bound stays as a guard rather than as the mechanism.
+        var ranking = edges.filter(function (e, i) { return !backEdge[i]; });
         var rank = {};
         nodes.forEach(function (n) { rank[n.id] = 0; });
         for (var pass = 0; pass < nodes.length; pass++) {
             var changed = false;
-            edges.forEach(function (e) {
+            ranking.forEach(function (e) {
                 if (rank[e.to] < rank[e.from] + 1) { rank[e.to] = rank[e.from] + 1; changed = true; }
             });
             if (!changed) break;
         }
 
+        /* Compacted, and the filter is load-bearing rather than tidy: it
+           drops holes as well as empty arrays, so a rank nobody occupies
+           cannot reach the width arithmetic. */
         var rows = [];
         nodes.forEach(function (n) {
             (rows[rank[n.id]] = rows[rank[n.id]] || []).push(n);
         });
+        rows = rows.filter(function (row) { return row && row.length; });
 
         // Position. Rows are centred against the widest row.
         var rowWidths = rows.map(function (row) {
