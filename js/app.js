@@ -508,69 +508,19 @@
     }
 
     /* ======================================================================
-       Sidebar — the Questions shape of it
+       The sidebar
 
-       Topics grouped by track, in track order, with the answered count beside
-       each. Phase 4 moves this into sidebar.js next to the other four shapes.
+       The Questions shape moved to sidebar.js, and RENDERING IT IS NO LONGER
+       THIS FILE'S JOB AT ALL. Which shape the panel takes is a property of
+       the mode, declared in modes.js, and the active item is always the
+       route's first segment — a topic id here, a module id in Theory, a set
+       id in the drill modes, a letter in the Glossary. So the sidebar
+       subscribes to every route in initApp exactly the way the rail does,
+       and no mode renderer calls it. Only the count refresh stays, because
+       that is driven by a progress write rather than by a route.
        ====================================================================== */
-    function renderQuestionSidebar(activeTopicId) {
-        var nav = document.getElementById('sidebarNav');
-        if (!nav) return;
-
-        var groups = (typeof subjectTracks === 'function' ? subjectTracks() : [])
-            .map(function (track) {
-                return { track: track, topics: topicsInTrack(track.id) };
-            })
-            .filter(function (group) { return group.topics.length > 0; });
-
-        /* `null` is a spelled-out answer meaning "belongs to no subject", and
-           it renders in its own group rather than vanishing. A topic nobody
-           has decided about is `undefined`, and validate-nav.js catches that
-           — the two are different problems and only one of them is legal. */
-        var orphans = topicsInTrack(null);
-        if (orphans.length) {
-            groups.push({ track: { id: null, title: 'Everything else', hue: 'slate' }, topics: orphans });
-        }
-
-        nav.innerHTML = groups.map(function (group) {
-            return '<div class="sidebar-section" data-hue="' + escapeHtml(group.track.hue) + '">' +
-                '<div class="sidebar-section-label">' + escapeHtml(group.track.title) + '</div>' +
-                group.topics.map(function (topic) {
-                    var answered = progressStore.answeredInTopic(topic);
-                    return '<a class="sidebar-link' + (topic.id === activeTopicId ? ' is-active' : '') +
-                           '" href="' + router.href('questions', [topic.id]) + '">' +
-                        '<span class="sidebar-link-title">' + escapeHtml(topic.title) + '</span>' +
-                        '<span class="sidebar-count">' + answered + '/' + topic.questions.length + '</span>' +
-                    '</a>';
-                }).join('') +
-            '</div>';
-        }).join('');
-
-        nav.querySelectorAll('.sidebar-link').forEach(function (link) {
-            link.addEventListener('click', function () { closeDrawer(); });
-        });
-    }
-
-    /* Marking a card answered has to move the number beside its topic in the
-       sidebar, and it did not: the sidebar was rendered once per route change
-       and nothing told it anything had happened.
-
-       This updates the counts in place rather than re-rendering the sidebar.
-       Re-rendering would rebuild every link and rebind every handler on every
-       click of a checkbox, and it would also discard the drawer's scroll
-       position on a phone — a lot of work to change two digits. */
     function refreshSidebarCounts() {
-        var nav = document.getElementById('sidebarNav');
-        if (!nav) return;
-
-        nav.querySelectorAll('.sidebar-link').forEach(function (link) {
-            var route = router.parse(link.getAttribute('href'));
-            var topic = topicById(route.segments[0]);
-            var count = link.querySelector('.sidebar-count');
-            if (topic && count) {
-                count.textContent = progressStore.answeredInTopic(topic) + '/' + topic.questions.length;
-            }
-        });
+        sidebar.refreshCounts('questions');
     }
 
     /* ======================================================================
@@ -585,7 +535,6 @@
         var topicId = route.segments[0] || (topics[0] && topics[0].id);
         var topic   = topicById(topicId);
 
-        renderQuestionSidebar(topic ? topic.id : null);
         renderTopic(topic);
 
         if (!topic) return;
@@ -652,12 +601,6 @@
        Shell
        ====================================================================== */
 
-    function closeDrawer() {
-        document.body.classList.remove('drawer-open');
-        var hamburger = document.getElementById('hamburger');
-        if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
-    }
-
     function bindShell() {
         var hamburger = document.getElementById('hamburger');
         var overlay   = document.getElementById('drawerOverlay');
@@ -668,7 +611,7 @@
                 hamburger.setAttribute('aria-expanded', String(open));
             });
         }
-        if (overlay) overlay.addEventListener('click', closeDrawer);
+        if (overlay) overlay.addEventListener('click', sidebar.closeDrawer);
 
         var backToTop = document.getElementById('backToTop');
         if (backToTop) {
@@ -681,7 +624,7 @@
         }
 
         document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape') closeDrawer();
+            if (event.key === 'Escape') sidebar.closeDrawer();
 
             // `/` focuses the search box, unless the reader is already typing
             // into something — in which case a slash is a slash.
@@ -712,6 +655,14 @@
            in this application where start-up order is decided. */
         rail.start();
         router.onAny(rail.onRoute);
+
+        /* The sidebar's shape follows the mode and its active item is the
+           route's first segment, in all four shapes. That is true of every
+           mode, so it is subscribed here once rather than called from five
+           route handlers. */
+        router.onAny(function (modeId, route) {
+            sidebar.render(modeId, route.segments[0] || null);
+        });
 
         router.register('questions', handleQuestions);
         router.start();

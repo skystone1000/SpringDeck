@@ -297,6 +297,42 @@
     font-size: var(--text-micro);
 }
 
+/* An empty state, and it says which mode is empty rather than showing a
+   blank panel. A sidebar with nothing in it and no explanation reads as a
+   bug in the page; one that says "no sets authored yet" reads as a phase
+   that has not happened. */
+.sidebar-empty {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-micro);
+    color: var(--ds-faint);
+}
+
+/* ---- The glossary jump grid --------------------------------------------
+   Six columns of fixed cells, not a list. A letter with no term under it is
+   dimmed rather than removed, so D is always where D was — a grid that
+   changes shape as the corpus grows is harder to use than one that does not.
+   ---------------------------------------------------------------------- */
+.glossary-jump {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2px;
+}
+.glossary-letter {
+    display: grid;
+    place-items: center;
+    height: 26px;
+    border-radius: var(--radius-input);
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    color: var(--ds-muted);
+    text-decoration: none;
+    transition: background var(--transition-hover) var(--ease-standard),
+                color var(--transition-hover) var(--ease-standard);
+}
+.glossary-letter:hover { background: var(--ds-hover); color: var(--ds-text); }
+.glossary-letter.is-active { background: var(--ds-sunken); color: var(--ds-text); }
+.glossary-letter.is-empty { color: var(--ds-border); cursor: default; }
+
 @media (max-width: 768px) {
     .hamburger { display: grid; }
     .mode-meta { display: none; }

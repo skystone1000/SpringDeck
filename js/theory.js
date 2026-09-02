@@ -553,7 +553,7 @@
 
     function bindIndex(box) {
         box.querySelectorAll('.module-card').forEach(function (card) {
-            card.addEventListener('click', function () { closeDrawer(); });
+            card.addEventListener('click', function () { sidebar.closeDrawer(); });
         });
     }
 
@@ -679,11 +679,6 @@
         chapters.forEach(function (chapter) { spy.observe(chapter); });
     }
 
-    function closeDrawer() {
-        document.body.classList.remove('drawer-open');
-        var hamburger = document.getElementById('hamburger');
-        if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
-    }
 
     /* ======================================================================
        The mode header and the sidebar
@@ -715,57 +710,13 @@
         }
     }
 
-    function renderSidebar(activeModuleId) {
-        var nav = document.getElementById('sidebarNav');
-        if (!nav) return;
-
-        var groups = (typeof subjectTracks === 'function' ? subjectTracks() : [])
-            .map(function (track) {
-                return { track: track, modules: modulesInTrack(track.id) };
-            })
-            .filter(function (group) { return group.modules.length > 0; });
-
-        nav.innerHTML =
-            '<div class="sidebar-section">' +
-                '<a class="sidebar-link' + (activeModuleId ? '' : ' is-active') + '" href="#theory">' +
-                    '<span class="sidebar-link-title">The reading path</span>' +
-                '</a>' +
-            '</div>' +
-            groups.map(function (group) {
-                return '<div class="sidebar-section" data-hue="' + esc(group.track.hue) + '">' +
-                    '<div class="sidebar-section-label">' + esc(group.track.title) + '</div>' +
-                    group.modules.map(function (module) {
-                        return '<a class="sidebar-link' +
-                               (module.id === activeModuleId ? ' is-active' : '') +
-                               '" href="' + router.href('theory', [module.id]) + '" ' +
-                               'data-module-id="' + esc(module.id) + '">' +
-                            '<span class="sidebar-link-title">' + esc(module.title) + '</span>' +
-                            '<span class="sidebar-count">' + readInModule(module) + '/' +
-                                module.chapters.length + '</span>' +
-                        '</a>';
-                    }).join('') +
-                '</div>';
-            }).join('');
-
-        nav.querySelectorAll('.sidebar-link').forEach(function (link) {
-            link.addEventListener('click', function () { closeDrawer(); });
-        });
-    }
-
-    /* Counts updated in place rather than by re-rendering the sidebar.
-       Re-rendering would rebuild every link and rebind every handler to
-       change two digits, and would throw away the drawer's scroll position
-       on a phone. */
+    /* The tracks shape moved to sidebar.js, and it is rendered from a
+       router.onAny subscription in app.js rather than from here — the shape
+       is a property of the mode and the active item is the route's first
+       segment, which is true of all five modes. Only the count refresh
+       stays, because a progress write is not a route change. */
     function refreshSidebarCounts() {
-        var nav = document.getElementById('sidebarNav');
-        if (!nav) return;
-        nav.querySelectorAll('[data-module-id]').forEach(function (link) {
-            var module = theoryByModuleId[link.getAttribute('data-module-id')];
-            var count  = link.querySelector('.sidebar-count');
-            if (module && count) {
-                count.textContent = readInModule(module) + '/' + module.chapters.length;
-            }
-        });
+        sidebar.refreshCounts('theory');
     }
 
     /* ======================================================================
@@ -779,7 +730,6 @@
         var moduleId = route.segments[0];
 
         if (!theoryModules.length) {
-            renderSidebar(null);
             document.getElementById('topicContainer').innerHTML =
                 '<div class="empty-state"><h2>Nothing here yet</h2>' +
                 '<p>The reading path arrives with the theory corpus.</p></div>';
@@ -788,7 +738,6 @@
         }
 
         if (!moduleId) {
-            renderSidebar(null);
             renderIndex();
             window.scrollTo({ top: 0 });
             return;
@@ -796,7 +745,6 @@
 
         var module = theoryByModuleId[moduleId];
         if (!module) {
-            renderSidebar(null);
             document.getElementById('topicContainer').innerHTML =
                 '<div class="empty-state"><h2>No such module</h2>' +
                 '<p>That link points at a module this deck does not have. ' +
@@ -805,7 +753,6 @@
             return;
         }
 
-        renderSidebar(module.id);
         renderModule(module);
 
         var chapterId = route.segments[1];
