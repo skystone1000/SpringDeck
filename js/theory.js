@@ -622,7 +622,12 @@
                         other.classList.add('is-correct');
                     }
                 });
-                updateModeHeader(null, true);
+                /* No header refresh here. A predict verdict changes the
+                   PREDICT count, and the meter on screen in Theory mode
+                   counts chapters read. The old call refreshed the theory
+                   meter after answering a predict card, which repainted an
+                   unrelated number. rail.js repaints the meter only when the
+                   store that changed is the mode on screen. */
             });
         });
     }
@@ -681,38 +686,33 @@
     }
 
     /* ======================================================================
-       Mode header, rail meter and sidebar
+       The mode header and the sidebar
 
        ONE mode, ONE noun, ONE number. The bar is this module's read count
        over this module's chapters. Never a figure spanning modes, and never
        an average over the five — the five count five incompatible units and
        an average of them is a sixth number true of nothing.
+
+       The rail meter used to be written here as well, in a copy of the one
+       in app.js. rail.js owns it now.
        ====================================================================== */
-    function updateModeHeader(module, meterOnly) {
+    function updateModeHeader(module) {
         var title = document.getElementById('modeTitle');
-        if (title && !meterOnly) title.textContent = 'Theory';
+        if (title) title.textContent = modeById.theory.title;
 
-        if (!meterOnly) {
-            var read  = module ? readInModule(module) : 0;
-            var total = module ? module.chapters.length : 0;
+        var read  = module ? readInModule(module) : 0;
+        var total = module ? module.chapters.length : 0;
 
-            var fill = document.getElementById('modeProgressFill');
-            if (fill) fill.style.width = (total ? Math.round((read / total) * 100) : 0) + '%';
+        var fill = document.getElementById('modeProgressFill');
+        if (fill) fill.style.width = (total ? Math.round((read / total) * 100) : 0) + '%';
 
-            var text = document.getElementById('modeProgressText');
-            if (text) text.textContent = total ? read + ' / ' + total : '';
+        var text = document.getElementById('modeProgressText');
+        if (text) text.textContent = total ? read + ' / ' + total : '';
 
-            if (!module) {
-                var meta = document.getElementById('modeMeta');
-                if (meta) meta.textContent = theoryModules.length + ' modules';
-            }
+        if (!module) {
+            var meta = document.getElementById('modeMeta');
+            if (meta) meta.textContent = theoryModules.length + ' modules';
         }
-
-        var value = document.getElementById('railMeterValue');
-        var noun  = document.getElementById('railMeterNoun');
-        var count = progressStore.countFor('theory');
-        if (value) value.textContent = count;
-        if (noun)  noun.textContent  = progressStore.nounFor('theory', count);
     }
 
     function renderSidebar(activeModuleId) {

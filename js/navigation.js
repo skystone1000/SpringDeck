@@ -200,6 +200,18 @@ const router = (function () {
         handlers[mode] = handler;
     }
 
+    /* Some things happen on EVERY route regardless of mode — the rail's
+       selected item, the accent token, the meter. Registering those as a
+       sixth mode handler would be wrong, and calling them from inside
+       dispatch() would give this file knowledge of what a mode renders,
+       which is precisely what register() exists to avoid. So they subscribe,
+       and dispatch tells them the mode id and nothing else. */
+    var anyListeners = [];
+
+    function onAny(fn) {
+        if (typeof fn === 'function') anyListeners.push(fn);
+    }
+
     function dispatch(route) {
         // Rule 1, applied. Normalise first so the handler always sees a
         // canonical route and never has to know legacy links exist.
@@ -221,6 +233,19 @@ const router = (function () {
         }
 
         document.documentElement.dataset.mode = route.mode;
+
+        /* Before the handler, so the rail shows the mode you are going to
+           while that mode is still rendering rather than after it. A
+           subscriber that throws must not stop the mode from rendering. */
+        anyListeners.forEach(function (fn) {
+            try {
+                fn(route.mode, route);
+            } catch (e) {
+                if (typeof console !== 'undefined' && console.error) {
+                    console.error('router: an onAny listener threw for "' + route.mode + '"', e);
+                }
+            }
+        });
 
         var handler = handlers[route.mode];
         if (typeof handler === 'function') handler(route);
@@ -245,6 +270,7 @@ const router = (function () {
         flags:           flags,
         setTiers:        setTiers,
         register:        register,
+        onAny:           onAny,
         start:           start,
         get route()      { return lastRoute; }
     };

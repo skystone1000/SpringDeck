@@ -482,15 +482,20 @@
     }
 
     /* ======================================================================
-       Mode header and rail meter
+       The mode header
 
        ONE mode, ONE noun, ONE number. The bar is this topic's answered count
        over this topic's total — never a figure spanning modes, and never an
        average of five things that are not the same kind of thing.
+
+       The RAIL METER is no longer written here. It was, and so was an
+       identical copy of it in theory.js, which is two implementations of one
+       behaviour each of which ran only while its own mode was on screen.
+       rail.js owns it now, subscribed once, for all five modes.
        ====================================================================== */
     function updateModeHeader(topic) {
         var title = document.getElementById('modeTitle');
-        if (title) title.textContent = 'Questions';
+        if (title) title.textContent = modeById.questions.title;
 
         var answered = topic ? progressStore.answeredInTopic(topic) : 0;
         var total    = topic ? topic.questions.length : 0;
@@ -500,12 +505,6 @@
 
         var text = document.getElementById('modeProgressText');
         if (text) text.textContent = total ? answered + ' / ' + total : '';
-
-        var value = document.getElementById('railMeterValue');
-        var noun  = document.getElementById('railMeterNoun');
-        var deckWide = progressStore.countFor('questions');
-        if (value) value.textContent = deckWide;
-        if (noun)  noun.textContent  = progressStore.nounFor('questions', deckWide);
     }
 
     /* ======================================================================
@@ -706,6 +705,13 @@
         progressStore.subscribe(function (mode) {
             if (mode === 'questions') refreshSidebarCounts();
         });
+
+        /* The rail is built once, before the first dispatch, and follows
+           every route after it through router.onAny. It is started here
+           rather than registering itself, because initApp is the one place
+           in this application where start-up order is decided. */
+        rail.start();
+        router.onAny(rail.onRoute);
 
         router.register('questions', handleQuestions);
         router.start();
