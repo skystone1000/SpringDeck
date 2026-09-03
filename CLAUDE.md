@@ -29,12 +29,11 @@ and every file declares one global.
 
 ## Commands
 
-**Three of the seven tools this file used to list do not exist yet.** Run what
-is on disk; `ls tools/` is the authority, not this section. Before **any**
-commit touching `data/`:
+Run what is on disk; `ls tools/` is the authority, not this section. Before
+**any** commit touching `data/` or the navigation:
 
 ```bash
-node tools/validate-theory.js && node tools/validate-questions.js
+node tools/validate-theory.js && node tools/validate-questions.js && node tools/validate-nav.js
 ```
 
 `check-offline.js` is fast too, and belongs in any commit touching `index.html`,
@@ -48,9 +47,14 @@ Not yet written, each one a deliverable of the phase that needs it:
 
 | Tool | Arrives in | What it will guard |
 |---|---|---|
-| `validate-nav.js` | Phase 4 | the hard totals, and that every mode counts its own noun |
 | `check-doc-links.js` | Phase 9 | every `docs[]` and `referenceLinks[]` URL |
 | `run-snippets.js` | Phase 9 | every `stdout` claim, against a real JDK |
+
+**`validate-nav.js` holds the five mode totals as hard numbers.** Changing the
+corpus means changing `EXPECTED_TOTALS` by hand in the same commit. If that
+ever feels like friction, that is the check working — a refactor that quietly
+halves the Predict total is what it exists to catch, and *"a number appeared"
+is not a check.*
 
 Serve locally (zero dependencies):
 
