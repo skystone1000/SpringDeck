@@ -841,4 +841,11 @@
     window.renderDrillBlock  = renderDrill;
     window.renderPredictBlock = renderPredict;
     window.theoryChapterKey  = chapterKey;
+
+    /* Exported for predict.js, which renders the same predict blocks outside
+       a chapter. Sharing the BINDING and not only the markup is the point:
+       a verdict recorded from the Predict mode and one recorded from a
+       theory chapter have to be the same write to the same key, or the two
+       screens disagree about what the reader has solved. */
+    window.bindPredictCard   = bindPredict;
 })();

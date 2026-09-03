@@ -430,7 +430,13 @@
 .predict-option:disabled   { cursor: default; }
 
 .predict-reveal { display: none; margin-top: var(--space-4); }
-.predict-card.is-revealed .predict-reveal { display: block; }
+/* .block-predict, not .predict-card. The renderer emits `block
+   block-predict` and bindPredict adds is-revealed to that same element, so
+   the selector written here originally matched nothing and the reveal pane
+   was permanently hidden — a silent CSS failure of exactly the kind
+   CLAUDE.md records: no error, no warning, and a feature that simply never
+   appears. Found by exercising the mode rather than by reading the file. */
+.block-predict.is-revealed .predict-reveal { display: block; }
 
 /* The wrong answer people actually give, and why. A distractor that is
    obviously wrong makes the exercise worthless. */
@@ -614,4 +620,135 @@
     .types-item, .version-item { grid-template-columns: 1fr; gap: var(--space-1); }
     .comparison-grid { grid-template-columns: 1fr; }
     .comparison-grid > :nth-child(-n + 3) { background: var(--ds-sunken); }
+}
+
+
+/* ==========================================================================
+   The three drill modes' own surfaces
+
+   Everything above this line is a block. Everything below is the frame the
+   Synthesis, Predict and Glossary modes put around blocks they did not
+   author — the checkbox beside a drill, the chips beside a term. The blocks
+   themselves are drawn by the same renderers the theory chapters use, which
+   is why there is nothing here that repeats a block rule.
+   ========================================================================== */
+
+/* ---- Synthesis: one drill, framed --------------------------------------- */
+
+.drill-entry {
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--ds-border-subtle);
+}
+.drill-entry:last-child { border-bottom: 0; }
+
+.drill-entry-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-bottom: var(--space-1);
+}
+.drill-entry-title {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    color: var(--ds-text);
+}
+.drill-entry-summary {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-small);
+    color: var(--ds-muted);
+}
+
+/* Rehearsed, not read. The noun is doing work: a drill is a build you sat
+   down for, and a checkbox that said "done" would invite ticking it after
+   reading the sketch. */
+.drill-done, .glossary-seen {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-micro);
+    color: var(--ds-faint);
+    cursor: pointer;
+    user-select: none;
+}
+.drill-done input, .glossary-seen input { cursor: pointer; }
+
+/* ---- Predict: one puzzle, framed ---------------------------------------- */
+
+.predict-entry {
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--ds-border-subtle);
+}
+.predict-entry:last-child { border-bottom: 0; }
+.predict-entry .block { max-width: none; }
+
+/* ---- Glossary ----------------------------------------------------------- */
+
+.glossary-group { margin-bottom: var(--space-6); }
+
+.glossary-group-letter {
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-1);
+    border-bottom: 2px solid var(--ds-border);
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    color: var(--ds-faint);
+}
+
+.glossary-entry {
+    margin-bottom: var(--space-4);
+    padding: var(--space-4);
+    border: 1px solid var(--ds-border);
+    border-radius: var(--radius-card);
+    background: var(--ds-surface);
+    max-width: var(--measure);
+}
+
+.glossary-entry-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+    flex-wrap: wrap;
+}
+.glossary-term {
+    font-family: var(--font-mono);
+    font-size: var(--text-body);
+    font-weight: 600;
+    color: var(--ds-text);
+    overflow-wrap: anywhere;
+    min-width: 0;
+}
+.glossary-chips { display: flex; gap: var(--space-1); flex-wrap: wrap; }
+
+/* Both chips are DERIVED — one from the question bank, one from the term
+   string. Blueprint 18.5 allows a second chip only on that condition, and a
+   chip that needed an authored field would belong in the schema instead. */
+.glossary-chip {
+    padding: 1px var(--space-2);
+    border-radius: var(--radius-pill);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    background: var(--ds-sunken);
+    color: var(--ds-faint);
+}
+.glossary-chip[data-kind="annotation"] { background: var(--hue-sky-bg);   color: var(--hue-sky-ink); }
+.glossary-chip[data-kind="asked"]      { background: var(--tier-must-bg); color: var(--tier-must-ink); }
+.glossary-chip[data-kind="key"]        { background: var(--accent-wash);  color: var(--accent-work); }
+
+.glossary-definition { line-height: var(--leading-answer); }
+.glossary-source {
+    margin-top: var(--space-2);
+    font-size: var(--text-micro);
+}
+.glossary-source a { color: var(--ds-faint); }
+.glossary-source a:hover { color: var(--ds-text); }
+
+@media (max-width: 600px) {
+    .drill-entry-head, .glossary-entry-head { flex-wrap: wrap; }
 }
