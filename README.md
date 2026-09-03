@@ -56,6 +56,24 @@ Filter by importance with the chips, or share a filtered view directly —
 at. `?cram` is the same thing in one flag. Progress is stored per question in
 `localStorage`, and each mode counts its own noun; nothing adds them together.
 
+**The other three modes are in.** Synthesis holds 19 drills across two sets —
+eight ninety-to-hundred-and-twenty-minute machine coding builds and eleven
+debug-and-review exercises, the round-5 material almost nobody rehearses.
+Predict holds 34 puzzles across four sets; 23 of them are complete
+deterministic Java programs whose output a runner re-executes and diffs, and
+the other 11 declare `behaviour` instead, because a lost-update counter prints
+a different number on every machine and a deck that prints one is teaching
+that the number is the lesson. The Glossary is harvested from the `definition`
+blocks in the chapters that teach them, never authored, so a term arrives with
+its chapter already attached.
+
+The rail switches modes with digits 1–5 and remembers where you left each one.
+**Each mode counts its own noun** — known, read, rehearsed, solved, seen — and
+nothing anywhere adds them together. Five incompatible units averaged into one
+number would be a sixth number true of nothing, and it would mislead in the
+direction that hurts: somebody who has read every chapter and sat no drill is
+not half ready for anything.
+
 ## Running it
 
 There is no build step and no package manager. Open `index.html` from disk and

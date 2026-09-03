@@ -150,13 +150,15 @@ Where a cross-language comparison earns its place it is **prose in a
 
 | | |
 |---|---|
-| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 |
-| **Next phase** | 4 — The rail and the five modes |
+| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes |
+| **Next phase** | 5 — Search, then ship |
 | **Corpus** | Questions: 10 topics, 244 questions, 49 snippets, 14 diagrams |
-| | Theory: 41 modules, 318 chapters, 1,030 blocks, 47 glossary terms, 24 diagrams |
+| | Theory: 41 modules, 318 chapters on the reading path, 47 glossary terms, 24 diagrams |
 | | Tracks: java-platform 14/104 · spring-core 7/51 · web-api 7/53 · persistence 13/110 |
-| **Last commit date used** | 2026-09-01, 17 commits |
-| **Next active day** | 2026-09-02 |
+| | Sets: synthesis 2 modules / 19 drills · output 4 modules / 34 predicts |
+| **Phase 4 remaining** | none. Tiers 2 and 3 (27 drills) and the seven non-`stdout` predict sets are Phase 8 by plan |
+| **Last commit date used** | 2026-09-03 |
+| **Commit cadence** | **Reduced by instruction on 2026-09-03.** Fewer, larger commits — one per unit of work rather than 15–17 a day. The hand-set dates and the ascending-within-a-day rule still hold. |
 
 ### Phase gates recorded
 
@@ -194,6 +196,34 @@ Every gate criterion was checked against the running page rather than argued:
   page itself was **not** opened from disk, because the in-app browser
   declines to navigate to a `file://` URL. **Do this by hand before the Phase 3
   gate**, and read a question, a code block and a diagram while there.
+
+**Phase 4 — The rail and the five modes.** PASSED, with the same item still
+not run. Five modes render, and the deck stopped being a question bank with a
+theory section attached.
+
+- **All three validators green**, `validate-nav.js` among them for the first
+  time. **Ten of its failures were induced on purpose and all ten fired** —
+  including the one that matters most, a total off by one. That last probe
+  then shipped: the `git checkout` that was meant to undo it did nothing,
+  because the file was still untracked, and `validate-nav.js` went in with
+  `predict: 35`. **The check caught its own author within the hour**, which
+  is a better argument for it than the ten induced failures were. The lesson
+  is the older one: run the validators immediately before the commit, not
+  before the last edit.
+- **Every legacy bare segment normalises.** All ten tested, `#collections` to
+  `#questions/collections`; an unknown segment gives the empty state.
+- **Digits 1–5 switch modes**, and the guard holds: a digit typed into the
+  search box is a digit.
+- **Each mode counts its own noun** — KNOWN, READ, REHEARSED, SOLVED, SEEN,
+  read off the rail meter in all five. **`progressStore` still contains no
+  function that adds them together**, and now neither does anything else:
+  the meter is one subscription in `rail.js` rather than a copy per mode.
+- **A predict verdict is one write.** The same binder serves the Predict mode
+  and a chapter, so the two screens cannot disagree about what is solved.
+- **No console errors across nine routes** covering all five modes, and no
+  horizontal document overflow at 390px or 1280px on any of them.
+- **`file://` was NOT opened by hand.** Fourth gate. Unchanged reason, and it
+  is now the oldest open item in this file.
 
 **Phase 3 — Theory, tracks 1–4.** PASSED, with one item explicitly not run.
 41 modules, 318 chapters, 1,030 blocks, against a plan target of ~320 chapters.
@@ -292,6 +322,16 @@ inline event handler.
   underneath the next column. Fixed with `overflow-wrap: break-word` on both,
   and a `.table-scroll` container for wide tables. Watch for the same shape in
   any new block type that has a fixed-width column.
+- **A CSS selector that matches nothing is invisible.** The reveal pane under
+  every predict card was styled `.predict-card.is-revealed` while the renderer
+  emitted `.block-predict`, so the pane had been permanently hidden since
+  Phase 3 — no error, no warning, and a feature that simply never appeared.
+  The colour grep cannot see it, no validator looks at CSS, and reading the
+  stylesheet does not reveal it either. **Only exercising the feature does.**
+  Same family as the `var(--typo)` blind spot below and worth stating
+  separately, because that one is a wrong value and this one is a rule that
+  never applies.
+
 - **A diagram can mount with the right node count, the right edge count and
   the right labels, and still be geometrically NaN.** Three flowcharts —
   every one that contains a loop — ranked their nodes over more ranks than
