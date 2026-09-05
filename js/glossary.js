@@ -112,8 +112,12 @@ function collectGlossaryEntries() {
             (entry.important
                 ? '<span class="glossary-chip" data-kind="key">KEY TERM</span>' : '');
 
+        /* The slug comes from search-index.js rather than being spelled out
+           here, because a search result addresses this element by it. Two
+           copies of one expression is how a result starts landing on the
+           right page and scrolling to nothing. */
         return '<article class="glossary-entry" id="term-' +
-                   esc(entry.term.toLowerCase().replace(/[^a-z0-9]+/g, '-')) + '">' +
+                   esc(glossaryTermSlug(entry.term)) + '">' +
             '<div class="glossary-entry-head">' +
                 '<h3 class="glossary-term">' + esc(entry.term) + '</h3>' +
                 '<div class="glossary-chips">' + chips + '</div>' +
@@ -212,10 +216,26 @@ function collectGlossaryEntries() {
 
         /* A segment that is not a single letter is a typo or a stale link,
            and showing the whole list is a better answer than an error page
-           for something this cheap to recover from. */
+           for something this cheap to recover from. It is also how a term
+           beginning with '@' is addressed: '@Transactional' files under no
+           letter, so a link to it says 'all' and lands on the full list. */
         if (letter && !/^[a-z]$/i.test(letter)) letter = null;
 
         render(letter);
+
+        /* A SECOND SEGMENT IS A TERM, the same way it is a chapter in Theory
+           and a card in Questions. Search results address one term, and a
+           mode whose deep link stopped at the letter would drop the reader
+           at the top of a page of forty and leave them to scroll. */
+        var slug = route.segments[1];
+        if (slug) {
+            var target = document.getElementById('term-' + slug);
+            if (target) {
+                target.scrollIntoView({ block: 'start', behavior: 'smooth' });
+                return;
+            }
+        }
+
         window.scrollTo({ top: 0 });
     }
 
