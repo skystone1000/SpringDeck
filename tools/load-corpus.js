@@ -116,7 +116,25 @@ function loadCorpus(options) {
     return context;
 }
 
-module.exports = { loadCorpus, scriptOrder, DECLARED, ROOT };
+/* Evaluate one more script INSIDE a context loadCorpus() already built, so it
+   sees the corpus globals exactly as the browser's next <script> would.
+
+   Only for files in js/ that touch no DOM. search-index.js is the first and,
+   at the time of writing, the only one — the split that keeps it pure is the
+   whole reason its ranking can be checked outside a browser. A file that
+   references document throws here, loudly, which is the right answer: it
+   means the pure half stopped being pure.
+
+   No export shim is needed for it. The `const` subtlety above applies to
+   lexical bindings; search-index.js declares its surface with `function` and
+   `var`, both of which do become properties of the global object. */
+function evalInCorpus(context, relPath) {
+    const source = fs.readFileSync(path.join(ROOT, relPath), 'utf8');
+    new vm.Script(source, { filename: relPath }).runInContext(context);
+    return context;
+}
+
+module.exports = { loadCorpus, evalInCorpus, scriptOrder, DECLARED, ROOT };
 
 /* Run directly to see what the browser would see. */
 if (require.main === module) {

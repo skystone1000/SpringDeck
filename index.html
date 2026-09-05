@@ -89,7 +89,7 @@
         <span class="mode-progress-text" id="modeProgressText"></span>
     </div>
     <div class="search" role="search">
-        <input class="search-input" id="searchInput" type="search" placeholder="Search  /" aria-label="Search questions and chapters" autocomplete="off" spellcheck="false">
+        <input class="search-input" id="searchInput" type="search" placeholder="Search  /" aria-label="Search every mode" autocomplete="off" spellcheck="false">
         <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
     </div>
 </header>
@@ -216,12 +216,19 @@
      theory.js sits between them because it registers its own route handler at
      parse time and app.js is what calls router.start(). A mode is therefore a
      file and a script tag, and app.js never learns the names of the other
-     four. -->
+     four.
+
+     search-index.js is a leaf and sits with the other leaves: it declares
+     pure functions over the corpora and touches no DOM, which is what lets
+     tools/validate-search.js load it into a vm and check it in Node.
+     glossary.js reads glossaryTermSlug from it, so it has to be above.
+ -->
 <script src="js/theme.js"></script>
 <script src="js/three-bg.js"></script>
 <script src="js/code-highlight.js"></script>
 <script src="js/diagrams.js"></script>
 <script src="js/progress.js"></script>
+<script src="js/search-index.js"></script>
 <script src="js/rail.js"></script>
 <script src="js/sidebar.js"></script>
 <script src="js/navigation.js"></script>
