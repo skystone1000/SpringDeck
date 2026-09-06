@@ -407,6 +407,13 @@
     display: flex;
     align-items: flex-start;
     gap: var(--space-3);
+    /* A grid item is min-width:auto by default, so an option holding one
+       unbreakable 31-character exception name claimed 586px inside a 436px
+       column and pushed the whole document sideways. Same shape as the
+       `types` and `comparison` tracks recorded in CLAUDE.md, on the block
+       type that arrived two phases later — which is why that note says to
+       watch for it in every new block with a fixed-width column. */
+    min-width: 0;
     padding: var(--space-3);
     border: 1px solid var(--ds-border);
     border-radius: var(--radius-row);
@@ -424,6 +431,12 @@
     width: 18px;
     color: var(--ds-faint);
     font-weight: 600;
+}
+/* `anywhere` and not `break-word`: only `anywhere` reduces min-content width,
+   and min-content is what sized the track too wide in the first place. */
+.predict-option-text {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 .predict-option.is-correct { border-color: var(--state-success); background: var(--accent-wash); }
 .predict-option.is-wrong   { border-color: var(--tier-must-dot); background: var(--tier-must-bg); }

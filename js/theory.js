@@ -243,6 +243,19 @@
         '</div>';
     }
 
+    /* A predict option is a candidate STDOUT, and a stdout with three lines in
+       it was authored as one string with literal backslash-n between them —
+       which rendered as the characters "\\n" in the middle of a monospace
+       line, in a font where they look like part of the output. Broken into
+       real lines it reads as what it is.
+
+       ESCAPED FIRST, THEN SPLIT. esc() cannot emit a '<', so the only tags in
+       the result are the ones added here. The reverse order would put author
+       text next to markup and make the escaping load-bearing on the split. */
+    function optionLines(option) {
+        return esc(option).split('\\n').join('<br>');
+    }
+
     function renderPredictOptions(block, verdict) {
         if (!block.options || !block.options.length) return '';
         var done = verdict !== 'unanswered';
@@ -256,7 +269,7 @@
                        'data-index="' + index + '"' + (done ? ' disabled' : '') + '>' +
                     '<span class="predict-option-key">' +
                         String.fromCharCode(65 + index) + '</span>' +
-                    '<span>' + esc(option) + '</span>' +
+                    '<span class="predict-option-text">' + optionLines(option) + '</span>' +
                 '</button>';
             }).join('') +
         '</div>';
