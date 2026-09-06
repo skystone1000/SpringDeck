@@ -635,12 +635,57 @@
 }
 .search-result:hover, .search-result.is-active { background: var(--ds-hover); }
 .search-result-title { font-size: var(--text-small); font-weight: 500; }
+
+/* The excerpt is the line that makes a result worth clicking: the title says
+   what it is, this says why it matched. Two lines and no more — a panel of
+   paragraphs is a panel nobody reads. `anywhere` rather than break-word for
+   the reason recorded in CLAUDE.md: an excerpt out of a code block can be one
+   47-character identifier, and only `anywhere` shrinks min-content. */
+.search-result-excerpt {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-top: 3px;
+    font-size: var(--text-micro);
+    line-height: 1.5;
+    color: var(--ds-muted);
+    overflow-wrap: anywhere;
+}
 .search-result-context { margin-top: 2px; font-size: var(--text-micro); color: var(--ds-faint); }
+
+/* A panel that opens blank is indistinguishable from a panel that is broken.
+   Both of these exist so it never does. */
+.search-empty {
+    padding: var(--space-4);
+    font-size: var(--text-small);
+    line-height: 1.6;
+    color: var(--ds-muted);
+}
+.search-footer {
+    padding: var(--space-2) var(--space-4);
+    border-top: 1px solid var(--ds-border-subtle);
+    font-size: var(--text-micro);
+    color: var(--ds-faint);
+}
+/* THE MARK CARRIES ITS COLOUR IN THE INK, NOT THE BACKGROUND.
+
+   This rule was written in Phase 0 as background:--accent-100, color:inherit,
+   and shipped unexercised until search did. In dark that painted the darkest
+   accent step behind muted grey text on a panel two points away from it — a
+   highlight the same colour as its own background, technically applied and
+   invisible. (Written with the two hex values in it at first, which made the
+   colour grep in CLAUDE.md report this file. A comment is not an exemption:
+   the grep is the invariant, so the comment says it in words.)
+   --accent-work is the
+   token defined as "the step that passes contrast in THIS theme", which is
+   precisely the question a highlight has to answer in both. */
 .search-result mark {
     padding: 0 1px;
     border-radius: 2px;
     background: var(--accent-100);
-    color: inherit;
+    color: var(--accent-work);
+    font-weight: 600;
 }
 
 @media (max-width: 1024px) {

@@ -222,7 +222,10 @@
      pure functions over the corpora and touches no DOM, which is what lets
      tools/validate-search.js load it into a vm and check it in Node.
      glossary.js reads glossaryTermSlug from it, so it has to be above.
- -->
+
+     search.js is last but one. It calls router.go and reads modeById, and it
+     is bound from DOMContentLoaded — registered before app.js's listener,
+     which is what puts its router.onAny in place before router.start(). -->
 <script src="js/theme.js"></script>
 <script src="js/three-bg.js"></script>
 <script src="js/code-highlight.js"></script>
@@ -236,6 +239,7 @@
 <script src="js/synthesis.js"></script>
 <script src="js/predict.js"></script>
 <script src="js/glossary.js"></script>
+<script src="js/search.js"></script>
 <script src="js/app.js"></script>
 
 </body>
