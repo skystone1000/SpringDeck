@@ -33,8 +33,11 @@ Run what is on disk; `ls tools/` is the authority, not this section. Before
 **any** commit touching `data/` or the navigation:
 
 ```bash
-node tools/validate-theory.js && node tools/validate-questions.js && node tools/validate-nav.js
+node tools/validate-theory.js && node tools/validate-questions.js && node tools/validate-nav.js && node tools/validate-search.js
 ```
+
+`validate-search.js` also belongs in any commit touching `js/search-index.js`
+or `js/glossary.js` — it is the only check that reads a file out of `js/`.
 
 `check-offline.js` is fast too, and belongs in any commit touching `index.html`,
 the stylesheets or the load order:
@@ -150,17 +153,48 @@ Where a cross-language comparison earns its place it is **prose in a
 
 | | |
 |---|---|
-| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes |
-| **Next phase** | 5 — Search, then ship |
+| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes · 5 — Search |
+| **Next phase** | 6 — The question bank, remaining topics |
 | **Corpus** | Questions: 10 topics, 244 questions, 49 snippets, 14 diagrams |
 | | Theory: 41 modules, 318 chapters on the reading path, 47 glossary terms, 24 diagrams |
 | | Tracks: java-platform 14/104 · spring-core 7/51 · web-api 7/53 · persistence 13/110 |
 | | Sets: synthesis 2 modules / 19 drills · output 4 modules / 34 predicts |
 | **Phase 4 remaining** | none. Tiers 2 and 3 (27 drills) and the seven non-`stdout` predict sets are Phase 8 by plan |
-| **Last commit date used** | 2026-09-03 |
+| **Search index** | 662 entries — questions 244 · theory 318 · synthesis 19 · predict 34 · glossary 47 |
+| **Last commit date used** | 2026-09-06 |
 | **Commit cadence** | **Reduced by instruction on 2026-09-03.** Fewer, larger commits — one per unit of work rather than 15–17 a day. The hand-set dates and the ascending-within-a-day rule still hold. |
 
 ### Phase gates recorded
+
+**Phase 5 — Search.** PASSED. **This is the first shippable state**, which is
+what the plan says Phase 5 is for. Both halves of the gate were checked in the
+running page, not argued:
+
+- **A term from a `sql` code block finds its chapter.** `gin_trgm_ops` appears
+  in exactly one place in the deck — inside a `CREATE INDEX` in
+  `indexes-and-plans` — and it is the only result. Sixteen such identifiers
+  exist and `validate-search.js` samples eight of them on every run.
+- **A question result lands on an expanded card.** One card open, its body
+  visible, the panel closed and the input blurred, and `?cram` still in the
+  address bar afterwards.
+- **All five validators green**, `validate-search.js` among them for the first
+  time, and **all twelve of its failure modes were induced on purpose.** Ten
+  fired. **Two did not, and both were the check being wrong rather than the
+  code being right** — see the two new blind spots below. They fire now.
+- **Eighty-eight routes swept at 390px, 768px and 1280px** — every mode index,
+  every topic, every module, every set and all twenty-six glossary letters.
+  264 combinations, no horizontal document overflow, no `NaN` in any diagram,
+  no empty diagram slot. The sweep found one real defect at 768px; see below.
+- **No console errors on a fresh tab across all 88 routes.** The first sweep
+  reported a page of `NaN` geometry errors and every one was stale — see the
+  blind spot about console buffers.
+- **Escaping proved rather than assumed.** Searching `List<String>` matches the
+  decoded corpus text and renders `<mark>List&lt;String&gt;</mark>`; the only
+  element inside any excerpt is `mark`.
+- **Both themes.** The highlight was invisible in dark until this phase; it is
+  now checked in both, and the search panel is the only place `mark` appears.
+- **`file://` was NOT opened by hand.** Fifth gate. Unchanged reason, and it
+  remains the oldest open item in this file.
 
 **Phase 0 — Skeleton.** PASSED. The page renders in both themes; the code
 gutter and the code source agree on line count exactly. `grep -nE
@@ -353,6 +387,53 @@ inline event handler.
   pages. `:not(pre) > code` in `styles.css` now uses `anywhere`. **Sweep every
   route for `documentElement.scrollWidth > clientWidth` at 390px after any
   content phase** — it is four lines in the console and it found both.
+
+- **A check that agrees with itself is not a check.** `validate-search.js`
+  compared each glossary entry's slug to `glossaryTermSlug(entry.title)` — but
+  the entry was BUILT by that function, so the comparison held by
+  construction. The probe that should have broken it (changing the separator)
+  did not fire, and that silence is the only reason it was found. What can
+  actually drift is `glossary.js`, which renders the element the slug has to
+  match. The general form: **a validator must read a DIFFERENT source of truth
+  from the one that produced the value**, or it is asserting `x === x` in a
+  costume. Route resolution in that file was already written this way; the
+  slug check was not, and nothing distinguished them from the outside.
+
+- **A gate check can pass for the wrong reason and look identical to one that
+  passed for the right one.** The sql-identifier check asked for tokens
+  appearing in a `sql` snippet and unique to one entry. Deleting `block.code`
+  from the indexer entirely — so that not one line of SQL was searchable —
+  still left seven such tokens, because they also appear in the prose around
+  the snippet, and the check went green. Same family as the diagrams that
+  mounted with the right node count, the right edge count, the right labels
+  and `NaN` for every coordinate. **Ask what would have to be true for the
+  check to fail, then make that true and watch it.** The fixed version also
+  requires the candidate to be absent from its own chapter with the code
+  blanked out, and taking `block.code` away now takes the sample to zero.
+
+- **A long-lived browser tab's console buffer is not evidence.** The first
+  error sweep of Phase 5 reported a screenful of `<path> attribute d:
+  Expected number, "MNaN..."` — the exact signature of the Phase 3 diagram
+  bug, apparently back. It was not. The dev-server tab had been open since
+  Phase 3 and the buffer survives navigation, so those errors were emitted
+  weeks of commits earlier. **Open a new tab before reading the console, and
+  re-derive the finding in it.** Eighty-eight routes in a fresh tab produced
+  none.
+
+- **An overflow sweep at 390 and 1280 does not cover 768.** The Phase 4 sweep
+  ran at the two ends and `#predict/predict-collections` overflows at neither:
+  a phone wraps the option text and a desktop column is wide enough for it.
+  At 768 the sidebar is still on screen and the content column is at its
+  narrowest relative to its content, which is where a fixed-width flex or grid
+  item breaks out. **Three widths, and the middle one is the one that finds
+  things.**
+
+- **A comment containing a hex value breaks the colour grep.** The grep in the
+  Phase 0 gate is `grep -nE '#[0-9a-fA-F]{3,8}\b|rgba?\(' css/*.css | grep -v
+  themes.css`, and it does not know what a comment is. A note explaining why a
+  highlight was invisible, written with the two colours in it, made
+  `components.css` report as a violation. **A comment is not an exemption** —
+  the grep is the invariant, so the comment says the colours in words.
 
 - **This file has told at least one lie about its own tool chain.** The
   Commands section listed `validate-nav.js`, `check-doc-links.js` and

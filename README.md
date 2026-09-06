@@ -67,6 +67,14 @@ that the number is the lesson. The Glossary is harvested from the `definition`
 blocks in the chapters that teach them, never authored, so a term arrives with
 its chapter already attached.
 
+**Search covers both corpora and groups by mode.** One box, five groups, and
+the entry it finds is the thing you navigate to: a question opens expanded, a
+chapter is scrolled to, a term lands under its own letter. It indexes code, so
+an identifier out of a `sql` snippet finds the chapter that explains it — and
+it indexes a predict puzzle's prompt and code but never its options, its answer
+or its output pane, because a search box that prints the answers makes the one
+block type that withholds something pointless.
+
 The rail switches modes with digits 1–5 and remembers where you left each one.
 **Each mode counts its own noun** — known, read, rehearsed, solved, seen — and
 nothing anywhere adds them together. Five incompatible units averaged into one
@@ -93,7 +101,7 @@ The validators are the test suite. Run them before any commit that touches
 `data/` or the navigation:
 
 ```bash
-node tools/validate-theory.js && node tools/validate-questions.js && node tools/validate-nav.js
+node tools/validate-theory.js && node tools/validate-questions.js && node tools/validate-nav.js && node tools/validate-search.js
 ```
 
 `validate-questions.js` runs seven checks: every question carries an importance
@@ -108,6 +116,12 @@ module prerequisite must resolve to a **strictly lower** position in the reading
 order, which is what makes the path a path; and every `relatedQuestions`
 reference must resolve against the question bank, so a question id invented
 while writing a chapter fails the build instead of dangling.
+
+`validate-search.js` runs six, and it exists because search fails soft in the
+worst way: a result whose route does not resolve navigates to an empty state,
+and a mode nobody indexed simply returns nothing. Neither prints anything to a
+console. It is able to check the real ranking functions rather than a
+reimplementation of them because `js/search-index.js` touches no DOM.
 
 And, for the invariant that the page works from disk:
 
