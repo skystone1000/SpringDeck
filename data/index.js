@@ -15,6 +15,7 @@
 const topics = [
     javaLanguageData,
     collectionsData,
+    streamsFunctionalData,
     concurrencyData,
     springCoreData,
     springBootData,
@@ -81,6 +82,7 @@ const tracks = [
 const topicTracks = {
     'java-language': 'java-platform',
     'collections':   'java-platform',
+    'streams-functional': 'java-platform',
     'concurrency':   'java-platform',
     'spring-core':   'spring-core',
     'spring-boot':   'spring-core',
