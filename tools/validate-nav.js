@@ -38,7 +38,7 @@ const { RESERVED_SEGMENTS, KEBAB, makeReport } = require('./schema');
    glossary   definition blocks, which are harvested rather than authored
    -------------------------------------------------------------------------- */
 const EXPECTED_TOTALS = {
-    questions: 340,
+    questions: 359,
     theory:    318,
     synthesis:  19,
     predict:    34,
