@@ -27,7 +27,8 @@ const topics = [
     springSecurityData,
     jpaHibernateData,
     transactionsData,
-    sqlDatabasesData
+    sqlDatabasesData,
+    microservicesData
 ];
 
 /* The languages the highlighter knows, and the only ones a snippet may
@@ -98,7 +99,8 @@ const topicTracks = {
     'spring-security': 'security',
     'jpa-hibernate': 'persistence',
     'transactions':  'persistence',
-    'sql-databases': 'persistence'
+    'sql-databases': 'persistence',
+    'microservices': 'distributed'
 };
 
 function trackById(id) {
