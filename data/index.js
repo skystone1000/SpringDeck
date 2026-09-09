@@ -23,6 +23,7 @@ const topics = [
     springBootData,
     aopProxiesData,
     restApiData,
+    beyondRestData,
     jpaHibernateData,
     transactionsData,
     sqlDatabasesData
@@ -92,6 +93,7 @@ const topicTracks = {
     'spring-boot':   'spring-core',
     'aop-proxies':   'spring-core',
     'rest-api':      'web-api',
+    'beyond-rest':   'web-api',
     'jpa-hibernate': 'persistence',
     'transactions':  'persistence',
     'sql-databases': 'persistence'
