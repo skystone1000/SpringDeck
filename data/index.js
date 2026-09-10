@@ -29,7 +29,8 @@ const topics = [
     transactionsData,
     sqlDatabasesData,
     microservicesData,
-    kafkaMessagingData
+    kafkaMessagingData,
+    cachingScaleData
 ];
 
 /* The languages the highlighter knows, and the only ones a snippet may
@@ -102,7 +103,8 @@ const topicTracks = {
     'transactions':  'persistence',
     'sql-databases': 'persistence',
     'microservices': 'distributed',
-    'kafka-messaging': 'distributed'
+    'kafka-messaging': 'distributed',
+    'caching-scale': 'distributed'
 };
 
 function trackById(id) {
