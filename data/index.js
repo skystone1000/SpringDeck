@@ -28,6 +28,7 @@ const topics = [
     jpaHibernateData,
     transactionsData,
     sqlDatabasesData,
+    nosqlData,
     microservicesData,
     kafkaMessagingData,
     cachingScaleData
@@ -102,6 +103,7 @@ const topicTracks = {
     'jpa-hibernate': 'persistence',
     'transactions':  'persistence',
     'sql-databases': 'persistence',
+    'nosql':         'persistence',
     'microservices': 'distributed',
     'kafka-messaging': 'distributed',
     'caching-scale': 'distributed'
