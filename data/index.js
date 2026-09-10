@@ -28,7 +28,8 @@ const topics = [
     jpaHibernateData,
     transactionsData,
     sqlDatabasesData,
-    microservicesData
+    microservicesData,
+    kafkaMessagingData
 ];
 
 /* The languages the highlighter knows, and the only ones a snippet may
@@ -100,7 +101,8 @@ const topicTracks = {
     'jpa-hibernate': 'persistence',
     'transactions':  'persistence',
     'sql-databases': 'persistence',
-    'microservices': 'distributed'
+    'microservices': 'distributed',
+    'kafka-messaging': 'distributed'
 };
 
 function trackById(id) {
