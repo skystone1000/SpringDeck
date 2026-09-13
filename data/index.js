@@ -31,7 +31,8 @@ const topics = [
     nosqlData,
     microservicesData,
     kafkaMessagingData,
-    cachingScaleData
+    cachingScaleData,
+    testingData
 ];
 
 /* The languages the highlighter knows, and the only ones a snippet may
@@ -106,7 +107,8 @@ const topicTracks = {
     'nosql':         'persistence',
     'microservices': 'distributed',
     'kafka-messaging': 'distributed',
-    'caching-scale': 'distributed'
+    'caching-scale': 'distributed',
+    'testing':       'production'
 };
 
 function trackById(id) {
