@@ -32,7 +32,8 @@ const topics = [
     microservicesData,
     kafkaMessagingData,
     cachingScaleData,
-    testingData
+    testingData,
+    observabilityOpsData
 ];
 
 /* The languages the highlighter knows, and the only ones a snippet may
@@ -108,7 +109,8 @@ const topicTracks = {
     'microservices': 'distributed',
     'kafka-messaging': 'distributed',
     'caching-scale': 'distributed',
-    'testing':       'production'
+    'testing':       'production',
+    'observability-ops': 'production'
 };
 
 function trackById(id) {
