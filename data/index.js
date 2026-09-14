@@ -34,7 +34,8 @@ const topics = [
     cachingScaleData,
     testingData,
     observabilityOpsData,
-    buildToolsData
+    buildToolsData,
+    cloudData
 ];
 
 /* The languages the highlighter knows, and the only ones a snippet may
@@ -112,7 +113,8 @@ const topicTracks = {
     'caching-scale': 'distributed',
     'testing':       'production',
     'observability-ops': 'production',
-    'build-tools':   'production'
+    'build-tools':   'production',
+    'cloud':         'production'
 };
 
 function trackById(id) {
