@@ -36,7 +36,8 @@ const topics = [
     observabilityOpsData,
     buildToolsData,
     cloudData,
-    designPatternsData
+    designPatternsData,
+    architectureDddData
 ];
 
 /* The languages the highlighter knows, and the only ones a snippet may
@@ -116,7 +117,8 @@ const topicTracks = {
     'observability-ops': 'production',
     'build-tools':   'production',
     'cloud':         'production',
-    'design-patterns': 'craft'
+    'design-patterns': 'craft',
+    'architecture-ddd': 'craft'
 };
 
 function trackById(id) {
