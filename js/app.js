@@ -290,6 +290,22 @@
         return trackById(id);
     }
 
+    /* SLATE IS THE TENTH HUE, AND A TOPIC WITH NO TRACK GETS IT.
+
+       The header used to omit data-hue entirely when topicTracks named null,
+       while sidebar.js gave the same topic's group hue: 'slate' — so the two
+       disagreed about one topic and nothing said so. It failed soft: the
+       header simply inherited the default text colours and looked fine, which
+       is why it survived until behavioural-project became the first real
+       null-track topic and the gate sweep compared the two.
+
+       The fallback lives here, in one named function, rather than as a
+       conditional at the emit site, so the next thing that needs a hue cannot
+       pick a different answer. */
+    function hueFor(track) {
+        return track && track.hue ? track.hue : 'slate';
+    }
+
     function renderTopic(topic) {
         var container = document.getElementById('topicContainer');
         if (!container) return;
@@ -329,7 +345,7 @@
         }).join('');
 
         container.innerHTML =
-            '<header class="topic-header"' + (track ? ' data-hue="' + escapeHtml(track.hue) + '"' : '') + '>' +
+            '<header class="topic-header" data-hue="' + escapeHtml(hueFor(track)) + '">' +
                 '<div class="topic-eyebrow">' + escapeHtml(track ? track.title : 'Questions') + '</div>' +
                 '<h1 class="topic-title">' + escapeHtml(topic.title) + '</h1>' +
                 '<p class="topic-meta">' + topic.questions.length + ' questions</p>' +
