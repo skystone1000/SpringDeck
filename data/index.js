@@ -37,7 +37,8 @@ const topics = [
     buildToolsData,
     cloudData,
     designPatternsData,
-    architectureDddData
+    architectureDddData,
+    behaviouralProjectData
 ];
 
 /* The languages the highlighter knows, and the only ones a snippet may
@@ -118,7 +119,11 @@ const topicTracks = {
     'build-tools':   'production',
     'cloud':         'production',
     'design-patterns': 'craft',
-    'architecture-ddd': 'craft'
+    'architecture-ddd': 'craft',
+
+    /* The only null: a deliberate, spelled-out "belongs to no subject track".
+       It renders in an Everything else group. */
+    'behavioural-project': null
 };
 
 function trackById(id) {
