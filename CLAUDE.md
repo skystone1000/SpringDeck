@@ -153,18 +153,49 @@ Where a cross-language comparison earns its place it is **prose in a
 
 | | |
 |---|---|
-| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes · 5 — Search |
-| **Next phase** | 6 — The question bank, remaining topics |
-| **Corpus** | Questions: 10 topics, 244 questions, 49 snippets, 14 diagrams |
+| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes · 5 — Search · 6 — The question bank, all 26 topics |
+| **Next phase** | 7 — Theory, tracks 5–8 and the §5.9 insertions |
+| **Corpus** | Questions: **26 topics, 486 questions**, 63 snippets, 19 diagrams |
 | | Theory: 41 modules, 318 chapters on the reading path, 47 glossary terms, 24 diagrams |
 | | Tracks: java-platform 14/104 · spring-core 7/51 · web-api 7/53 · persistence 13/110 |
 | | Sets: synthesis 2 modules / 19 drills · output 4 modules / 34 predicts |
 | **Phase 4 remaining** | none. Tiers 2 and 3 (27 drills) and the seven non-`stdout` predict sets are Phase 8 by plan |
-| **Search index** | 662 entries — questions 244 · theory 318 · synthesis 19 · predict 34 · glossary 47 |
-| **Last commit date used** | 2026-09-06 |
+| **Search index** | 904 entries — questions 486 · theory 318 · synthesis 19 · predict 34 · glossary 47 |
+| **Last commit date used** | 2026-09-15 |
 | **Commit cadence** | **Reduced by instruction on 2026-09-03.** Fewer, larger commits — one per unit of work rather than 15–17 a day. The hand-set dates and the ascending-within-a-day rule still hold. |
 
 ### Phase gates recorded
+
+**Phase 6 — The question bank, remaining topics.** PASSED. All sixteen
+remaining topics authored: 26 topics, **486 questions**, against a plan
+estimate of ~853. Every track now has at least one topic, so all nine sidebar
+groups render for the first time.
+
+- **All five validators green**, and the totals were updated by hand in each
+  of the sixteen commits rather than once at the end, per the plan's
+  instruction. `validate-nav` refused a wrong figure once — 361 against an
+  actual 359 — which is the third time it has caught its own author.
+- **`validate-questions` check 2 fired on real content for the first time.**
+  `graceful-shutdown` existed in both `spring-core` and `observability-ops`.
+  Renamed rather than exempted: the two are the framework-level and the
+  platform-level question and they are genuinely different. Until now that
+  check had only ever been exercised against a synthetic duplicate.
+- **Seventy-eight topic/width combinations swept** — all 26 topics at 390px,
+  768px and 1280px. No horizontal overflow, no `NaN` in any diagram, no empty
+  diagram slot, no topic rendering zero cards, and card numbering 1..n
+  everywhere.
+- **The null track renders.** `behavioural-project` is the first topic with
+  `track: null`, so the "Everything else" group and `topicsInTrack(null)` are
+  exercised by real content rather than only by a validator. The sweep found
+  one defect doing it; see the new blind spot.
+- **Deep links, legacy segments and the tier filter all work on the new
+  topics.** `#design-patterns` normalises, a card deep link opens expanded,
+  and card numbers do not move under a filter.
+- **Search reaches the new corpus.** 904 entries, and terms that exist in
+  exactly one new topic — `cardinality explosion`, `preStop`, `ESR rule`,
+  `presigned` — each return it.
+- **No console errors on a fresh tab** across the whole sweep.
+- **`file://` was NOT opened by hand.** Sixth gate.
 
 **Phase 5 — Search.** PASSED. **This is the first shippable state**, which is
 what the plan says Phase 5 is for. Both halves of the gate were checked in the
@@ -387,6 +418,26 @@ inline event handler.
   pages. `:not(pre) > code` in `styles.css` now uses `anywhere`. **Sweep every
   route for `documentElement.scrollWidth > clientWidth` at 390px after any
   content phase** — it is four lines in the console and it found both.
+
+- **A hue that is merely absent looks fine.** `sidebar.js` gave the orphan
+  group `hue: 'slate'`; the topic header emitted `data-hue` only when a track
+  existed, so a topic with an explicit `null` track got no attribute at all.
+  The two disagreed about one topic for four phases and nothing said so,
+  because a header with no `data-hue` inherits the default text colours and
+  looks entirely reasonable. It surfaced only when the first real null-track
+  topic arrived and the gate sweep **compared every header's hue against its
+  track's** rather than checking that each one rendered. The general form:
+  **when two places derive the same fact, assert that they agree**, not that
+  each produces something.
+
+- **A gate check of my own fired on all 26 topics and was wrong.** The sweep
+  asserted one tier element per card via `[class*=tier]`, and `.tier-badge`
+  contains a `.tier-dot`, so the count was always double. Twenty-six red
+  results, zero defects. Worth recording next to the two checks in Phase 5
+  that were wrong in the other direction: **a check that fails everywhere is
+  usually the check**, and a check that passes everywhere may be vacuous —
+  both need the same treatment, which is to look at one case by hand before
+  believing the aggregate.
 
 - **A check that agrees with itself is not a check.** `validate-search.js`
   compared each glossary entry's slug to `glossaryTermSlug(entry.title)` — but

@@ -681,6 +681,15 @@ properties, 1 YAML, 1 Dockerfile) and 14 diagrams. 28 snippets claim a console
 output and 21 record a trace instead. Every SQL snippet is a trace, because the
 runner executes Java only.
 
+**Phase 6 actual, for all 26 topics:** 486 questions — 216 must-know, 192
+should-know, 78 good-to-know — with 63 code snippets (51 Java, 4 SQL, 3 bash,
+2 properties, 2 Dockerfile, 1 YAML) and 19 diagrams. 424 reference links on
+405 of the questions. Against the ~853 estimate that is 57%, and the shortfall
+is concentrated in the ten core topics authored in Phase 2, which were
+estimated generously; the sixteen written in Phase 6 came in close to their
+individual estimates where the subject warranted it and below where the
+estimate assumed breadth the topic does not have.
+
 **Phase 3 actual, for tracks 1–4:** 41 modules, 318 chapters, 1,030 blocks
 against a target of ~320 chapters. By track: Java & the JVM 14/104, the Spring
 container 7/51, HTTP and the web layer 7/53, persistence 13/110. By importance:

@@ -14,16 +14,34 @@ Five modes, two corpora, one page:
 
 ## What is built
 
-**Questions mode is complete for the ten core topics** — 244 questions, 49 code
-snippets and 14 diagrams.
+**Questions mode is complete** — all 26 topics, 486 questions, 63 code
+snippets and 19 diagrams, across every one of the eight subject tracks plus
+one topic that belongs to none of them.
 
-| Topic | Questions | | Topic | Questions |
-|---|--:|---|---|--:|
-| Java Language & OOP | 44 | | REST APIs & Spring MVC | 22 |
-| Collections Framework | 26 | | JPA & Hibernate | 21 |
-| Concurrency & Multithreading | 29 | | Transactions & Concurrency Control | 16 |
-| Spring Core & DI | 27 | | SQL & Database Design | 21 |
-| Spring Boot & Auto-Configuration | 24 | | AOP, Proxies & Annotations | 14 |
+| Track | Topics | Questions |
+|---|--:|--:|
+| Java & the JVM | 6 | 177 |
+| The Spring Container & Boot | 3 | 65 |
+| HTTP, REST & the Web Layer | 2 | 40 |
+| Data, SQL & Transactions | 4 | 68 |
+| Security & API Hardening | 1 | 19 |
+| Microservices, Messaging & Scale | 3 | 40 |
+| Testing, Observability & Operations | 4 | 43 |
+| Design, Patterns & Architecture | 2 | 24 |
+| Everything else | 1 | 10 |
+
+216 are must-know, 192 should-know and 78 good-to-know. The distribution is
+deliberate rather than uniform: `java-language` has 44 questions and `cloud`
+has 9, because one of them is asked in every interview and the other is asked
+when it is relevant.
+
+The later topics are weighted towards judgement rather than recall, because
+that is what they are asked for. When a parallel stream helps — rarely, and
+here are the five conditions. Whether to split a monolith — usually not, and
+here is the test. Whether hexagonal architecture is worth it — only if there
+is a domain to protect. A candidate who can only list benefits has read about
+microservices; one who can say what database-per-service takes away has run
+them.
 
 **Theory mode is four tracks in** — 41 modules and 318 chapters, in one global
 dependency order rather than one order per track. The cross-track prerequisites
