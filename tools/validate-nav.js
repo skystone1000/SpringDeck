@@ -39,10 +39,10 @@ const { RESERVED_SEGMENTS, KEBAB, makeReport } = require('./schema');
    -------------------------------------------------------------------------- */
 const EXPECTED_TOTALS = {
     questions: 486,
-    theory:    318,
+    theory:    327,
     synthesis:  19,
     predict:    34,
-    glossary:   47
+    glossary:   51
 };
 
 /* The four sidebar shapes sidebar.js implements. A mode naming a fifth would
