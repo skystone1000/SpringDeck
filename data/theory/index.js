@@ -28,6 +28,7 @@ const theoryModules = [
     inheritanceAndInterfacesModule,
     solidAndOodModule,
     patternsThatGetAskedModule,
+    lldMethodModule,
     exceptionsAndFailureModule,
     genericsAndErasureModule,
     collectionsChoosingModule,
