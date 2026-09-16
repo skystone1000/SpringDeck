@@ -45,6 +45,7 @@ const theoryModules = [
     configurationAndProfilesModule,
     aopAndProxiesModule,
     autoconfigurationModule,
+    patternsInSpringModule,
     applicationLifecycleModule,
     springGenerationsModule,
     httpFoundationsModule,
