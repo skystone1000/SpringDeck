@@ -27,6 +27,7 @@ const theoryModules = [
     objectsAndContractsModule,
     stringsAndTextModule,
     inheritanceAndInterfacesModule,
+    enumsAndNestedTypesModule,
     solidAndOodModule,
     patternsThatGetAskedModule,
     lldMethodModule,
