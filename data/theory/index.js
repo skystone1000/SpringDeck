@@ -25,6 +25,7 @@
 const theoryModules = [
     howJavaRunsModule,
     objectsAndContractsModule,
+    stringsAndTextModule,
     inheritanceAndInterfacesModule,
     solidAndOodModule,
     patternsThatGetAskedModule,
