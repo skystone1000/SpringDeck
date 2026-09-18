@@ -39,6 +39,7 @@ const theoryModules = [
     modernJavaModule,
     datesAndTimesModule,
     ioAndSerializationModule,
+    reflectionAndAnnotationsModule,
     threadsAndMemoryModelModule,
     executorsAndFuturesModule,
     virtualThreadsModule,
