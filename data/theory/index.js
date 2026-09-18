@@ -37,6 +37,7 @@ const theoryModules = [
     hashmapInternalsModule,
     streamsAndLambdasModule,
     modernJavaModule,
+    datesAndTimesModule,
     threadsAndMemoryModelModule,
     executorsAndFuturesModule,
     virtualThreadsModule,
