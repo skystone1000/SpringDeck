@@ -58,6 +58,7 @@ const theoryModules = [
     httpFoundationsModule,
     dispatcherLifecycleModule,
     restApiDesignModule,
+    apiStylesModule,
     validationAndErrorsModule,
     serializationModule,
     asyncAndSchedulingModule,
