@@ -41,6 +41,7 @@ const theoryModules = [
     ioAndSerializationModule,
     reflectionAndAnnotationsModule,
     threadsAndMemoryModelModule,
+    locksAndSynchronizersModule,
     executorsAndFuturesModule,
     virtualThreadsModule,
     heapAndGcModule,
