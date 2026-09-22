@@ -24,6 +24,7 @@
 
 const theoryModules = [
     howJavaRunsModule,
+    buildAndDependenciesModule,
     objectsAndContractsModule,
     stringsAndTextModule,
     inheritanceAndInterfacesModule,
