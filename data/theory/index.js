@@ -86,6 +86,9 @@ const theoryModules = [
     methodSecurityModule,
     apiHardeningModule,
 
+    serviceBoundariesModule,
+    ddaTacticalModule,
+
     /* The mode-scope sets. They are in this array because they are theory
        modules in every mechanical sense — the validator checks them, the
        block renderers draw them, progress keys them the same way. They are
