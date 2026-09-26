@@ -91,6 +91,8 @@ const theoryModules = [
     syncCommunicationModule,
     resiliencePatternsModule,
     idempotencyModule,
+    messagingFoundationsModule,
+    kafkaMechanicsModule,
 
     /* The mode-scope sets. They are in this array because they are theory
        modules in every mechanical sense — the validator checks them, the
