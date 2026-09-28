@@ -39,7 +39,7 @@ const { RESERVED_SEGMENTS, KEBAB, makeReport } = require('./schema');
    -------------------------------------------------------------------------- */
 const EXPECTED_TOTALS = {
     questions: 486,
-    theory:    613,
+    theory:    629,
     synthesis:  19,
     predict:    34,
     glossary:   61
