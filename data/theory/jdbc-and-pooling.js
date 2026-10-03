@@ -206,8 +206,8 @@ const jdbcAndPoolingModule = {
                     title: 'The signature, in the order you see it',
                     items: [
                         { name: 'Latency rises across every endpoint', html: '<p>Including ones that touch no database, because they are queueing behind request threads that do.</p>' },
-                        { name: '<strong>The database is idle</strong>', html: '<p>Low CPU, few active queries, no slow-query log entries. This is the clue that inverts the investigation: the bottleneck is in front of the database, not inside it.</p>' },
-                        { name: 'Thread dumps show <code>getConnection</code>', html: '<p>Dozens of threads parked in <code>HikariPool.getConnection</code>. <strong>The definitive signature</strong> — one dump settles it.</p>' },
+                        { name: 'The database is idle', html: '<p>Low CPU, few active queries, no slow-query log entries. This is the clue that inverts the investigation: the bottleneck is in front of the database, not inside it.</p>' },
+                        { name: 'Thread dumps show getConnection', html: '<p>Dozens of threads parked in <code>HikariPool.getConnection</code>. <strong>The definitive signature</strong> — one dump settles it.</p>' },
                         { name: 'Then timeouts, all at once', html: '<p><code>SQLTransientConnectionException: Connection is not available, request timed out after 30000ms</code>, on every request simultaneously.</p>' },
                         { name: 'Recovery is abrupt', html: '<p>Once the holder releases, everything drains at once. Which makes the incident look transient and the cause look like a network blip.</p>' }
                     ]

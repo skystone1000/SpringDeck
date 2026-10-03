@@ -74,7 +74,7 @@ const scalingDataModule = {
                 {
                     type: 'table',
                     title: 'PostgreSQL 16 replication modes',
-                    headers: ['<code>synchronous_commit</code>', 'The primary waits for', 'On failover'],
+                    headers: ['synchronous_commit', 'The primary waits for', 'On failover'],
                     rows: [
                         ['<code>off</code>', 'Nothing — not even its own disk flush', 'Recent local writes can be lost'],
                         ['<code>local</code>', 'Its own WAL flush', 'Committed writes not yet replicated are lost'],

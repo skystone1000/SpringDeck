@@ -299,7 +299,7 @@ const objectsAndContractsModule = {
                         { name: 'All fields private and final', html: '<p><code>final</code> is what gives the <em>safe-publication</em> guarantee: a thread that sees a reference to a correctly constructed object with final fields is guaranteed to see those fields initialised. Without <code>final</code> that is not guaranteed, even though it almost always appears to work.</p>' },
                         { name: 'The class cannot be extended', html: '<p><code>final</code> on the class, or a private constructor with a static factory. Otherwise a subclass adds mutable state and every guarantee above is void for anything holding the supertype.</p>' },
                         { name: 'Defensive copies in and out', html: '<p>A field that is itself mutable — an array, a <code>Date</code>, a <code>List</code> — must be copied on the way in and on the way out. See the next chapter; this is where most attempts fail.</p>' },
-                        { name: 'Do not leak <code>this</code> during construction', html: '<p>Registering a listener, starting a thread or passing <code>this</code> to anything inside the constructor publishes a partially built object. Do it in a static factory after the constructor returns.</p>' }
+                        { name: 'Do not leak this during construction', html: '<p>Registering a listener, starting a thread or passing <code>this</code> to anything inside the constructor publishes a partially built object. Do it in a static factory after the constructor returns.</p>' }
                     ]
                 },
                 {

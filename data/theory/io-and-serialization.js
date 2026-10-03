@@ -179,8 +179,8 @@ const ioAndSerializationModule = {
                     type: 'types',
                     title: 'Heap buffers against direct buffers',
                     items: [
-                        { name: '<code>allocate</code> — heap buffer', html: '<p>A <code>byte[]</code> inside the Java heap. Cheap to create, and I/O copies it to an off-heap staging area first because the kernel cannot be handed a movable array.</p>' },
-                        { name: '<code>allocateDirect</code> — direct buffer', html: '<p>Off-heap memory the kernel can use without a copy. Expensive to allocate, freed only when the buffer is collected. Worth it for long-lived buffers in a hot path; a mistake for short-lived ones.</p>' },
+                        { name: 'allocate — heap buffer', html: '<p>A <code>byte[]</code> inside the Java heap. Cheap to create, and I/O copies it to an off-heap staging area first because the kernel cannot be handed a movable array.</p>' },
+                        { name: 'allocateDirect — direct buffer', html: '<p>Off-heap memory the kernel can use without a copy. Expensive to allocate, freed only when the buffer is collected. Worth it for long-lived buffers in a hot path; a mistake for short-lived ones.</p>' },
                         { name: 'The operational hazard', html: '<p>Direct buffers are not in the heap, so they do not show in heap usage and are not bounded by <code>-Xmx</code>. A leak here shows up as the container being OOM-killed while the heap looks healthy — bound it with <code>-XX:MaxDirectMemorySize</code>.</p>' }
                     ]
                 }

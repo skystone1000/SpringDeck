@@ -75,7 +75,7 @@ const collectionsChoosingModule = {
                     rows: [
                         { aspect: 'Backed by', left: 'One <code>Object[]</code>, resized by 1.5× when full', right: 'A doubly linked node per element' },
                         { aspect: 'Memory per element', left: 'One reference, plus slack up to 50%', right: 'One reference <strong>plus a node object</strong> — roughly three times the overhead' },
-                        { aspect: '<code>get(i)</code>', left: 'O(1)', right: 'O(n) — it walks, from whichever end is nearer' },
+                        { aspect: 'get(i)', left: 'O(1)', right: 'O(n) — it walks, from whichever end is nearer' },
                         { aspect: 'Insert in the middle', left: 'O(n), one <code>System.arraycopy</code>', right: 'O(1) — <em>once you are there</em>, which was O(n)' },
                         { aspect: 'Insert at the end', left: 'Amortised O(1)', right: 'O(1)' },
                         { aspect: 'Iterating', left: 'Sequential memory, prefetcher-friendly', left_note: '', right: 'A pointer chase per element; a cache miss per element' },
@@ -220,8 +220,8 @@ const collectionsChoosingModule = {
                         { name: 'ArrayDeque', html: '<p>A growable circular array. The fastest stack and the fastest non-blocking queue in the JDK. <code>push</code>/<code>pop</code>/<code>peek</code> for stack use, <code>offer</code>/<code>poll</code> for queue use. No nulls — which is the price of using <code>null</code> as the empty signal.</p>' },
                         { name: 'PriorityQueue', html: '<p>A binary heap. <code>poll()</code> always returns the smallest element by the comparator. <strong>Iteration is not sorted</strong> — only removal is — and that catches people every time.</p>' },
                         { name: 'ArrayBlockingQueue / LinkedBlockingQueue', html: '<p>The thread-safe ones, with blocking <code>put</code> and <code>take</code>. This is the hand-off between producer and consumer threads, and the queue a thread pool is built around. See the executors module.</p>' },
-                        { name: '<s>Stack</s>', html: '<p>Extends <code>Vector</code>, so every method is synchronised for no benefit — and its iterator runs <strong>bottom to top</strong>, the opposite of pop order. Iterating a <code>Stack</code> gives you the elements in the order you will not want them.</p>' },
-                        { name: '<s>Vector</s>', html: '<p>Synchronised <code>ArrayList</code> from Java 1.0. Compound operations still need external locking, so the synchronisation buys almost nothing and costs on every call.</p>' }
+                        { name: 'Stack (do not use)', html: '<p>Extends <code>Vector</code>, so every method is synchronised for no benefit — and its iterator runs <strong>bottom to top</strong>, the opposite of pop order. Iterating a <code>Stack</code> gives you the elements in the order you will not want them.</p>' },
+                        { name: 'Vector (do not use)', html: '<p>Synchronised <code>ArrayList</code> from Java 1.0. Compound operations still need external locking, so the synchronisation buys almost nothing and costs on every call.</p>' }
                     ]
                 },
                 {

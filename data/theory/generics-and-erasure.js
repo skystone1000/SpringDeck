@@ -86,12 +86,12 @@ const genericsAndErasureModule = {
                     type: 'types',
                     title: 'What follows directly, each derivable in one step',
                     items: [
-                        { name: 'No <code>new T()</code>', html: '<p>There is no <code>T</code> at run time to construct. Pass a <code>Supplier&lt;T&gt;</code> or a <code>Class&lt;T&gt;</code> if you need one.</p>' },
-                        { name: 'No <code>new T[]</code>', html: '<p>Arrays check their element type at run time and there is nothing to check against. See the last chapter.</p>' },
-                        { name: 'No <code>instanceof List&lt;String&gt;</code>', html: '<p>At run time it is just a <code>List</code>. <code>instanceof List&lt;?&gt;</code> is allowed, because it asks nothing erasure removed.</p>' },
-                        { name: 'No static field of type <code>T</code>', html: '<p>Statics belong to the one erased class shared by every parameterisation, so there is no single <code>T</code> for it to be.</p>' },
+                        { name: 'No new T()', html: '<p>There is no <code>T</code> at run time to construct. Pass a <code>Supplier&lt;T&gt;</code> or a <code>Class&lt;T&gt;</code> if you need one.</p>' },
+                        { name: 'No new T[]', html: '<p>Arrays check their element type at run time and there is nothing to check against. See the last chapter.</p>' },
+                        { name: 'No instanceof List&lt;String&gt;', html: '<p>At run time it is just a <code>List</code>. <code>instanceof List&lt;?&gt;</code> is allowed, because it asks nothing erasure removed.</p>' },
+                        { name: 'No static field of type T', html: '<p>Statics belong to the one erased class shared by every parameterisation, so there is no single <code>T</code> for it to be.</p>' },
                         { name: 'No overload on the type argument', html: '<p><code>f(List&lt;String&gt;)</code> and <code>f(List&lt;Integer&gt;)</code> erase to the same signature and will not compile in the same class.</p>' },
-                        { name: 'No generic <code>Throwable</code>', html: '<p><code>catch</code> matches on the runtime class, which erasure has flattened, so a generic exception type could not be dispatched correctly.</p>' }
+                        { name: 'No generic Throwable', html: '<p><code>catch</code> matches on the runtime class, which erasure has flattened, so a generic exception type could not be dispatched correctly.</p>' }
                     ]
                 },
                 {

@@ -238,7 +238,7 @@ const containersAndK8sModule = {
                     , rows: [
                         { aspect: 'Spring binding', left: '<code>SPRING_DATASOURCE_URL</code> relaxed-binds', right: '<code>spring.config.import</code>, or a config tree' },
                         { aspect: 'Updated when the source changes', left: '<strong>No — fixed at pod start</strong>', right: 'Yes, the kubelet refreshes the file' },
-                        { aspect: 'Visible in <code>/proc</code> and <code>kubectl describe</code>', left: '<strong>Yes</strong>', right: 'No' },
+                        { aspect: 'Visible in /proc and kubectl describe', left: '<strong>Yes</strong>', right: 'No' },
                         { aspect: 'Leaks into crash dumps and child processes', left: 'Yes', right: 'No' },
                         { aspect: 'Rotation', left: 'Requires a pod restart', right: 'The file changes; <strong>the application must re-read it</strong>' },
                         { aspect: 'Preferred for secrets', left: 'No', right: '<strong>Yes</strong>' }

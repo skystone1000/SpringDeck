@@ -35,7 +35,7 @@ const inheritanceAndInterfacesModule = {
                     left: 'Abstract class',
                     right: 'Interface',
                     rows: [
-                        { aspect: '<strong>Instance state</strong>', left: '<strong>Yes</strong> — fields of any kind', right: '<strong>No.</strong> Fields are implicitly <code>public static final</code>' },
+                        { aspect: 'Instance state', left: '<strong>Yes</strong> — fields of any kind', right: '<strong>No.</strong> Fields are implicitly <code>public static final</code>' },
                         { aspect: 'How many can you have', left: 'One', right: 'As many as you like' },
                         { aspect: 'Constructors', left: 'Yes', right: 'No' },
                         { aspect: 'Method bodies', left: 'Yes', right: 'Yes — <code>default</code>, <code>static</code>, <code>private</code>' },

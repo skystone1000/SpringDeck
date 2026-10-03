@@ -70,7 +70,7 @@ const kafkaMechanicsModule = {
                 {
                     type: 'table',
                     title: 'The three values',
-                    headers: ['<code>acks</code>', 'Waits for', 'Loses data when', 'Use for'],
+                    headers: ['acks', 'Waits for', 'Loses data when', 'Use for'],
                     rows: [
                         ['<code>0</code>', 'Nothing — fire and forget', 'Anything at all. The producer never finds out.', 'Metrics you can afford to lose'],
                         ['<code>1</code>', 'The leader writes it', '<strong>The leader fails before a follower replicates it</strong>', 'A default that is rarely the right answer'],

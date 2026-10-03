@@ -41,9 +41,9 @@ const datesAndTimesModule = {
                     title: 'The defects, each of which caused a real class of bug',
                     items: [
                         { name: 'Mutable', html: '<p><code>Date</code> and <code>Calendar</code> can be changed after being handed out, so every getter had to defensively copy and most did not. A date stored in a field and then mutated by a caller is a classic.</p>' },
-                        { name: '<code>SimpleDateFormat</code> is not thread-safe', html: '<p>It keeps parse state in a field. A static shared instance under load produces wrong dates — not exceptions, <em>wrong dates</em> — which is why this is the most damaging item on the list.</p>' },
+                        { name: 'SimpleDateFormat is not thread-safe', html: '<p>It keeps parse state in a field. A static shared instance under load produces wrong dates — not exceptions, <em>wrong dates</em> — which is why this is the most damaging item on the list.</p>' },
                         { name: 'Zero-based months', html: '<p><code>Calendar.set(2024, 0, 1)</code> is January. Off-by-one-month bugs, forever.</p>' },
-                        { name: '<code>Date.getYear()</code> returns year minus 1900', html: '<p>An API decision from 1996 that could never be fixed compatibly.</p>' },
+                        { name: 'Date.getYear() returns year minus 1900', html: '<p>An API decision from 1996 that could never be fixed compatibly.</p>' },
                         { name: 'No distinction between kinds of time', html: '<p><code>Date</code> is a millisecond instant that prints in the default zone, so it pretends to be a wall-clock date and is not one. Almost every zone bug in old code starts here.</p>' },
                         { name: 'No date-only or time-only type', html: '<p>A birthday had to be an instant at midnight in some zone, which is not what a birthday is.</p>' }
                     ]
@@ -73,12 +73,12 @@ const datesAndTimesModule = {
                     type: 'types',
                     title: 'What each type actually models',
                     items: [
-                        { name: '<code>Instant</code>', html: '<p>A point on the global timeline, nanoseconds since the epoch. Unambiguous everywhere. <em>"When did this happen."</em></p>' },
-                        { name: '<code>LocalDateTime</code>', html: '<p>A date and a time with <strong>no zone</strong>, so it does not identify a moment. 2026-03-29T02:30 may never have happened, or may have happened twice. <em>"What the wall clock said."</em></p>' },
-                        { name: '<code>LocalDate</code>', html: '<p>A day in a calendar. A birthday, an invoice date, a public holiday. Has no time and needs none.</p>' },
-                        { name: '<code>LocalTime</code>', html: '<p>A time of day with no date. "The shop opens at 09:00" — true every day.</p>' },
-                        { name: '<code>ZonedDateTime</code>', html: '<p>A <code>LocalDateTime</code> plus a zone id, which together resolve to an instant. <em>"A moment, described the way a person in Mumbai would describe it."</em></p>' },
-                        { name: '<code>OffsetDateTime</code>', html: '<p>A local date-time plus a fixed offset such as <code>+05:30</code>. Identifies an instant, and knows nothing about future rule changes.</p>' }
+                        { name: 'Instant', html: '<p>A point on the global timeline, nanoseconds since the epoch. Unambiguous everywhere. <em>"When did this happen."</em></p>' },
+                        { name: 'LocalDateTime', html: '<p>A date and a time with <strong>no zone</strong>, so it does not identify a moment. 2026-03-29T02:30 may never have happened, or may have happened twice. <em>"What the wall clock said."</em></p>' },
+                        { name: 'LocalDate', html: '<p>A day in a calendar. A birthday, an invoice date, a public holiday. Has no time and needs none.</p>' },
+                        { name: 'LocalTime', html: '<p>A time of day with no date. "The shop opens at 09:00" — true every day.</p>' },
+                        { name: 'ZonedDateTime', html: '<p>A <code>LocalDateTime</code> plus a zone id, which together resolve to an instant. <em>"A moment, described the way a person in Mumbai would describe it."</em></p>' },
+                        { name: 'OffsetDateTime', html: '<p>A local date-time plus a fixed offset such as <code>+05:30</code>. Identifies an instant, and knows nothing about future rule changes.</p>' }
                     ]
                 },
                 {

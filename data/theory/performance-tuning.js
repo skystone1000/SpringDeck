@@ -163,8 +163,8 @@ const performanceTuningModule = {
                     type: 'types',
                     title: 'Then, if the count is right and it is still slow',
                     items: [
-                        { name: '<code>pg_stat_statements</code>', html: '<p>Total time by normalised query. The top row is usually the answer, and it is total time rather than mean — a fast query run a million times is a bigger problem than a slow one run twice.</p>' },
-                        { name: '<code>EXPLAIN (ANALYZE, BUFFERS)</code>', html: '<p>The real plan with real timings. A sequential scan on a large table, or an estimate wildly different from the actual row count, is the finding.</p>' },
+                        { name: 'pg_stat_statements', html: '<p>Total time by normalised query. The top row is usually the answer, and it is total time rather than mean — a fast query run a million times is a bigger problem than a slow one run twice.</p>' },
+                        { name: 'EXPLAIN (ANALYZE, BUFFERS)', html: '<p>The real plan with real timings. A sequential scan on a large table, or an estimate wildly different from the actual row count, is the finding.</p>' },
                         { name: 'Index usage', html: '<p><code>pg_stat_user_indexes</code>. An index nobody uses costs write time and space; a missing one costs read time.</p>' },
                         { name: 'Lock waits', html: '<p><code>pg_locks</code> joined to <code>pg_stat_activity</code>. Latency with no CPU and no I/O is usually blocking.</p>' }
                     ]

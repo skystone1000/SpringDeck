@@ -76,7 +76,7 @@ const patternsInSpringModule = {
                     rows: [
                         { aspect: 'What it is', left: 'The container itself — the root interface every context implements', right: 'A <strong>bean you write</strong> that produces another bean' },
                         { aspect: 'Who implements it', left: 'Spring', right: 'You' },
-                        { aspect: 'What <code>getBean("x")</code> returns', left: 'The bean named x', right: 'For a FactoryBean named x, the <em>product</em>. Use <code>&amp;x</code> to get the factory itself.' },
+                        { aspect: 'What getBean("x") returns', left: 'The bean named x', right: 'For a FactoryBean named x, the <em>product</em>. Use <code>&amp;x</code> to get the factory itself.' },
                         { aspect: 'When you meet it', left: 'Constantly, indirectly', right: 'Rarely — <code>SqlSessionFactoryBean</code>, <code>LocalContainerEntityManagerFactoryBean</code>' },
                         { aspect: 'Modern alternative', left: '—', right: 'An <code>@Bean</code> method. Almost always simpler, and the reason FactoryBean is now unusual in application code.' }
                     ]

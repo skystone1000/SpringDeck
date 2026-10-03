@@ -218,8 +218,8 @@ const jpaMappingModule = {
                     right: 'orphanRemoval = true',
                     rows: [
                         { aspect: 'Fires when', left: 'The <strong>parent</strong> is deleted', right: 'The child leaves the collection' },
-                        { aspect: '<code>order.getLines().remove(line)</code>', left: 'Nothing. The row stays', right: '<strong>The row is deleted</strong>' },
-                        { aspect: '<code>em.remove(order)</code>', left: 'Children deleted', right: 'Children deleted' },
+                        { aspect: 'order.getLines().remove(line)', left: 'Nothing. The row stays', right: '<strong>The row is deleted</strong>' },
+                        { aspect: 'em.remove(order)', left: 'Children deleted', right: 'Children deleted' },
                         { aspect: 'Says', left: '"Deleting me deletes them"', right: '"They cannot exist outside me"' },
                         { aspect: 'Use', left: 'A parent-child link', right: '<strong>A true composition</strong>' }
                     ]

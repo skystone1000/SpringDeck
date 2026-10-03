@@ -109,11 +109,11 @@ const oauth2AndOidcModule = {
                     type: 'types',
                     title: 'The parameters that carry the security properties',
                     items: [
-                        { name: '<code>state</code>', html: '<p>An opaque random value the client generates, sent to the authorization server and returned unchanged. The client checks it matches. <strong>This is the CSRF defence for the callback</strong> — without it, an attacker can feed you their own code and log you into their account.</p>' },
-                        { name: '<code>redirect_uri</code>', html: '<p>Must be registered exactly. Open redirect here means the code is delivered to the attacker.</p>' },
-                        { name: '<code>scope</code>', html: '<p>What is being asked for. Presented to the user as consent, and encoded in the resulting token.</p>' },
-                        { name: '<code>code_challenge</code>', html: '<p>PKCE. Next chapter, and now required for every client type.</p>' },
-                        { name: '<code>nonce</code>', html: '<p>OIDC only: returned inside the ID token, so the client can prove the token belongs to this request.</p>' }
+                        { name: 'state', html: '<p>An opaque random value the client generates, sent to the authorization server and returned unchanged. The client checks it matches. <strong>This is the CSRF defence for the callback</strong> — without it, an attacker can feed you their own code and log you into their account.</p>' },
+                        { name: 'redirect_uri', html: '<p>Must be registered exactly. Open redirect here means the code is delivered to the attacker.</p>' },
+                        { name: 'scope', html: '<p>What is being asked for. Presented to the user as consent, and encoded in the resulting token.</p>' },
+                        { name: 'code_challenge', html: '<p>PKCE. Next chapter, and now required for every client type.</p>' },
+                        { name: 'nonce', html: '<p>OIDC only: returned inside the ID token, so the client can prove the token belongs to this request.</p>' }
                     ]
                 }
             ],
@@ -266,7 +266,7 @@ const oauth2AndOidcModule = {
                     title: 'What OIDC adds on top',
                     items: [
                         { name: 'The ID token', html: '<p>A JWT with <code>sub</code>, <code>iss</code>, <code>aud</code>, <code>exp</code>, <code>nonce</code> and <code>auth_time</code>. Verified by the client.</p>' },
-                        { name: 'The <code>openid</code> scope', html: '<p>Requesting it is what turns an OAuth2 flow into an OIDC one. Without it there is no ID token.</p>' },
+                        { name: 'The openid scope', html: '<p>Requesting it is what turns an OAuth2 flow into an OIDC one. Without it there is no ID token.</p>' },
                         { name: 'Standard claims and the userinfo endpoint', html: '<p><code>email</code>, <code>name</code>, <code>picture</code>, requested through the <code>profile</code> and <code>email</code> scopes.</p>' },
                         { name: 'Discovery', html: '<p><code>/.well-known/openid-configuration</code> lists every endpoint and the JWKS URI — which is why <code>issuer-uri</code> alone is enough to configure a Spring resource server.</p>' }
                     ]

@@ -75,7 +75,7 @@ const streamsAndLambdasModule = {
                     left: 'Lambda',
                     right: 'Anonymous class',
                     rows: [
-                        { aspect: '<code>this</code> refers to', left: '<strong>The enclosing instance</strong>', right: '<strong>The anonymous instance itself</strong>' },
+                        { aspect: 'this refers to', left: '<strong>The enclosing instance</strong>', right: '<strong>The anonymous instance itself</strong>' },
                         { aspect: 'Compiled to', left: 'An <code>invokedynamic</code> call site, linked by <code>LambdaMetafactory</code> at first execution', right: 'A separate class file, <code>Outer$1.class</code>' },
                         { aspect: 'Instances created', left: 'One, cached, if it captures nothing', right: 'A new one every evaluation' },
                         { aspect: 'Can hold state', left: 'No', right: 'Yes — fields' },
@@ -141,7 +141,7 @@ const streamsAndLambdasModule = {
                         { name: 'Short-circuiting operations', html: '<p><code>findFirst</code>, <code>findAny</code>, <code>anyMatch</code>, <code>allMatch</code>, <code>noneMatch</code>, <code>limit</code>, <code>takeWhile</code>. These are what make an infinite stream terminate.</p>' },
                         { name: 'Stateful operations cannot short-circuit', html: '<p><code>sorted</code> and <code>distinct</code> must see every element before they can emit the first one, so putting <code>sorted</code> before <code>limit(10)</code> still sorts everything. That is the pipeline order to think about when performance matters.</p>' },
                         { name: 'A stream is single-use', html: '<p>Reusing one throws <code>IllegalStateException: stream has already been operated upon or closed</code>. Store the collection, not the stream, and build a new stream per traversal.</p>' },
-                        { name: '<code>peek</code> is for debugging only', html: '<p>Its Javadoc says so. Under some conditions the implementation may skip elements entirely — with <code>count()</code> on a sized stream it can elide the whole pipeline — so never put a side effect you depend on in a <code>peek</code>.</p>' }
+                        { name: 'peek is for debugging only', html: '<p>Its Javadoc says so. Under some conditions the implementation may skip elements entirely — with <code>count()</code> on a sized stream it can elide the whole pipeline — so never put a side effect you depend on in a <code>peek</code>.</p>' }
                     ]
                 },
                 {

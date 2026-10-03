@@ -275,7 +275,7 @@ const enumsAndNestedTypesModule = {
                     left: 'Anonymous class',
                     right: 'Lambda',
                     rows: [
-                        { aspect: '<code>this</code> refers to', left: 'The anonymous instance itself', right: '<strong>The enclosing instance.</strong> A lambda introduces no new scope.' },
+                        { aspect: 'this refers to', left: 'The anonymous instance itself', right: '<strong>The enclosing instance.</strong> A lambda introduces no new scope.' },
                         { aspect: 'Compiled to', left: 'A separate <code>Outer$1.class</code>, loaded at first use', right: '<code>invokedynamic</code>; the implementation is a synthetic method, and the object is created by <code>LambdaMetafactory</code>' },
                         { aspect: 'Can hold state', left: 'Yes — it can declare fields', right: 'No fields. Captured values only.' },
                         { aspect: 'Can implement', left: 'Any interface or abstract class, any number of methods', right: 'Exactly one functional interface' },

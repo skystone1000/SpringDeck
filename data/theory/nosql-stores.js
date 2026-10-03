@@ -192,7 +192,7 @@ const nosqlStoresModule = {
                     rows: [
                         { aspect: 'Identity map / persistence context', left: 'Yes', right: '<strong>No.</strong> Two loads give two objects.' },
                         { aspect: 'Dirty checking', left: 'Yes — a modified managed entity is flushed', right: 'No. You call <code>save</code> explicitly.' },
-                        { aspect: 'What <code>save</code> does', left: 'Merges the changed fields', right: '<strong>Replaces the whole document</strong>' },
+                        { aspect: 'What save does', left: 'Merges the changed fields', right: '<strong>Replaces the whole document</strong>' },
                         { aspect: 'Lazy loading', left: 'Yes, with all its hazards', right: 'No. <code>@DBRef</code> exists and is best avoided.' },
                         { aspect: 'Derived query methods', left: 'Yes', right: 'Yes — the same naming rules' },
                         { aspect: 'Transactions', left: 'Everywhere', right: 'Multi-document transactions since MongoDB 4.0, on a replica set, and they are not cheap' }

@@ -41,8 +41,8 @@ const platformConcernsModule = {
                         { name: 'Belongs: rate limiting', html: '<p>Reject before the traffic reaches anything expensive — the security track\'s "shed early, shed cheaply".</p>' },
                         { name: 'Belongs: routing and versioning', html: '<p>Path or header to service. One place that knows the topology.</p>' },
                         { name: 'Belongs: cross-cutting observability', html: '<p>Correlation ids, request logs, edge latency metrics.</p>' },
-                        { name: '<strong>Does not belong: business logic</strong>', html: '<p>A gateway that decides whether an order may be placed is a service with a routing table attached, owned by nobody and changed by everybody.</p>' },
-                        { name: '<strong>Does not belong: response aggregation</strong>', html: '<p>Calling three services and merging the results is a backend-for-frontend. Build that as a service; it has a team and a test suite.</p>' }
+                        { name: 'Does not belong: business logic', html: '<p>A gateway that decides whether an order may be placed is a service with a routing table attached, owned by nobody and changed by everybody.</p>' },
+                        { name: 'Does not belong: response aggregation', html: '<p>Calling three services and merging the results is a backend-for-frontend. Build that as a service; it has a team and a test suite.</p>' }
                     ]
                 },
                 {

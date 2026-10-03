@@ -127,9 +127,9 @@ const jwtInPracticeModule = {
                     items: [
                         { name: '1. Algorithm is one you accept', html: '<p>From your configuration, never from the header. This must be first, because everything after it depends on verifying correctly.</p>' },
                         { name: '2. Signature verifies', html: '<p>Against the key selected by <code>kid</code> from the issuer\'s JWKS. If this fails, stop — nothing else in the token means anything.</p>' },
-                        { name: '3. <code>iss</code> is the expected issuer', html: '<p>A validly signed token from a different issuer you also trust is still not for you.</p>' },
-                        { name: '4. <code>aud</code> contains this service', html: '<p><strong>The one most often skipped.</strong> Without it, a token minted for the reporting API is accepted by the payments API.</p>' },
-                        { name: '5. <code>exp</code> is in the future, <code>nbf</code> in the past', html: '<p>With a small clock skew allowance — see the next chapter but one.</p>' },
+                        { name: '3. iss is the expected issuer', html: '<p>A validly signed token from a different issuer you also trust is still not for you.</p>' },
+                        { name: '4. aud contains this service', html: '<p><strong>The one most often skipped.</strong> Without it, a token minted for the reporting API is accepted by the payments API.</p>' },
+                        { name: '5. exp is in the future, nbf in the past', html: '<p>With a small clock skew allowance — see the next chapter but one.</p>' },
                         { name: '6. Your own rules', html: '<p>A required scope, a tenant claim matching the path, a token version. Application-specific, and this is where a custom validator goes.</p>' }
                     ]
                 },

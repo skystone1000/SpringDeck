@@ -186,7 +186,7 @@ const deliveryAndOutboxModule = {
                         { name: 'Idempotent producer', html: '<p><code>enable.idempotence=true</code>, the default since Kafka 3.0. Each producer gets an id and each batch a sequence number, so the broker discards a duplicate caused by a retry. <strong>Scope: one producer session, one partition.</strong></p>' },
                         { name: 'Transactional producer', html: '<p><code>transactional.id</code> set. Several sends across several partitions, plus the consumer offset commit, either all become visible or none do. Consumers must set <code>isolation.level=read_committed</code> to benefit.</p>' },
                         { name: 'What a transaction covers', html: '<p>Reads from Kafka, writes to Kafka, and the offset commit. This is the read-process-write pattern, and it is exactly what Kafka Streams uses.</p>' },
-                        { name: 'What it does <strong>not</strong> cover', html: '<p><strong>Any write outside Kafka.</strong> A database insert inside a Kafka transaction is not rolled back when the transaction aborts. That is the dual-write problem, unchanged.</p>' }
+                        { name: 'What it does not cover', html: '<p><strong>Any write outside Kafka.</strong> A database insert inside a Kafka transaction is not rolled back when the transaction aborts. That is the dual-write problem, unchanged.</p>' }
                     ]
                 },
                 {

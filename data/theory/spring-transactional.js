@@ -328,7 +328,7 @@ const springTransactionalModule = {
                         { name: 'The service method — yes', html: '<p>One business operation, one transaction. It is the layer where "place an order" exists as a single thing.</p>' },
                         { name: 'The repository — no', html: '<p>A transaction per statement means two writes in one operation are two units of work, and the second failing leaves the first committed. Spring Data\'s methods are transactional individually, which is a floor rather than the design.</p>' },
                         { name: 'The controller — no', html: '<p>It would hold the transaction across request parsing and response rendering. That is <code>open-in-view</code> with extra steps.</p>' },
-                        { name: 'Around an HTTP call — <strong>never</strong>', html: '<p>The connection is held for the duration of somebody else\'s latency, and the transaction cannot be rolled back on their side anyway.</p>' }
+                        { name: 'Around an HTTP call — never', html: '<p>The connection is held for the duration of somebody else\'s latency, and the transaction cannot be rolled back on their side anyway.</p>' }
                     ]
                 },
                 {
