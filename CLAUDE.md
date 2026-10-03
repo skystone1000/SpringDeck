@@ -50,7 +50,7 @@ Not yet written, each one a deliverable of the phase that needs it:
 
 | Tool | Arrives in | What it will guard |
 |---|---|---|
-| `check-doc-links.js` | Phase 9 | every `docs[]` and `referenceLinks[]` URL |
+| `check-doc-links.js` | Phase 9 | every `docs[]` and `referenceLinks[]` URL — 761 theory links plus 424 question links, 1,185 in all |
 | `run-snippets.js` | Phase 9 | every `stdout` claim, against a real JDK |
 
 **`validate-nav.js` holds the five mode totals as hard numbers.** Changing the
@@ -153,18 +153,65 @@ Where a cross-language comparison earns its place it is **prose in a
 
 | | |
 |---|---|
-| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes · 5 — Search · 6 — The question bank, all 26 topics |
-| **Next phase** | 7 — Theory, tracks 5–8 and the §5.9 insertions |
+| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes · 5 — Search · 6 — The question bank, all 26 topics · 7 — Theory, tracks 5–8 and the §5.9 insertions |
+| **Next phase** | 8 — Tiers 2 and 3 of the drill catalogue, and the seven non-`stdout` predict sets |
 | **Corpus** | Questions: **26 topics, 486 questions**, 63 snippets, 19 diagrams |
-| | Theory: 41 modules, 318 chapters on the reading path, 47 glossary terms, 24 diagrams |
-| | Tracks: java-platform 14/104 · spring-core 7/51 · web-api 7/53 · persistence 13/110 |
+| | Theory: **83 modules, 687 chapters** on the reading path, 2,045 blocks, 61 glossary terms, 35 diagrams, 346 syntax blocks |
+| | Tracks: java-platform 20/163 · spring-core 7/51 · web-api 8/64 · persistence 14/121 · security 6/48 · distributed 11/86 · production 10/86 · craft 7/68 |
 | | Sets: synthesis 2 modules / 19 drills · output 4 modules / 34 predicts |
-| **Phase 4 remaining** | none. Tiers 2 and 3 (27 drills) and the seven non-`stdout` predict sets are Phase 8 by plan |
-| **Search index** | 904 entries — questions 486 · theory 318 · synthesis 19 · predict 34 · glossary 47 |
-| **Last commit date used** | 2026-09-15 |
+| **Phase 8 scope** | Tiers 2 and 3 (27 drills) and the seven non-`stdout` predict sets, both carried since Phase 4 by plan |
+| **Search index** | 1,287 entries — questions 486 · theory 687 · synthesis 19 · predict 34 · glossary 61 |
+| **Last commit date used** | 2026-10-03 |
 | **Commit cadence** | **Reduced by instruction on 2026-09-03.** Fewer, larger commits — one per unit of work rather than 15–17 a day. The hand-set dates and the ascending-within-a-day rule still hold. |
 
 ### Phase gates recorded
+
+**Phase 7 — Theory, tracks 5–8 and the §5.9 insertions.** PASSED. 42 modules
+authored, taking the reading path to **83 modules and 687 chapters** across all
+eight subject tracks. The deck now has a curriculum with no gaps in it.
+
+- **687 is the number §5.11 computed before any of these chapters existed.**
+  The manifest added up chapter counts from the module plans; the corpus
+  reached the same figure by being written module by module over eighteen
+  commits, without consulting it. Two counts derived from opposite ends
+  agreeing exactly is the only check available on a manifest no validator can
+  read.
+- **All five validators green**, with `EXPECTED_TOTALS` stepped by hand in
+  every one of the eighteen content commits rather than once at the end.
+- **`validate-search` caught its own author, and did it AFTER the commit
+  landed.** `idempotency` defined a term `http-foundations` already defines,
+  and the glossary slug collided. The run that would have caught it was
+  chained behind `&&` on the same line as the commit, so the commit ran
+  regardless. Fixed by amend, and the working rule is now: **run the
+  validators as a separate call and read the output before staging anything.**
+- **249 route/width combinations swept** — all 83 theory routes at 390px,
+  768px and 1280px. No horizontal overflow, no `NaN` in any diagram, no empty
+  diagram slot, and the chapter count on every route matched the corpus.
+- **The diagram check was rewritten mid-gate because the old one was
+  vacuous.** See the new blind spot; the count is now asserted per module
+  against the corpus, and all three of its branches were broken on purpose.
+- **The four new sidebar groups render**, and the DOM agrees with the
+  registry: eight groups, eight distinct hues, and module counts of
+  20/7/8/14/6/11/10/7 matching `modulesInTrack()` exactly. All 83 module
+  headers carry a `data-hue` that equals their track's — the check that the
+  null-track defect in Phase 6 taught us to write.
+- **98 prerequisites in the data, 98 rendered as links.** 23 of them cross a
+  track boundary, which is what the global reading order exists for.
+- **Search reaches the new corpus.** 1,287 entries. `code_verifier` returns
+  exactly one result, the PKCE chapter; `CooperativeStickyAssignor`,
+  `crypto-shredding`, `PACELC`, `OOMKilled` and `SKIP LOCKED` each land in the
+  new material.
+- **The glossary is 61 terms across 18 initials**, and the sidebar renders
+  exactly those 18. One `Idempotent`, one `Idempotency key`.
+- **No console errors across 88 routes in a fresh tab** — and the console
+  reader was proved to work by emitting an error into it deliberately, because
+  a silent console and a broken reader look identical.
+- **Looking at the page found a defect nothing else could.** A screenshot of
+  the OAuth parameter table showed `<code>state</code>` rendered as literal
+  angle brackets. 46 such literals across 22 modules, the oldest shipped in
+  Phase 3. Fixed, and `validate-theory` grew an eleventh check.
+- **`file://` was NOT opened by hand.** Seventh gate. Unchanged reason, and it
+  is still the oldest open item in this file.
 
 **Phase 6 — The question bank, remaining topics.** PASSED. All sixteen
 remaining topics authored: 26 topics, **486 questions**, against a plan
@@ -330,6 +377,45 @@ unknown language (a Kotlin snippet — the Java-only rule holds), disallowed tag
 inline event handler.
 
 ### Known blind spots — recorded now, not discovered in Phase 9
+
+- **A field that is escaped and a field that is markup look identical in the
+  data.** A `types` item is `{ name, html }`: the name goes through `esc()`
+  and the description does not. Writing `name: '<code>state</code>'` produces
+  literal angle brackets in the column a reader looks at first, and nothing
+  anywhere says so — the tag check only ever ran over the fields listed as
+  carrying HTML, which is correct and says nothing about the rest. 46 of them
+  accumulated across 22 modules over five phases. **The only signal was a
+  screenshot.** `validate-theory` check 11 now holds the mirror table,
+  `PLAIN_FIELDS`, beside `HTML_FIELDS`; the general rule is that **a pair of
+  tables that partition a space is safer than one table and a default**,
+  because a new block type that lands in neither is then visible as a gap.
+- **The first fix for that was wrong, and the reason generalises.** A
+  `comparison` block has `left`/`right` on the block, where they are column
+  headings and escaped, and `left`/`right` on every row, where they are cell
+  bodies and are HTML. A rewrite keyed on the field name took out 423 literals
+  instead of 46 and deleted legitimate markup from three hundred rows. **The
+  same word one level apart can mean the opposite thing** — key a bulk edit on
+  the position, not on the name, and count what it changed before believing
+  it.
+- **Counting `svg` on a page counts the chrome.** The Phase 7 sweep first
+  reported 270 diagrams across 60 routes and `bad: 0`, which looked like a
+  clean pass and was arithmetic on icons: the corpus holds 35 theory diagrams
+  in total. A count with no expected value to compare against is not a check,
+  it is a number. The sweep now carries the per-module diagram count computed
+  from the corpus in Node and asserts route by route, which is a different
+  source of truth from the page — the same rule `validate-search` had to learn
+  about its own glossary slugs.
+- **A silent console and a broken console reader are the same observation.**
+  Eighty-eight routes produced no errors, which is either a clean deck or a
+  reader returning nothing. One deliberate `console.error` separates the two
+  cases and costs one call. Do it every time the answer is zero.
+- **A selector that matches two nodes per item double-counts, again.** The
+  glossary check reported 122 terms against 61, because `[id^="term-"]`,
+  `.glossary-term` and `.glossary-entry` were ORed and two of them match the
+  same entries. Exactly the shape of the Phase 6 `[class*=tier]` result. Both
+  times the aggregate was a clean multiple of the truth, which is the tell:
+  **when a count is exactly 2× or 3× what it should be, suspect the selector
+  before the corpus.**
 
 - `check-doc-links.js` will follow HTTP redirects but **cannot see an HTML
   meta-refresh**. Spring's documentation restructured its URL scheme between
