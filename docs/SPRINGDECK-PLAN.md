@@ -698,7 +698,24 @@ container 7/51, HTTP and the web layer 7/53, persistence 13/110. By importance:
 flowchart, 6 sequence, 1 animation), 47 definition blocks, 361 documentation
 links and 317 `relatedQuestions` references, all of which resolve.
 
-**Every one of the 75 outputs in the theory corpus is a `trace`. Not one claims
+**Phase 7 actual, for all eight tracks:** 83 modules, 687 chapters, 2,045
+blocks. By track: Java & the JVM 20/163, the Spring container 7/51, HTTP and
+the web layer 8/64, persistence 14/121, security 6/48, microservices and scale
+11/86, testing and operations 10/86, design and architecture 7/68. By
+importance: 390 must-know, 245 should-know, 52 good-to-know. 346 syntax blocks
+(258 Java, 23 SQL, 20 YAML, 16 bash, 12 properties, 8 HTTP, 6 XML, 2 JSON, 1
+Dockerfile), 35 diagrams (27 flowchart, 7 sequence, 1 animation), 61 definition
+blocks, 761 documentation links and 825 `relatedQuestions` references, all of
+which resolve.
+
+**687 is the figure §5.11 arrived at before a chapter of any of these tracks
+existed.** It was computed from the module manifests by adding up their chapter
+counts; the corpus reached it by being written module by module over eighteen
+commits. Two counts derived from opposite ends agreeing exactly is the
+strongest check available on a manifest that no validator can read, and it is
+worth more than either number on its own.
+
+**Every one of the 95 outputs in the theory corpus is a `trace`. Not one claims
 `stdout`,** which is the honest position while no JDK exists on the build
 machine: the validator only checks that the *language* is runnable, and that is
 a weaker assertion than the output being correct. See the blind spot recorded in
@@ -707,11 +724,13 @@ a weaker assertion than the output being correct. See the blind spot recorded in
 ```yaml
 totals:                       # targets, not commitments
   questions: 853              # across all 26 topics; 244 authored in Phase 2
-  theory:    687              # chapters in the SUBJECT tracks only; 318 in Phase 3
+  theory:    687              # chapters in the SUBJECT tracks only. MET EXACTLY
+                              # at the end of Phase 7: 318 in Phase 3, 369 in Phase 7
   synthesis:  46              # drill blocks
   predict:    81              # predict blocks
-  glossary:   47              # definition blocks — COUNTED at the end of Phase 3,
-                              # not estimated. Re-set it at the end of Phase 7.
+  glossary:   61              # definition blocks — COUNTED, never estimated.
+                              # 47 at the end of Phase 3, re-counted at the end
+                              # of Phase 7 as the section below instructed.
 ```
 
 `glossary` is the one total that could not be planned honestly: it is harvested
@@ -721,8 +740,16 @@ wrong by an order of magnitude.** 318 chapters produced 47 terms, and the reason
 is a rule the authoring settled into rather than a shortfall: a `definition`
 block is for a term the reader will meet again in another module, so most
 chapters define nothing and the ones that do define one. Extrapolated over all
-687 subject chapters that is roughly a hundred, not six hundred. Re-count rather
-than re-estimate at the end of Phase 7.
+687 subject chapters that is roughly a hundred, not six hundred.
+
+**The re-count at the end of Phase 7 gives 61**, which is below even that
+hundred. The extrapolation assumed the second half of the reading path would
+define terms at the rate the first half did, and it does not: the later tracks
+lean on vocabulary the earlier ones already introduced, so security, messaging
+and operations between them added fourteen terms across 288 chapters. The rule
+held; the corpus simply ran out of new words to name. 61 is the number in
+`validate-nav.js`, and the 600 written here before any chapter existed remains
+the largest single miss in this document.
 
 ---
 
