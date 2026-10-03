@@ -27,6 +27,8 @@
      8  relatedQuestions resolve against the question bank
      9  the drill catalogue and the predict-set catalogue are HELD HERE
     10  the modules that must carry a version block do carry one
+    11  no markup in a field the renderer escapes — a <code> tag written
+        into a types item's name renders as literal angle brackets
 
    Warnings never fail a run. They are meant to be READ, which is why the
    three families that are legitimately loud for most of the build are
@@ -184,6 +186,47 @@ const HTML_FIELDS = {
     drill:      ['prompt'],
     predict:    ['prompt', 'distractor']
 };
+
+/* --------------------------------------------------------------------------
+   THE MIRROR OF THE TABLE ABOVE: the fields that reach the DOM through esc().
+
+   Every one of these is rendered as PLAIN TEXT. Markup written into one of
+   them does not fail — it renders as literal angle brackets, which looks like
+   a corrupted page and reads like nothing at all. Thirty-six of them shipped
+   for four phases before anyone looked at the column they land in.
+
+   The name is deliberately the same shape as HTML_FIELDS, because the two
+   answer the same question from opposite sides: which of a block's strings
+   are markup, and which of them are words. A block type belongs in one table
+   or the other, and a new one that lands in neither is the failure this pair
+   exists to make visible.
+   -------------------------------------------------------------------------- */
+const PLAIN_FIELDS = {
+    definition: ['term'],
+    types:      ['title'],
+    table:      ['title'],
+    comparison: ['title', 'left', 'right'],
+    drill:      ['title'],
+    predict:    ['title'],
+    version:    ['title']
+};
+
+/* A tag name from the allowed subset, spelled as a tag. `Callable<T>` and
+   `List<String>` must NOT trip this — a generic parameter in a plain-text
+   field is exactly right, and a check that rejects it would be rewriting
+   correct content to satisfy itself. */
+const PLAIN_TAG = /<\/?(?:p|ul|ol|li|strong|em|code|a|br|s|b|i|table|thead|tbody|tr|th|td|span|div)\b[^>]*>/i;
+
+function plainTextIssues(value, where) {
+    if (typeof value !== 'string') return [];
+    const match = PLAIN_TAG.exec(value);
+    if (!match) return [];
+    return [
+        `${where}: contains ${match[0]} — this field is escaped before it ` +
+        `reaches the DOM, so the tag renders as literal text. Put the markup ` +
+        `in the html field beside it, or say it in words.`
+    ];
+}
 
 function run() {
     const report  = makeReport('validate-theory');
@@ -415,6 +458,27 @@ function run() {
                         htmlIssues(block[field], `${b}.${field}`).forEach(i => report.error(i));
                     }
                 });
+
+                (PLAIN_FIELDS[block.type] || []).forEach(field => {
+                    plainTextIssues(block[field], `${b}.${field}`).forEach(i => report.error(i));
+                });
+
+                /* The three plain-text fields that live inside an array
+                   rather than on the block, checked here so every escaped
+                   string in the corpus is covered by one pass. */
+                (block.items || []).forEach((item, ii) => {
+                    plainTextIssues(item.name, `${b}.items[${ii}].name`).forEach(i => report.error(i));
+                });
+                if (block.type === 'table') {
+                    (block.headers || []).forEach((header, hi) => {
+                        plainTextIssues(header, `${b}.headers[${hi}]`).forEach(i => report.error(i));
+                    });
+                }
+                if (block.type === 'comparison') {
+                    (block.rows || []).forEach((row, ri) => {
+                        plainTextIssues(row && row.aspect, `${b}.rows[${ri}].aspect`).forEach(i => report.error(i));
+                    });
+                }
 
                 /* ---- CHECK 5 — block shapes ---------------------------- */
                 switch (block.type) {
