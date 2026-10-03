@@ -43,18 +43,27 @@ is a domain to protect. A candidate who can only list benefits has read about
 microservices; one who can say what database-per-service takes away has run
 them.
 
-**Theory mode is four tracks in** — 41 modules and 318 chapters, in one global
-dependency order rather than one order per track. The cross-track prerequisites
-are the whole reason that order exists: transactional propagation cannot be
-taught before transactions, and transactions cannot be taught before the
-container that manages them.
+**Theory mode is complete** — 83 modules and 687 chapters across all eight
+tracks, in one global dependency order rather than one order per track. The
+cross-track prerequisites are the whole reason that order exists: transactional
+propagation cannot be taught before transactions, transactions cannot be taught
+before the container that manages them, and the outbox pattern cannot be taught
+before either. Twenty-three of the 98 prerequisites cross a track boundary.
 
 | Track | Modules | Chapters |
 |---|--:|--:|
-| Java & the JVM | 14 | 104 |
+| Java & the JVM | 20 | 163 |
 | The Spring Container & Boot | 7 | 51 |
-| HTTP, REST & the Web Layer | 7 | 53 |
-| Persistence & Data | 13 | 110 |
+| HTTP, REST & the Web Layer | 8 | 64 |
+| Data, SQL & Transactions | 14 | 121 |
+| Security & API Hardening | 6 | 48 |
+| Microservices, Messaging & Scale | 11 | 86 |
+| Testing, Observability & Operations | 10 | 86 |
+| Design, Patterns & Architecture | 7 | 68 |
+
+390 chapters are must-know, 245 should-know and 52 good-to-know, and the path
+carries 761 documentation links and 825 references back into the question bank,
+every one of which resolves.
 
 The persistence track ends where a schema meets production: expand and
 contract, backfilling a large table without holding a lock, replication lag,
@@ -62,6 +71,15 @@ partitioning, and the argument for not sharding yet. Every claim about engine
 behaviour names its engine and its version, because most of them are only true
 of one — adding a column with a constant default stopped rewriting the table in
 PostgreSQL 11, and still rewrites it for a volatile one.
+
+The later tracks are threaded rather than stacked. The dual-write problem is
+named three times before it is solved — once where a document store makes it
+tempting, once where idempotency makes it survivable, and once in the outbox
+chapter that actually fixes it. Read-your-writes appears as a saga's UI
+problem, a CQRS projection's lag and a read replica's replication lag, which
+are the same problem at three scales. The `ThreadLocal` that carries a security
+principal, a trace context and a logging MDC is one mechanism with three
+symptoms, and the deck says so in all three places.
 
 A chapter is built from twelve block types — prose, definition, types, syntax,
 table, comparison, pitfall, tip, diagram, drill, predict and version. The last
@@ -129,11 +147,14 @@ resolve and are attributed, `stdout` is refused for any language the runner
 cannot execute, snippet languages are ones the highlighter knows, and authored
 HTML stays inside a fixed tag subset.
 
-`validate-theory.js` runs ten, and two of them are the reason it exists: every
+`validate-theory.js` runs eleven, and two of them are the reason it exists: every
 module prerequisite must resolve to a **strictly lower** position in the reading
 order, which is what makes the path a path; and every `relatedQuestions`
 reference must resolve against the question bank, so a question id invented
-while writing a chapter fails the build instead of dangling.
+while writing a chapter fails the build instead of dangling. The eleventh is
+newer and duller: a block's strings are either markup or words, the renderer
+escapes the second kind, and a `<code>` tag written into one of them renders
+as literal angle brackets on the page without failing anything at all.
 
 `validate-search.js` runs six, and it exists because search fails soft in the
 worst way: a result whose route does not resolve navigates to an empty state,
