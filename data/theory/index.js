@@ -117,6 +117,7 @@ const theoryModules = [
        modulesInTrack('synthesis') finds them and subjectTracks() does not,
        so theory.js never has to know they exist. */
     drillsMachineCodingModule,
+    drillsSystemDesignModule,
     drillsDebugAndReviewModule,
     predictJavaCoreModule,
     predictCollectionsModule,
