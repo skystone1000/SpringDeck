@@ -118,6 +118,7 @@ const theoryModules = [
        so theory.js never has to know they exist. */
     drillsMachineCodingModule,
     drillsSystemDesignModule,
+    drillsFocusedImplementationModule,
     drillsDebugAndReviewModule,
     predictJavaCoreModule,
     predictCollectionsModule,
