@@ -41,7 +41,7 @@ const EXPECTED_TOTALS = {
     questions: 486,
     theory:    687,
     synthesis:  46,
-    predict:    51,
+    predict:    66,
     glossary:   61
 };
 

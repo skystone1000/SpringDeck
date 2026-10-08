@@ -125,7 +125,9 @@ const theoryModules = [
     predictStreamsModule,
     predictConcurrencyModule,
     predictIoAndTimeModule,
-    predictSpringModule
+    predictSpringModule,
+    predictJpaModule,
+    predictSqlModule
 ].sort(function (a, b) { return a.order - b.order; });
 
 const theoryByModuleId = theoryModules.reduce(function (map, module) {
