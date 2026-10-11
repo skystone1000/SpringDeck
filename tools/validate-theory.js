@@ -29,6 +29,8 @@
     10  the modules that must carry a version block do carry one
     11  no markup in a field the renderer escapes — a <code> tag written
         into a types item's name renders as literal angle brackets
+    12  a trace's lines are STEPS, not a pasted console transcript — the
+        renderer numbers them, so a blank line becomes step 3 of nothing
 
    Warnings never fail a run. They are meant to be READ, which is why the
    three families that are legitimately loud for most of the build are
@@ -679,9 +681,60 @@ function checkSnippet(report, where, snippet) {
     checkOutput(report, where, snippet.output, snippet.language);
 }
 
+/* --------------------------------------------------------------------------
+   CHECK 12 — a trace is a SEQUENCE OF STEPS, not a console transcript.
+
+   renderOutputPane() draws the two kinds differently and the difference is
+   the whole point of having two: `stdout` becomes a <pre> of literal console
+   text, and `trace` becomes an <ol> under the heading "What happens, in
+   order". A psql result table pasted into a trace therefore renders as
+   "1. count  2. -------  3. 0  4. (1 row)", which is not wrong so much as
+   meaningless, and nothing fails — the pane draws, the corpus validates, and
+   only looking at the page shows it.
+
+   Ninety such lines went in across six predict sets in one phase, because a
+   verbatim transcript is the obvious thing to write when the answer IS what
+   a console printed. The four shapes below are what a transcript has and a
+   step list never does.
+   -------------------------------------------------------------------------- */
+const TRANSCRIPT_SHAPES = [
+    [/^\s*$/,               'an empty line — a numbered step cannot be blank'],
+    /* Before the comment-marker test, because a rule of dashes starts with
+       two of them and would otherwise be reported as a comment. A check that
+       fires for the wrong reason is only half a check. */
+    [/^\s*-{3,}\s*$/,       'a rule of dashes — that is a table separator, not a step'],
+    [/^\s*--/,              'a comment marker — annotate the step in the step, or use output.explain'],
+    [/^\s*\(\d+ rows?\)/,   'a psql row count — that is transcript furniture, not a step']
+];
+
+function traceIssues(lines, where) {
+    const issues = [];
+    (lines || []).forEach((line, i) => {
+        if (typeof line !== 'string') return;
+        for (const [pattern, why] of TRANSCRIPT_SHAPES) {
+            if (pattern.test(line)) {
+                issues.push(
+                    `${where}.output.lines[${i}]: ${why}. A trace renders as an ` +
+                    `ordered list headed "What happens, in order"; write the step, ` +
+                    `not the console.`
+                );
+                break;
+            }
+        }
+    });
+    return issues;
+}
+
 function checkOutput(report, where, output, language) {
     if (OUTPUT_KINDS.indexOf(output.kind) === -1) {
         report.error(`${where}: output.kind "${output.kind}" is not stdout or trace`);
+    }
+
+    /* stdout is literal console text and may legitimately contain a blank
+       line, a table rule or anything else a program printed. Only a trace is
+       held to the step-list shape. */
+    if (output.kind === 'trace') {
+        traceIssues(output.lines, where).forEach(i => report.error(i));
     }
 
     /* THE CHECK THAT MATTERS MOST IN THIS FILE, and it is the same one the
