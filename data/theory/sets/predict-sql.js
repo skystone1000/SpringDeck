@@ -56,15 +56,12 @@ const predictSqlModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            ' count ',
-                            '-------',
-                            '     0',
-                            '(1 row)',
-                            '',
-                            '-- id NOT IN (2, 3, NULL)',
-                            '--   expands to:  id <> 2 AND id <> 3 AND id <> NULL',
-                            '--   id = 1  ->   true   AND true   AND UNKNOWN  ->  UNKNOWN',
-                            '--   UNKNOWN is not TRUE, so no row qualifies.'
+                            'The subquery returns the set 2, 3, NULL.',
+                            'NOT IN expands to id <> 2 AND id <> 3 AND id <> NULL.',
+                            'For id = 1 the first two comparisons are true and the third is UNKNOWN.',
+                            'true AND true AND UNKNOWN is UNKNOWN, which is not TRUE, so the row does not qualify.',
+                            'The same holds for every row, because every row meets that NULL.',
+                            'count(*) returns 0, with no error and no warning.'
                         ],
                         explain: '<p><code>id &lt;&gt; NULL</code> is UNKNOWN, never true, so the whole conjunction can never be true and the query returns nothing — with no error and no warning. <strong>The fix is <code>NOT EXISTS</code></strong>, which asks a different question: it tests for the absence of a matching row rather than comparing values, and a NULL row simply does not match. <code>NOT IN</code> against a nullable column is a defect waiting for the first NULL; the version that returns 3 rows today returns 0 the day somebody inserts one.</p>'
                     }
@@ -84,10 +81,11 @@ const predictSqlModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            ' a | b | c |  d  ',
-                            '---+---+---+-----',
-                            ' 5 | 3 | 1 | 300',
-                            '(1 row)'
+                            'count(*) counts rows and ignores their contents: 5.',
+                            'count(bonus) counts non-null inputs, skipping the two NULLs: 3.',
+                            'count(DISTINCT bonus) counts distinct non-null values, and all three are 100: 1.',
+                            'sum(bonus) adds the non-null inputs: 300.',
+                            'sum returns NULL rather than 0 only when there is nothing non-null to add, which is why coalesce(sum(x), 0) exists.'
                         ],
                         explain: '<p><code>count(*)</code> counts rows and never skips one. <code>count(bonus)</code> counts non-null inputs, so it is 3. <code>count(DISTINCT bonus)</code> is 1, because the three non-null values are all 100 — NULL is not counted as a distinct value here even though <code>SELECT DISTINCT bonus</code> would return two rows including one NULL, which is the inconsistency worth remembering. <code>sum</code> ignores NULLs and returns 300; it returns NULL rather than 0 only when there is nothing non-null to add, which is why <code>coalesce(sum(x), 0)</code> exists.</p>'
                     }
@@ -112,18 +110,12 @@ const predictSqlModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            '-- A: the outer rows are produced, THEN filtered.',
-                            '--    A customer with no order gets o.status = NULL,',
-                            '--    and NULL = \'SHIPPED\' is UNKNOWN, so the row is dropped.',
-                            ' id ',
-                            '----',
-                            '  1',
-                            '  3',
-                            '(2 rows)',
-                            '',
-                            '-- B: the condition is part of the join, so non-matching',
-                            '--    orders simply do not attach; the customer survives.',
-                            '(5 rows)'
+                            'Query A performs the outer join first, producing a row for every customer including the two with no orders, whose o.status is NULL.',
+                            'The WHERE clause is then applied to that result.',
+                            'NULL = \'SHIPPED\' is UNKNOWN, so every manufactured outer row is dropped.',
+                            'A returns only the customers that had a shipped order. The LEFT JOIN has become an inner join.',
+                            'Query B puts the same condition in ON, so it decides what attaches rather than what survives.',
+                            'A customer with no matching order still appears, with NULL columns. B returns all five.'
                         ],
                         explain: '<p>A predicate on the right-hand table in <code>WHERE</code> runs <em>after</em> the outer join has manufactured its NULL rows, and those NULL rows fail it — which silently converts the LEFT JOIN into an INNER JOIN. Putting the condition in <code>ON</code> makes it part of deciding what attaches. <strong>The one exception is <code>WHERE o.id IS NULL</code></strong>, which is the deliberate anti-join idiom for "customers with no shipped order" and works precisely because it tests the manufactured NULL rather than comparing to a value.</p>'
                     }
@@ -148,10 +140,11 @@ const predictSqlModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'ERROR:  column "employees.name" must appear in the GROUP BY clause',
-                            '        or be used in an aggregate function',
-                            'LINE 1: SELECT department, name, count(*)',
-                            '                           ^'
+                            'The query groups by department, so each group may contain many rows.',
+                            'name is neither in the GROUP BY nor wrapped in an aggregate, so the query does not say which of the many names it wants.',
+                            'PostgreSQL 16 refuses to guess and raises an error naming the column.',
+                            'Nothing is returned.',
+                            'MySQL 8 with ONLY_FULL_GROUP_BY disabled returns an arbitrary row per group instead, and the row it picks can change between runs.'
                         ],
                         explain: '<p>The group has many names and the query does not say which one it wants, so PostgreSQL refuses. <strong>MySQL historically did not</strong>: with <code>ONLY_FULL_GROUP_BY</code> off it picks an arbitrary row, which is where "it worked on the old database" comes from, and the value it picks can change between runs. The honest fixes are to add the column to the <code>GROUP BY</code>, wrap it in an aggregate such as <code>min(name)</code>, or — when you genuinely want one whole row per group — use <code>DISTINCT ON (department)</code> with an <code>ORDER BY</code> that says which one.</p>'
                     }
@@ -191,14 +184,12 @@ const predictSqlModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            '-- A',
-                            'Seq Scan on orders  (cost=0.00..96432.00 rows=25000 width=84)',
-                            '  Filter: (date_trunc(\'day\', placed_at) = \'2026-10-08\'::date)',
-                            '',
-                            '-- B',
-                            'Index Scan using orders_placed_at_idx on orders',
-                            '  (cost=0.43..1204.11 rows=24800 width=84)',
-                            '  Index Cond: ((placed_at >= \'2026-10-08\') AND (placed_at < \'2026-10-09\'))'
+                            'The index on orders(placed_at) is ordered by the stored column value.',
+                            'Query A applies date_trunc to that column, producing a value the index knows nothing about.',
+                            'The only way to evaluate the predicate is to compute it for every row, so the planner chooses a sequential scan over five million rows.',
+                            'Query B compares the raw column against a half-open range, which the index can be probed for directly.',
+                            'The planner chooses an index scan and reads roughly the rows that match.',
+                            'An expression index on date_trunc(\'day\', placed_at) would make A fast too, at the cost of an index serving only that shape of query.'
                         ],
                         explain: '<p>A B-tree is ordered by the stored value. Applying a function to the column produces something the index knows nothing about, so the only way to evaluate the predicate is to compute it for every row. <strong>Rewriting the predicate as a half-open range is the fix, and it is the general one</strong> — the same reasoning covers <code>lower(email) = ?</code>, <code>CAST(id AS text) = ?</code> and <code>col + 0 = ?</code>. When the function is genuinely needed, an expression index — <code>CREATE INDEX ON orders (date_trunc(\'day\', placed_at))</code> — makes A fast, at the cost of an index that serves only that shape of query.</p>'
                     }
@@ -223,20 +214,12 @@ const predictSqlModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            '-- page 1',
-                            ' id ',
-                            '----',
-                            ' 41',
-                            ' 17',
-                            ' ...',
-                            '',
-                            '-- page 2 (a different plan, or a parallel scan with a different',
-                            '--         worker split, is enough to reorder the ties)',
-                            ' id ',
-                            '----',
-                            ' 17     <-- seen again',
-                            ' 93',
-                            ' ...'
+                            'Every row has score = 10, so the ORDER BY distinguishes none of them.',
+                            'The engine may return rows not distinguished by the ORDER BY in any order it likes.',
+                            'Page 1 is executed and returns ten of them in whatever order that plan produced.',
+                            'Page 2 is a separate execution. A different plan, or a parallel scan with a different worker split, is enough to order the ties differently.',
+                            'A row shown on page 1 can appear again on page 2, and another can be skipped entirely.',
+                            'Appending a unique tiebreaker to the ORDER BY makes the order total and the paging stable.'
                         ],
                         explain: '<p><code>ORDER BY score</code> with every score equal imposes no order at all, and the engine is free to return ties however the plan happened to produce them. A row can be shown twice and another never shown — a real, reproducible bug in paginated lists sorted by a non-unique column. <strong>The fix is a total order: always append a unique tiebreaker</strong>, usually the primary key. It is also the precondition for keyset pagination, which fixes the other half of this problem — a large <code>OFFSET</code> still makes the database walk and discard every skipped row.</p>'
                     }
@@ -261,14 +244,12 @@ const predictSqlModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'UPDATE 4812093',
-                            '',
-                            '  count  ',
-                            '---------',
-                            ' 4812093',
-                            '(1 row)',
-                            '',
-                            '-- autocommit: the transaction ended when the statement did.'
+                            'The statement is syntactically complete: a WHERE clause is optional, and its absence means every row.',
+                            'PostgreSQL updates all 4,812,093 rows and reports the count.',
+                            'Autocommit ends the transaction as the statement finishes, before the count has been read.',
+                            'There is no open transaction, so there is nothing to ROLLBACK.',
+                            'The following SELECT confirms every account is frozen.',
+                            'The defences all have to be in place beforehand: BEGIN first, psql --single-transaction, or write the WHERE clause before the SET clause.'
                         ],
                         explain: '<p>A missing <code>WHERE</code> is not a syntax error — "all rows" is a legitimate thing to mean — and with autocommit the transaction is over before you have read the row count. <strong>The three defences are all cheap and all have to be in place beforehand:</strong> run <code>BEGIN</code> first so there is something to <code>ROLLBACK</code>, start <code>psql</code> with <code>--single-transaction</code> for a session that touches production, and write the <code>WHERE</code> clause before the <code>SET</code> clause when composing the statement. <code>psql</code> also offers <code>ON_ERROR_ROLLBACK</code>, which does not help here because this is not an error.</p>'
                     }

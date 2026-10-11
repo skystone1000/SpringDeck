@@ -61,14 +61,12 @@ const predictHttpSecurityModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'HTTP/1.1 403 Forbidden',
-                            'Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers',
-                            'Content-Length: 0',
-                            '',
-                            '-- no Access-Control-Allow-Origin header, which is what actually',
-                            '-- fails the browser check. In the console:',
-                            '   Access to fetch at \'https://api.example.com/api/orders\' from origin',
-                            '   \'https://other.example.com\' has been blocked by CORS policy.'
+                            'The browser sends an OPTIONS preflight before the real POST, carrying Origin and Access-Control-Request-Method.',
+                            'Spring handles the preflight before dispatch, so no controller method is entered.',
+                            'The configured origin is https://app.example.com and the request\'s origin is not it.',
+                            'The response is 403 with a Vary header and, crucially, no Access-Control-Allow-Origin.',
+                            'The browser sees no allow header, blocks the request and logs a CORS policy error in the console.',
+                            'curl against the same endpoint succeeds, because CORS is enforced by the browser and not by the server.'
                         ],
                         explain: '<p>A preflight is answered before dispatch, so no controller code runs and no breakpoint in it will ever be hit — which is why this is usually debugged in the wrong place. <strong>CORS is enforced by the browser, not by the server</strong>: the server simply declines to say the origin is allowed, and the browser refuses to hand the response to the script. <code>curl</code> from the same machine works perfectly, which is the observation that confuses people most. Note also that a CORS misconfiguration cannot be fixed by adding an <code>OPTIONS</code> mapping; the answer is the CORS configuration.</p>'
                     }
@@ -93,13 +91,11 @@ const predictHttpSecurityModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'HTTP/1.1 403 Forbidden',
-                            'Content-Type: application/json',
-                            '',
-                            '{"status":403,"error":"Forbidden","path":"/api/orders"}',
-                            '',
-                            '-- CsrfFilter rejected it. The token was never validated,',
-                            '-- and no controller method ran.'
+                            'The request reaches CsrfFilter, which is in the default chain and enabled by default.',
+                            'The method is POST, so CSRF protection applies.',
+                            'No CSRF token is present, and the filter does not care that authentication was by bearer token rather than by cookie.',
+                            'The request is rejected with 403 before the token is ever validated.',
+                            'No controller method runs, and the credentials were never the problem.'
                         ],
                         explain: '<p>CSRF protection is on by default and does not know or care that you authenticated with a header rather than a cookie. The 403 is confusing precisely because the credentials were fine. <strong>The correct fix is to disable CSRF for a genuinely stateless API and to understand why that is safe:</strong> the attack depends on the browser attaching a credential automatically, which is what a cookie does and what an <code>Authorization</code> header never does. Disabling it on a session-cookie API is not the same decision and is not safe.</p>'
                     }
@@ -124,16 +120,12 @@ const predictHttpSecurityModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            '-- A: TenantFilter runs first',
-                            'HTTP/1.1 500 Internal Server Error',
-                            '   MissingTenantException escaped the chain. An unauthenticated',
-                            '   caller can make your service throw, which is a monitoring',
-                            '   problem and an information-disclosure risk.',
-                            '',
-                            '-- B: BearerTokenAuthenticationFilter runs first',
-                            'HTTP/1.1 401 Unauthorized',
-                            'WWW-Authenticate: Bearer',
-                            '   The request never reached TenantFilter.'
+                            'In arrangement A, TenantFilter runs before authentication.',
+                            'The X-Tenant header is missing, so it throws MissingTenantException.',
+                            'The exception escapes the chain and the container turns it into 500, which any anonymous caller can trigger at will.',
+                            'In arrangement B, BearerTokenAuthenticationFilter runs first.',
+                            'There are no credentials, so it responds 401 with a WWW-Authenticate header.',
+                            'TenantFilter is never reached, which is the point: reject on identity before interpreting the request.'
                         ],
                         explain: '<p>Filter order is not a detail — it decides which check gets to answer, and therefore which status the client sees. <strong>The general rule is to reject before you interpret</strong>: anything that can be refused on identity alone should run before anything that parses the request, so an anonymous caller cannot drive your custom code at all. Position A also means every scanner on the internet can fill your error dashboard with 500s, which is how this usually gets discovered.</p>'
                     }
@@ -168,16 +160,12 @@ const predictHttpSecurityModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            '1 -> HTTP/1.1 401 Unauthorized',
-                            '     WWW-Authenticate: Bearer',
-                            '',
-                            '2 -> HTTP/1.1 401 Unauthorized',
-                            '     WWW-Authenticate: Bearer error="invalid_token",',
-                            '       error_description="Jwt expired at 2026-10-08T09:00:00Z"',
-                            '',
-                            '3 -> HTTP/1.1 403 Forbidden',
-                            '     WWW-Authenticate: Bearer error="insufficient_scope",',
-                            '       scope="orders:write"'
+                            'Request 1 has no credentials at all, so the server cannot know who is asking: 401, with WWW-Authenticate: Bearer.',
+                            'Request 2 has a token that fails validation because it expired. The credential is unusable, so this is also 401, with error="invalid_token".',
+                            'Retrying request 2 with a refreshed token might work, which is what 401 invites.',
+                            'Request 3 has a valid token from the right issuer for the right audience. The caller is known.',
+                            'The token lacks orders:write, so the answer is a decision rather than a question: 403, with error="insufficient_scope".',
+                            'Retrying request 3 with the same token will never work, which is why 403 carries no invitation.'
                         ],
                         explain: '<p>One sentence: <strong>401 means "I do not know who you are — try again with credentials", 403 means "I know exactly who you are and the answer is no".</strong> That is why 401 is required to carry <code>WWW-Authenticate</code> and 403 is not: only the first is an invitation to retry. An expired token is 401 because refreshing it might work; a valid token missing a scope is 403 because retrying with the same token never will. Returning 403 for case 2 sends a client into a loop of not refreshing; returning 401 for case 3 sends it into a loop of refreshing a token that was never the problem.</p>'
                     }
@@ -202,16 +190,12 @@ const predictHttpSecurityModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            '1 -> 400  MethodArgumentNotValidException',
-                            '     the body bound successfully, THEN @Min(1) failed',
-                            '     {"type":"about:blank","title":"Bad Request","status":400,',
-                            '      "detail":"Invalid request content."}',
-                            '',
-                            '2 -> 400  HttpMessageNotReadableException',
-                            '     Jackson could not build the record at all; the controller',
-                            '     method was never entered and no constraint ever ran',
-                            '     {"type":"about:blank","title":"Bad Request","status":400,',
-                            '      "detail":"Failed to read request"}'
+                            'Request 1 binds successfully: qty is a valid int.',
+                            'Bean validation then runs and @Min(1) fails, raising MethodArgumentNotValidException with a BindingResult full of field errors.',
+                            'Spring maps it to 400 with an RFC 9457 problem-details body that does not name the field.',
+                            'Request 2 never binds: Jackson cannot turn "abc" into an int and raises HttpMessageNotReadableException.',
+                            'The controller method is never entered, so no constraint ever runs.',
+                            'That is also mapped to 400, by a different path — which is why an error handler covering only the first leaves a hole.'
                         ],
                         explain: '<p>Both are 400, which is right, and both default bodies are useless to a client — neither names the field. <strong>The two arrive through different paths and a handler that covers only the first leaves a hole</strong>: <code>@Valid</code> failures happen after binding and carry a <code>BindingResult</code> full of field errors; a type mismatch happens during binding and carries a Jackson exception instead. That is why the tier-3 error-shape drill insists on handling <code>HttpMessageNotReadableException</code> explicitly. Adding field detail to case 2 is deliberate work, because the exception knows the path but not your API\'s field naming.</p>'
                     }
@@ -236,12 +220,11 @@ const predictHttpSecurityModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            '1 -> HTTP/1.1 415 Unsupported Media Type',
-                            '     Accept-Post: application/json',
-                            '     "I cannot read what you SENT."',
-                            '',
-                            '2 -> HTTP/1.1 406 Not Acceptable',
-                            '     "I cannot produce what you ASKED FOR."'
+                            'Request 1 declares Content-Type: text/plain against a handler that consumes application/json.',
+                            'The handler mapping cannot match the consumes condition, so the request is refused before any method runs: 415, with Accept-Post naming what the endpoint does read.',
+                            'Request 2 sends the right body type but asks for application/xml.',
+                            'The produces condition cannot be satisfied, so the server cannot deliver what was asked for: 406.',
+                            'The two are mirror images — 415 is about what you sent, 406 is about what you asked for — and a service returning 400 for both has told the caller neither.'
                         ],
                         explain: '<p>The two are mirror images and the direction is the whole distinction: 415 is about the request body, 406 is about the response body. Both are decided by the handler-mapping conditions before your method runs, so neither is something a try/catch inside the controller can influence. <strong>The practical consequence is in the client library:</strong> a 415 means the caller is sending the wrong thing and will keep doing it, while a 406 often means a stale <code>Accept</code> header from a proxy or an SDK default — different bug, different owner, and a service that returns 400 for both has told the caller neither.</p>'
                     }

@@ -60,16 +60,12 @@ const predictBuildAndConfigModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            '$ mvn dependency:tree',
-                            '[INFO] com.example:app:jar:1.0',
-                            '[INFO] +- com.example:service-a:jar:1.0:compile',
-                            '[INFO] |  \\- org.apache.commons:commons-lang3:jar:3.12.0:compile',
-                            '[INFO] \\- com.example:service-b:jar:1.0:compile',
-                            '[INFO]    \\- com.example:util-core:jar:2.0:compile',
-                            '[INFO]       \\- (org.apache.commons:commons-lang3:jar:3.14.0:compile',
-                            '[INFO]           - omitted for conflict with 3.12.0)',
-                            '',
-                            'classpath: commons-lang3 3.12.0'
+                            'commons-lang3 3.12.0 arrives at depth 2, through service-a.',
+                            'commons-lang3 3.14.0 arrives at depth 3, through service-b then util-core.',
+                            'Maven mediates by distance from the root, so the nearest definition wins.',
+                            '3.12.0 is placed on the classpath and dependency:tree marks the other omitted for conflict.',
+                            'If util-core calls a method added in 3.14.0 the result is a NoSuchMethodError at run time and a green build.',
+                            'Gradle resolves the same graph to 3.14.0 by its highest-version rule, so the Maven rule does not travel.'
                         ],
                         explain: '<p>Maven mediates by <strong>distance from the root</strong>, and a tie at equal depth goes to whichever was declared first in the pom — so reordering two <code>&lt;dependency&gt;</code> elements can change what you ship. If <code>util-core</code> calls a method added in 3.14.0, you get a <code>NoSuchMethodError</code> at run time and a green build. <strong>Gradle answers the same question differently and picks 3.14.0</strong>, by highest version; neither is more correct, and carrying the Maven rule into a Gradle codebase is how people get this wrong twice. The fix in both is to state the version explicitly — in <code>dependencyManagement</code>, which is the next puzzle.</p>'
                     }
@@ -94,12 +90,12 @@ const predictBuildAndConfigModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'jackson-databind        2.15.0   <-- explicit, wins',
-                            'jackson-core            2.17.1   <-- still managed by the parent',
-                            'jackson-annotations     2.17.1   <-- still managed by the parent',
-                            'jackson-datatype-jsr310 2.17.1   <-- still managed by the parent',
-                            '',
-                            'A mixed Jackson: databind 2.15 against core 2.17.'
+                            'The parent\'s dependencyManagement declares jackson-databind at 2.17.1.',
+                            'The pom declares the same artefact with an explicit version, and an explicit version takes precedence over a managed one.',
+                            'jackson-databind resolves to 2.15.0.',
+                            'jackson-core, jackson-annotations and jackson-datatype-jsr310 were not declared explicitly, so they stay at 2.17.1.',
+                            'The application now runs a Jackson family that was never released or tested together.',
+                            'Setting the jackson-bom.version property instead moves all of them at once, which is what the BOM exposes it for.'
                         ],
                         explain: '<p>The explicit version wins, and that is the useful half. The dangerous half is that it wins <strong>for one artefact only</strong>, leaving a set of modules that were released and tested together now mismatched — which surfaces as a <code>NoClassDefFoundError</code> from an internal class, weeks later, on one code path. The right way to move a managed version is the property the BOM exposes: <code>&lt;jackson-bom.version&gt;2.15.0&lt;/jackson-bom.version&gt;</code> moves the whole family together. Overriding one artefact of a BOM is almost always a mistake, and the build will not tell you.</p>'
                     }
@@ -124,12 +120,12 @@ const predictBuildAndConfigModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            '$ mvn dependency:tree -Dscope=runtime',
-                            '[INFO] com.example:app:jar:1.0',
-                            '[INFO] \\- com.example:library-x:jar:1.0:compile',
-                            '[INFO]    \\- org.assertj:assertj-core:jar:3.25.3:compile   <-- shipped',
-                            '',
-                            'app.jar now contains a test assertion library.'
+                            'library-x declares assertj with no scope, which defaults to compile.',
+                            'Your pom declares assertj at test scope, which governs your direct edge only.',
+                            'A compile-scoped transitive dependency stays compile in the consumer.',
+                            'assertj is therefore on the runtime classpath and is packaged into the jar.',
+                            'dependency:tree at runtime scope shows it under library-x.',
+                            'An exclusion on library-x removes it; running that tree before a release is what finds it.'
                         ],
                         explain: '<p>Scope is declared by the dependency that pulls something in, and your <code>test</code> declaration governs your direct edge, not <code>library-x</code>\'s. So a library with a mis-scoped dependency ships that dependency into every consumer — extra megabytes, extra classes on the classpath, and an extra thing for a vulnerability scanner to find. <strong>The fix is an <code>&lt;exclusion&gt;</code> on <code>library-x</code></strong>, and the prevention is to run <code>mvn dependency:tree</code> against the runtime scope before a release rather than trusting the pom to describe what ships.</p>'
                     }
@@ -169,12 +165,12 @@ const predictBuildAndConfigModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'The following 1 profile is active: "prod"',
-                            '',
-                            '-- SPRING_PROFILES_ACTIVE replaced the YAML value outright.',
-                            '-- application-dev.yaml is NOT loaded.',
-                            '-- The Maven profile named prod decided what went into the jar',
-                            '   at build time and has no runtime effect whatsoever.'
+                            'application.yaml sets spring.profiles.active to dev.',
+                            'SPRING_PROFILES_ACTIVE is an environment variable, which sits above application.yaml in the property order.',
+                            'spring.profiles.active is an ordinary property, so the higher source replaces the value rather than adding to it.',
+                            'The startup line reports one active profile: prod. application-dev.yaml is never loaded.',
+                            'spring.profiles.include is the property that adds rather than replaces.',
+                            'The Maven profile named prod decided what went into the jar at build time and has no runtime effect at all; sharing a name with a Spring profile is a coincidence.'
                         ],
                         explain: '<p>Two independent traps in one answer. The first is that <code>spring.profiles.active</code> obeys ordinary property precedence — a later source <em>replaces</em> it rather than adding to it, which is why setting it in a file and in the environment gives you one profile and not two. Use <code>spring.profiles.include</code> when you want additive behaviour. <strong>The second is that a Maven profile and a Spring profile share nothing but a word.</strong> <code>-Pprod</code> changes what is compiled and packaged; it does not activate anything at run time, and the two having the same name is how an afternoon disappears.</p>'
                     }
@@ -199,17 +195,12 @@ const predictBuildAndConfigModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            '-- generated hashCode() reads id, reference AND lines',
-                            '',
-                            'new Order() added to a HashSet: hashCode with id == null',
-                            'repository.save(order): id assigned',
-                            'set.contains(order) -> false        (the Phase-8 JPA puzzle again)',
-                            '',
-                            'log.debug("saved {}", order):',
-                            '  org.hibernate.LazyInitializationException: failed to lazily',
-                            '  initialize a collection of role: Order.lines',
-                            '',
-                            '-- or, inside a transaction, a silent extra SELECT per log line.'
+                            '@Data generates equals, hashCode and toString over every non-static field, which here includes the lazy lines collection.',
+                            'A new Order with a null id is added to a HashSet and filed under the hash it reports then.',
+                            'repository.save assigns the id, so the object\'s hashCode changes while it sits in the set.',
+                            'set.contains returns false: the object is in the set and cannot be found.',
+                            'Separately, logging the entity calls the generated toString, which touches lines.',
+                            'Outside a session that throws LazyInitializationException; inside one it fires an extra select per log statement.'
                         ],
                         explain: '<p><code>@Data</code> includes every non-static field in all three generated methods, which is right for a DTO and wrong for an entity. The <code>hashCode</code> half is the mutable-identity bug from the JPA set arriving through a different door. The <code>toString</code> half is worse in one respect — it is triggered by <em>logging</em>, so it fails in a code path nobody tested and it can fire an extra query per log statement in the paths where it does not fail. <strong>Use <code>@Getter</code> and <code>@Setter</code> on entities and write <code>equals</code>, <code>hashCode</code> and <code>toString</code> by hand</strong>, or exclude the associations explicitly. Generated code you did not read is still code you shipped.</p>'
                     }

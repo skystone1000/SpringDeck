@@ -79,9 +79,11 @@ const predictIoAndTimeModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'java.io.InvalidClassException: Customer; local class incompatible:',
-                            '    stream classdesc serialVersionUID = -4382415712341234567,',
-                            '    local class serialVersionUID = 8123456712349876543'
+                            'Monday\'s Customer is compiled; the JVM computes a serialVersionUID from its shape and writes that value into the stream.',
+                            'Tuesday\'s Customer has one more field, so the computed value is different.',
+                            'readObject compares the UID in the stream against the local class\'s and they do not match.',
+                            'It throws InvalidClassException: local class incompatible, naming both UIDs.',
+                            'Nothing is read. Every object written by Monday\'s code is unreadable.'
                         ],
                         explain: '<p>Neither version declared <code>serialVersionUID</code>, so the JVM computed one from the class shape — name, modifiers, interfaces, fields, methods. Adding a field changes the shape and therefore changes the computed value, and the two no longer match. <strong>Declaring <code>private static final long serialVersionUID = 1L</code> makes the two versions compatible</strong>, and then adding a field is fine: the old bytes have nothing for <code>country</code>, so it deserialises as <code>null</code>. The lesson is not "add the field" — it is that the default is to break, and a class that goes into a cache, a session store or a queue must pin its UID on day one.</p>'
                     }

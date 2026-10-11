@@ -63,18 +63,12 @@ const predictKafkaModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'Created(42) -> partition 3, offset 118',
-                            'Paid(42)    -> partition 0, offset 991',
-                            'Shipped(42) -> partition 5, offset 42',
-                            '',
-                            'One consumer polls all six partitions. The batch it receives',
-                            'is grouped by partition, in no cross-partition order:',
-                            '',
-                            '  Shipped(42)   <-- arrives first',
-                            '  Created(42)',
-                            '  Paid(42)',
-                            '',
-                            'A state machine that rejects SHIPPED before CREATED now fails.'
+                            'Each send has a null key, so the default partitioner spreads the records rather than pinning them.',
+                            'Created lands on one partition, Paid on another, Shipped on a third.',
+                            'Ordering is guaranteed within each partition, and Kafka makes no statement across partitions.',
+                            'A single consumer polls all six partitions and receives a batch grouped by partition, in no cross-partition order.',
+                            'The three events can be delivered as Shipped, Created, Paid.',
+                            'A state machine that rejects SHIPPED before CREATED now fails. Keying by the order id sends all three to one partition and fixes it.'
                         ],
                         explain: '<p>Kafka guarantees order <strong>within a partition</strong> and makes no statement across partitions. A null key means the partitioner spreads records, so three events about the same entity land in three places and their relative order is gone. <strong>The fix is one line: key by the entity id.</strong> All three then hash to the same partition and arrive in order. The cost is worth naming — a hot key concentrates load on one partition, and the maximum useful parallelism becomes the partition count rather than the consumer count.</p>'
                     }
@@ -99,16 +93,12 @@ const predictKafkaModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'poll() returns 500 records',
-                            '  ... 300 seconds elapse, 150 records processed ...',
-                            '',
-                            'WARN o.a.k.c.c.i.ConsumerCoordinator : consumer poll timeout has',
-                            'expired. This means the time between subsequent calls to poll() was',
-                            'longer than the configured max.poll.interval.ms',
-                            '',
-                            'consumer leaves the group -> rebalance -> partition reassigned',
-                            'commit of the 150 processed records is REJECTED (generation changed)',
-                            'the new owner starts from the last committed offset: all 500 again'
+                            'poll() returns up to 500 records in one batch.',
+                            'Each record takes about two seconds, so the batch needs roughly 1000 seconds.',
+                            'The heartbeat thread keeps the consumer alive in the group, because since KIP-62 it is separate from the poll loop.',
+                            'After 300 seconds the max.poll.interval.ms deadline passes with poll() not called again.',
+                            'The coordinator treats that as failure, removes the consumer from the group and rebalances.',
+                            'The commit for the 150 records already processed is rejected because the generation changed, and the new owner starts again from the last committed offset.'
                         ],
                         explain: '<p>Since KIP-62 the heartbeat runs on its own thread, so the consumer looks alive while the poll loop is stuck — which is exactly why <code>max.poll.interval.ms</code> exists as a separate deadline. Missing it is treated as failure, the partition moves, and the 150 records already processed are redelivered to somebody else. <strong>The fixes are all about making the batch fit the deadline</strong>: lower <code>max.poll.records</code>, raise <code>max.poll.interval.ms</code> if the work genuinely is slow, or take the slow call out of the listener entirely. And this is the second reason the handler must be idempotent — the first was a crash, and this one needs no crash at all.</p>'
                     }
@@ -148,13 +138,12 @@ const predictKafkaModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'poll -> PaymentEvent(id=9931, amount=249900)',
-                            'ack.acknowledge()   -> offset 4471 committed to __consumer_offsets',
-                            'SIGKILL',
-                            '',
-                            '-- new consumer joins, resumes from committed offset 4472',
-                            '-- event 9931 is never delivered again',
-                            '-- the ledger is short by 2499.00 and nothing anywhere says so'
+                            'The record is polled and handed to the listener.',
+                            'ack.acknowledge() commits offset 4471 to __consumer_offsets before any work is done.',
+                            'The pod is killed before ledger.apply(event) completes.',
+                            'A new consumer joins and resumes from the committed offset, 4472.',
+                            'The event is never delivered again. It is lost, silently.',
+                            'Where the commit sits relative to the work is the delivery guarantee: after it is at-least-once, before it is at-most-once.'
                         ],
                         explain: '<p>Where the commit sits relative to the work <em>is</em> the delivery guarantee — there is no third mechanism. Commit after and a crash redelivers: at-least-once, duplicates possible. Commit before and a crash skips: at-most-once, loss possible. <strong>The lag argument is not even true</strong>: lag is a function of throughput, and committing early does not make the handler faster, it only makes the metric lie. For anything with money in it, commit after, and make the handler tolerate the redelivery.</p>'
                     }
@@ -179,18 +168,12 @@ const predictKafkaModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'send -> broker appends at offset 5501, replicates to ISR',
-                            'ack  -> lost in the network',
-                            'producer: no ack within request.timeout.ms -> retry',
-                            'send -> broker appends AGAIN at offset 5502',
-                            '',
-                            'partition contents:',
-                            '  5501  acct-88  Debit(2499.00)',
-                            '  5502  acct-88  Debit(2499.00)     <-- the same debit, twice',
-                            '',
-                            '(with enable.idempotence=true, the default since Kafka 3.0, the',
-                            ' broker recognises the producer id and sequence number and drops',
-                            ' the second write.)'
+                            'The producer sends the record and the broker appends it at offset 5501 and replicates it to the in-sync replicas.',
+                            'The acknowledgement is lost in the network on its way back.',
+                            'The producer cannot distinguish a lost ack from a lost write, so after request.timeout.ms it retries.',
+                            'The broker appends the same debit again, at offset 5502.',
+                            'The partition now holds the same debit twice, and acks=all did nothing to prevent it, because it is a durability setting rather than a deduplication one.',
+                            'With enable.idempotence left at its default of true since Kafka 3.0, the producer id and sequence number let the broker drop the second write — which fixes the producer half and not the consumer half.'
                         ],
                         explain: '<p><code>acks=all</code> is a durability setting, not a deduplication one: it says the record reached the in-sync replicas, and says nothing about whether the producer found out. A lost ack is indistinguishable from a lost write, so the producer retries, and the retry is a second record. <strong>The idempotent producer fixes this half</strong> — a producer id and a per-partition sequence number let the broker drop a repeat — and it has been the default since Kafka 3.0, which is why this puzzle has to disable it explicitly to show the problem. <strong>It does not fix the consumer half.</strong> Redelivery after a rebalance or a crash still happens, so the four puzzles in this set all end in the same place: the consumer must be idempotent, and that is a property of your handler, not of any broker setting.</p>'
                     }

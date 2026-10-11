@@ -57,13 +57,11 @@ const predictJpaModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'select o1_0.id, o1_0.placed_at, ... from orders o1_0 order by o1_0.placed_at desc fetch first 10 rows only',
-                            'select l1_0.order_id, l1_0.id, ... from order_line l1_0 where l1_0.order_id=?   -- order 1',
-                            'select l1_0.order_id, l1_0.id, ... from order_line l1_0 where l1_0.order_id=?   -- order 2',
-                            '...',
-                            'select l1_0.order_id, l1_0.id, ... from order_line l1_0 where l1_0.order_id=?   -- order 10',
-                            '',
-                            'total: 1 + 10 = 11'
+                            'One select fetches the ten order rows, with a row limit applied in SQL.',
+                            'The stream touches getLines() on the first order, which is an uninitialised proxy, so Hibernate issues a select against order_line for that order id.',
+                            'The same happens for the second order, and the third, and so on.',
+                            'Ten collection selects are issued in total, one per order, because no batch fetch size is configured.',
+                            'Eleven statements reach the database. Against a page of 200 it would be 201.'
                         ],
                         explain: '<p>One query for the roots, then one per collection the moment it is touched. That is N+1, and the page size is the multiplier — the same method against a page of 200 fires 201. <strong>The fix that does not restructure anything is <code>@BatchSize(size = 20)</code> on the collection</strong>, or <code>hibernate.default_batch_fetch_size</code> globally, which turns the ten into one <code>where order_id in (?, ?, ...)</code> and the total into 2. A fetch join gives 1 but cannot be paginated; see the last puzzle in this set.</p>'
                     }
@@ -88,11 +86,12 @@ const predictJpaModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'select o1_0.id, o1_0.total, ... from orders o1_0 where o1_0.id=?',
-                            '-- method returns, transaction commits, Hibernate flushes',
-                            'update orders set total=? where id=?',
-                            '',
-                            'total: 2'
+                            'findById issues one select and the returned entity is managed by the persistence context.',
+                            'Hibernate keeps a snapshot of the loaded state.',
+                            'setTotal changes the object. No SQL is issued yet.',
+                            'The method returns and the transaction commits, which triggers a flush.',
+                            'The flush compares the entity against its snapshot, finds the difference, and issues an update.',
+                            'Two statements, and neither of them was asked for by name.'
                         ],
                         explain: '<p>An entity loaded inside a transaction is <em>managed</em>. Hibernate keeps a snapshot of it and compares at flush time, so a setter is a write. <code>save</code> exists for entities that are new or detached; calling it on a managed entity is a no-op that people add because it looks like it must be needed. <strong>The dangerous half of this is the same mechanism</strong>: a setter called by accident inside a transaction — in a mapper, in a lazy getter with a side effect — is also a write, and there is no line of code that says so.</p>'
                     }
@@ -117,12 +116,12 @@ const predictJpaModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'select ... from orders o1_0 where o1_0.id=?',
-                            'select ... from order_line l1_0 where l1_0.order_id=?',
-                            '-- commit, flush',
-                            'update order_line set order_id=null where id=?',
-                            '',
-                            'total: 3, and the line row still exists.'
+                            'findById selects the order, and touching the collection selects its three lines.',
+                            'remove(0) takes one OrderLine out of the in-memory collection.',
+                            'At commit Hibernate flushes and sees that the association no longer holds that line.',
+                            'Without orphanRemoval it has no instruction to delete the row, so it breaks the link instead: update order_line set order_id = null.',
+                            'The row survives, orphaned, and nothing reports it.',
+                            'In a schema where order_id is NOT NULL the same code fails at commit with a constraint violation, which is the louder and better outcome.'
                         ],
                         explain: '<p><code>CascadeType.REMOVE</code> answers "what happens to the children when the <em>parent</em> is removed". <code>orphanRemoval = true</code> answers "what happens to a child that is taken out of the collection", and they are genuinely different questions. Without it, Hibernate simply breaks the link. <strong>In most real schemas <code>order_id</code> is <code>NOT NULL</code>, so this same code fails at commit with a constraint violation instead</strong> — which is a better outcome, because the silent orphan is data nobody will notice for a year.</p>'
                     }
@@ -162,12 +161,11 @@ const predictJpaModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'select o1_0.id, ... from orders o1_0 where o1_0.id=?',
-                            '-- second findById: id already managed, no SQL',
-                            'true',
-                            'true',
-                            '',
-                            'total: 1 query'
+                            'The first findById misses the persistence context and issues one select.',
+                            'The loaded entity is registered in the context under its identity.',
+                            'The second findById finds that identity already managed and returns the same instance without any SQL.',
+                            'a == b is true, because a persistence context holds at most one instance per identity.',
+                            'a.equals(b) is true for the same reason, whatever equals happens to compare.'
                         ],
                         explain: '<p>The persistence context guarantees <strong>one instance per identity per context</strong>, which is why <code>==</code> holds. That guarantee is doing more work than it looks: it is what makes dirty checking coherent, and it is why an entity whose <code>equals</code> is based on a mutable field appears to work in every test — inside one transaction, identity comparison never gets exercised. The next puzzle is what happens when it does.</p>'
                     }
@@ -192,10 +190,12 @@ const predictJpaModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'set.add(tag)        -> hashCode() == 0   (id is null), bucket 0',
-                            'repository.save(tag) -> id assigned: 42',
-                            'set.contains(tag)   -> hashCode() == 42, looks in a different bucket',
-                            'false'
+                            'new Tag("java") has a null id, so the generated hashCode returns the value it computes for null.',
+                            'set.add(tag) files the object in the bucket for that hash.',
+                            'repository.save(tag) assigns an id from the database.',
+                            'The object\'s hashCode is now a different number, but it is still filed in the old bucket.',
+                            'set.contains(tag) computes the new hash, looks in the new bucket, and does not find it.',
+                            'It returns false. Nothing throws, and the set is silently wrong from here on.'
                         ],
                         explain: '<p>The object is in the set and cannot be found, because the hash it was filed under is no longer the hash it reports. Nothing throws; the set is simply wrong from here on. <strong>The rule that avoids it: an entity\'s <code>hashCode</code> must be stable from construction to removal</strong>, which a database-generated id can never be. The workable answers are a business key, or a UUID assigned in the constructor, or — the one Hibernate itself documents — a constant <code>hashCode</code> with <code>equals</code> on the id, which is correct and degrades a <code>HashSet</code> to a list.</p>'
                     }
@@ -220,11 +220,11 @@ const predictJpaModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'org.hibernate.LazyInitializationException: failed to lazily initialize',
-                            'a collection of role: Order.lines: could not initialize proxy - no Session',
-                            '    at OrderController.get(OrderController.java:9)',
-                            '',
-                            '(with spring.jpa.open-in-view=false, which is the recommended setting)'
+                            'find() runs inside a transaction and selects the order. The lines collection is a proxy and is never touched.',
+                            'find() returns and the transaction commits. The persistence context closes with it.',
+                            'The controller calls order.getLines() on the now-detached entity.',
+                            'The proxy has no session to load from and throws LazyInitializationException.',
+                            'With spring.jpa.open-in-view left at its default of true this appears to work, because the session is held open for the whole request — and it then issues queries from the view layer and holds a connection through serialization.'
                         ],
                         explain: '<p>The transaction — and with it the persistence context — ended when <code>find</code> returned. Touching a lazy association afterwards has no session to load it from. <strong>The default in Spring Boot hides this</strong>: <code>open-in-view</code> is <code>true</code>, which holds the session open for the whole web request and makes the code above work — while firing queries from the view layer, holding a connection for the duration of serialization, and moving the failure to production the day somebody sets it to false. The real fixes are to fetch what you need inside the transaction, or to map to a DTO there.</p>'
                     }
@@ -249,11 +249,12 @@ const predictJpaModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'select o1_0.id, o1_0.total, ... from orders o1_0 where o1_0.id=?',
-                            '-- session FlushMode set to MANUAL by the Hibernate dialect',
-                            '-- commit: no automatic flush, no dirty check, no update',
-                            '',
-                            'The in-memory object changed. The row did not.'
+                            'The transaction begins and Spring marks the connection read-only.',
+                            'The Hibernate dialect sets the session\'s flush mode to MANUAL.',
+                            'findById issues one select and the entity is managed.',
+                            'setTotal changes the in-memory object.',
+                            'The transaction commits. With flush mode MANUAL there is no automatic flush, so dirty checking never runs.',
+                            'No update is issued. The object changed; the row did not.'
                         ],
                         explain: '<p><code>readOnly</code> is a hint with two real effects: Spring passes it to the JDBC connection, where some drivers and some replicas act on it, and the Hibernate dialect sets the flush mode to manual, which is what actually suppresses the write here. <strong>It is not enforcement.</strong> An explicit <code>flush()</code> or a native query still writes, and against a physical read replica the same code fails with a driver error instead. Treating it as a performance hint that also documents intent is right; treating it as a guarantee that nothing can be written is not.</p>'
                     }
@@ -278,14 +279,12 @@ const predictJpaModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'WARN o.h.h.i.a.QueryTranslatorImpl : HHH90003004: firstResult/maxResults',
-                            'specified with collection fetch; applying in memory',
-                            '',
-                            'select distinct o1_0.id, ..., l1_0.id, ... from orders o1_0',
-                            '  join order_line l1_0 on o1_0.id=l1_0.order_id',
-                            '-- no limit, no offset. Every matching row is read.',
-                            '',
-                            'Result: the correct twenty orders. Heap: all two million.'
+                            'Hibernate parses the query and sees a collection fetch join together with a row limit.',
+                            'A SQL limit would cut the result mid-collection, so it refuses to apply one.',
+                            'It logs HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory.',
+                            'It executes the join with no limit and no offset, reading every matching row.',
+                            'It de-duplicates and pages the result in the JVM.',
+                            'The correct twenty orders are returned. The heap held two million.'
                         ],
                         explain: '<p>A fetch join multiplies rows — one order with three lines is three rows — so a SQL <code>LIMIT</code> would cut a collection in half rather than cut the result at an order boundary. Hibernate refuses to be wrong and is catastrophic instead: it reads everything and pages in memory, warning as it goes. <strong>The warning says "applying in memory" in plain words, and the query returns the right answer</strong>, which is why this survives code review and dies under load. The fix is two queries — page the ids, then fetch the collections for those ids — or leave the association lazy with a <code>@BatchSize</code>.</p>'
                     }

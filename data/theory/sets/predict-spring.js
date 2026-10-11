@@ -61,12 +61,12 @@ const predictSpringModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'process()  -> called through the proxy, no advice (not annotated)',
-                            '  save()   -> INTERNAL call on `this`, proxy not involved',
-                            '           -> no transaction started',
-                            '  repository.save() -> autocommits in its own transaction',
-                            '  throw IllegalStateException',
-                            'result: the row is present. Nothing rolled back.'
+                            'process() is called through the proxy, which finds no advice on it and passes straight through.',
+                            'process() calls save() on `this`, so the proxy is not involved and no advice runs.',
+                            'No transaction is started.',
+                            'repository.save() runs in its own auto-committed transaction and the row is written.',
+                            'IllegalStateException is thrown and propagates to the caller.',
+                            'There is no transaction to roll back. The row stays.'
                         ],
                         explain: '<p><code>@Transactional</code> is implemented by a proxy that wraps the bean. A call from one method of the bean to another goes through <code>this</code>, not through the proxy, so no advice runs and no transaction is started. The row is written by the repository in its own auto-committed transaction and stays. <strong>The fix is not another annotation</strong> — it is to move <code>save</code> to a different bean, or to inject the proxy into itself, or to use <code>TransactionTemplate</code>. Adding <code>@Transactional</code> to <code>process</code> would also work, and for the reason worth stating: it makes the outer call the one that goes through the proxy.</p>'
                     }
@@ -91,12 +91,12 @@ const predictSpringModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'proxy: begin transaction',
-                            '  repository.save(invoice)',
-                            '  throw IOException  -> CHECKED',
-                            'proxy: rollbackOn(IOException) == false  (default: RuntimeException | Error)',
-                            'proxy: COMMIT',
-                            'result: the invoice is committed and the caller sees the IOException.'
+                            'The proxy begins a transaction, because issue() really is proxied this time.',
+                            'repository.save(invoice) runs inside it.',
+                            'IOException is thrown, and it is a checked exception.',
+                            'The proxy asks its rollback rule: the default is RuntimeException or Error only, so the answer is no.',
+                            'The proxy commits.',
+                            'The caller sees the IOException and the invoice is in the database.'
                         ],
                         explain: '<p>The default rule is <code>RuntimeException</code> or <code>Error</code> only. A checked exception commits, which surprises almost everyone the first time and is a deliberate inheritance from EJB semantics — checked exceptions were meant to model expected, recoverable business outcomes. <strong>If a checked exception in your code means "this did not work", say so:</strong> <code>@Transactional(rollbackFor = IOException.class)</code>. The alternative and usually better answer is to not throw checked exceptions out of a service at all.</p>'
                     }
@@ -121,11 +121,11 @@ const predictSpringModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'http-nio-8080-exec-1',
-                            'http-nio-8080-exec-1',
-                            '',
-                            'generate() was invoked on `this`, so the async proxy never saw it.',
-                            'It ran inline, on the caller\'s thread, synchronously.'
+                            'run() prints the name of the request thread, http-nio-8080-exec-1.',
+                            'run() calls generate() on `this`, so the async proxy never sees the call.',
+                            'generate() executes inline, synchronously, on the same thread.',
+                            'It prints http-nio-8080-exec-1 again.',
+                            'No task was ever submitted to the executor, and nothing failed to say so.'
                         ],
                         explain: '<p>Identical mechanism to the transactional case, and worth recognising as the same fact rather than as a second rule: <strong><code>@Async</code>, <code>@Transactional</code>, <code>@Cacheable</code> and <code>@PreAuthorize</code> are all proxy advice, and none of them survives a call through <code>this</code>.</strong> This one is nastier than the transaction case because nothing fails — the work is done, correctly, just not where you thought. The symptom appears as a latency mystery weeks later.</p>'
                     }
@@ -150,11 +150,10 @@ const predictSpringModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'context refresh: CheckoutService created ONCE',
-                            '  -> Basket created ONCE and injected',
-                            'handle() x3 -> 1421795058, 1421795058, 1421795058',
-                            '',
-                            'Prototype means "a new instance per lookup", and there was one lookup.'
+                            'The context refreshes and creates CheckoutService once, because it is a singleton.',
+                            'Creating it asks the container for a Basket. That is one lookup, so one Basket is created and injected.',
+                            'handle() is called three times and prints the same identity hash each time.',
+                            'Prototype means a new instance per lookup, and there was exactly one lookup.'
                         ],
                         explain: '<p>Dependency injection happens once, when the singleton is created. Prototype scope promises a new instance per <em>request to the container</em>, and the singleton made exactly one such request. The fixes are all ways of asking again at call time: inject an <code>ObjectProvider&lt;Basket&gt;</code> and call <code>getObject()</code>, use <code>@Lookup</code>, or declare the prototype with a scoped proxy. <strong>The general form is worth keeping</strong>: a shorter-lived scope injected into a longer-lived one is always this bug, and it is why a request-scoped bean in a singleton needs a proxy too.</p>'
                     }
@@ -189,13 +188,11 @@ const predictSpringModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'Resolution order (later wins):',
-                            '  application.yaml            -> 1000',
-                            '  application-prod.yaml       -> 2000   (profile-specific beats plain)',
-                            '  OS environment APP_TIMEOUT  -> 3000',
-                            '  command-line argument       -> 4000   <-- wins',
-                            '',
-                            'Environment.getProperty("app.timeout") = 4000'
+                            'application.yaml contributes app.timeout = 1000.',
+                            'application-prod.yaml is added above it, because a profile-specific file beats a plain one: 2000.',
+                            'The OS environment variable APP_HTTP style key APP_TIMEOUT is added above that: 3000.',
+                            'The command-line argument is added above everything: 4000.',
+                            'Environment.getProperty("app.timeout") returns 4000.'
                         ],
                         explain: '<p>Command-line arguments sit above the environment, which sits above profile-specific files, which sit above the plain ones. The list is longer than this — the top of it is a <code>@TestPropertySource</code> and devtools, and the bottom is <code>@PropertySource</code> and defaults — but these four are the ones that appear in real incidents. <strong>The practical form: something outside the jar can always override something inside it</strong>, which is exactly what makes the same artefact deployable to four environments and also what makes "it works on my machine" possible.</p>'
                     }
@@ -220,13 +217,12 @@ const predictSpringModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'Binder canonicalises each key to: app.http.maxretrycount',
-                            '  app.http.max-retry-count   -> matches   (kebab, the recommended form)',
-                            '  app.http.maxRetryCount     -> matches   (camel)',
-                            '  app.http.max_retry_count   -> matches   (underscore)',
-                            '  APP_HTTP_MAXRETRYCOUNT     -> matches   (env-var form, upper + underscore)',
-                            '',
-                            'All four are the same property. Precedence, not spelling, decides.'
+                            'The binder canonicalises every key by lowercasing it and dropping the separators.',
+                            'app.http.max-retry-count canonicalises to app.http.maxretrycount and matches.',
+                            'app.http.maxRetryCount canonicalises to the same thing and matches.',
+                            'app.http.max_retry_count canonicalises to the same thing and matches.',
+                            'APP_HTTP_MAXRETRYCOUNT canonicalises to the same thing and matches.',
+                            'All four are one property, so precedence decides the value, not spelling.'
                         ],
                         explain: '<p>Relaxed binding lowercases the key and removes the separators before matching, so four spellings are one property. This is the mechanism that lets a Kubernetes environment variable override a YAML key without the two looking alike. <strong>It applies to <code>@ConfigurationProperties</code> and not to <code>@Value</code></strong>, which is the trap: <code>@Value("${app.http.maxRetryCount}")</code> will not find a key written in kebab-case, and the failure is a startup error rather than a wrong value. Write kebab-case in files and let the environment do what it does.</p>'
                     }
@@ -266,20 +262,12 @@ const predictSpringModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            '***************************',
-                            'APPLICATION FAILED TO START',
-                            '***************************',
-                            '',
-                            'The dependencies of some of the beans in the application context',
-                            'form a cycle:',
-                            '   a defined in file [A.class]',
-                            '┌─────┐',
-                            '|  b defined in file [B.class]',
-                            '└─────┘',
-                            '',
-                            'Action: relies upon circular references, which are disallowed by',
-                            'default. Update your application to remove the dependency cycle,',
-                            'or set spring.main.allow-circular-references to true.'
+                            'The container tries to create A, which needs B in its constructor.',
+                            'It tries to create B, which needs A in its constructor.',
+                            'Neither can be constructed first, so the cycle cannot be resolved.',
+                            'Startup fails with APPLICATION FAILED TO START and a diagram of the cycle.',
+                            'The action line offers spring.main.allow-circular-references=true, which is a flag rather than a fix.',
+                            'The field-injected pair fails the same way, because circular references are prohibited by default since Boot 2.6.'
                         ],
                         explain: '<p>Constructor injection cannot resolve a cycle at all — neither object can be constructed first. Field injection <em>could</em>, because the container can construct both and then set the fields, and that is exactly why it used to hide this. Since Boot 2.6 it is refused by default for both, with a flag to turn it back on. <strong>The flag is not the answer.</strong> A cycle is a design statement: these two things are one thing, or a third thing should sit between them. The startup failure is the container telling you something true about the code.</p>'
                     }
@@ -304,10 +292,11 @@ const predictSpringModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'constructor            (dependencies injected via constructor)',
-                            'postConstruct          (@PostConstruct, a BeanPostProcessor)',
-                            'afterPropertiesSet     (InitializingBean callback)',
-                            'custom                 (the initMethod attribute)'
+                            'The constructor runs, with constructor-injected dependencies available and injected fields still null.',
+                            'Fields and setters are injected.',
+                            '@PostConstruct runs, applied by a BeanPostProcessor.',
+                            'afterPropertiesSet() runs, the InitializingBean callback.',
+                            'The initMethod named on the @Bean declaration runs last.'
                         ],
                         explain: '<p>Annotation first, interface second, XML-era attribute last. The order is fixed and documented, and the reason to know it is smaller than the reason to know the first line: <strong>the constructor runs before any injected field is set</strong>, so anything that reads an <code>@Autowired</code> field or an <code>@Value</code> in a constructor body sees null — unless it came in through the constructor, which is the argument for constructor injection in one sentence. In new code, use <code>@PostConstruct</code> and never implement <code>InitializingBean</code>: it couples the bean to Spring for no gain.</p>'
                     }
@@ -332,14 +321,11 @@ const predictSpringModule = {
                     output: {
                         kind: 'trace',
                         lines: [
-                            'phase 1: user @Configuration classes register bean definitions',
-                            '         -> restClient (MyConfig)',
-                            'phase 2: auto-configuration classes evaluated',
-                            '         HttpAutoConfiguration#restClient',
-                            '           @ConditionalOnMissingBean -> a RestClient IS present',
-                            '           -> condition false, bean not registered',
-                            '',
-                            'context contains exactly one RestClient: the application\'s.'
+                            'User @Configuration classes are processed first and register their bean definitions, including MyConfig\'s restClient.',
+                            'Auto-configuration classes are evaluated afterwards.',
+                            'HttpAutoConfiguration#restClient asks @ConditionalOnMissingBean whether a RestClient is already present.',
+                            'One is, so the condition is false and the auto-configured bean is never registered.',
+                            'The context ends up with exactly one RestClient: the application\'s.'
                         ],
                         explain: '<p>The ordering is the whole mechanism behind "sensible defaults you can always override". Auto-configuration runs last on purpose, so <code>@ConditionalOnMissingBean</code> is asked at a moment when every user bean is already known. <strong>The trap is using <code>@ConditionalOnMissingBean</code> in your own <code>@Configuration</code></strong>, where it is evaluated in registration order against a half-built context and the answer depends on which class was processed first — which is a genuinely unpredictable result and the reason the annotation is documented as being for auto-configuration only. Use <code>--debug</code> and read the condition-evaluation report rather than guessing.</p>'
                     }
