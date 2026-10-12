@@ -51,7 +51,7 @@ Not yet written, each one a deliverable of the phase that needs it:
 | Tool | Arrives in | What it will guard |
 |---|---|---|
 | `check-doc-links.js` | Phase 9 | every `docs[]` and `referenceLinks[]` URL — 761 theory links plus 424 question links, 1,185 in all |
-| `run-snippets.js` | Phase 9 | every `stdout` claim, against a real JDK |
+| `run-snippets.js` | Phase 9 | every `stdout` claim, against a real JDK — 63 question snippets and 30 predict puzzles |
 
 **`validate-nav.js` holds the five mode totals as hard numbers.** Changing the
 corpus means changing `EXPECTED_TOTALS` by hand in the same commit. If that
@@ -153,18 +153,49 @@ Where a cross-language comparison earns its place it is **prose in a
 
 | | |
 |---|---|
-| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes · 5 — Search · 6 — The question bank, all 26 topics · 7 — Theory, tracks 5–8 and the §5.9 insertions |
-| **Next phase** | 8 — Tiers 2 and 3 of the drill catalogue, and the seven non-`stdout` predict sets |
+| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes · 5 — Search · 6 — The question bank, all 26 topics · 7 — Theory, tracks 5–8 and the §5.9 insertions · 8 — The drill and predict catalogues, completed |
+| **Next phase** | 9 — Verification. **BLOCKED until a JDK exists on this machine**; see the blind spot below |
 | **Corpus** | Questions: **26 topics, 486 questions**, 63 snippets, 19 diagrams |
 | | Theory: **83 modules, 687 chapters** on the reading path, 2,045 blocks, 61 glossary terms, 35 diagrams, 346 syntax blocks |
 | | Tracks: java-platform 20/163 · spring-core 7/51 · web-api 8/64 · persistence 14/121 · security 6/48 · distributed 11/86 · production 10/86 · craft 7/68 |
-| | Sets: synthesis 2 modules / 19 drills · output 4 modules / 34 predicts |
-| **Phase 8 scope** | Tiers 2 and 3 (27 drills) and the seven non-`stdout` predict sets, both carried since Phase 4 by plan |
-| **Search index** | 1,287 entries — questions 486 · theory 687 · synthesis 19 · predict 34 · glossary 61 |
-| **Last commit date used** | 2026-10-03 |
+| | Sets: synthesis **4 modules / 46 drills** (tiers 8·12·15·11) · output **11 modules / 81 predicts** (30 `stdout`, 51 not) |
+| **Catalogues** | Both complete and both still held as hard lists in `validate-theory.js`. An invented id is an error; an unwritten one is a warning. There are now none of either |
+| **Search index** | 1,361 entries — questions 486 · theory 687 · synthesis 46 · predict 81 · glossary 61 |
+| **Last commit date used** | 2026-10-12 |
 | **Commit cadence** | **Reduced by instruction on 2026-09-03.** Fewer, larger commits — one per unit of work rather than 15–17 a day. The hand-set dates and the ascending-within-a-day rule still hold. |
 
 ### Phase gates recorded
+
+**Phase 8 — The drill and predict catalogues, completed.** PASSED. 27 drills
+and 47 puzzles, taking Synthesis to **46 across four tiers** and Predict to
+**81 across eleven sets**. Every mode in the deck now holds its full corpus.
+
+- **Both totals were met exactly, and that is the catalogues working rather
+  than an achievement.** `DRILL_CATALOGUE` and `PREDICT_SETS` are hard lists
+  in `validate-theory.js`: an id outside the list is an error and an id in the
+  list with nothing written is a warning. The corpus could not drift from the
+  plan in either direction, and the run now emits neither kind.
+- **All five validators green**, with `EXPECTED_TOTALS` stepped by hand in
+  each of the six content commits.
+- **45 route/width combinations swept** — all 15 set routes at 390px, 768px
+  and 1280px, **with every one of the 81 answer panes open**, because the
+  widest state a predict route ever has is the revealed one and sweeping it
+  closed would have measured the wrong page.
+- **The reveal loop was exercised end to end.** 0 panes visible on a clean
+  load, one click stores a verdict keyed by predict id, the pane opens, the
+  rail counter moves, and nothing is written to any other mode's key.
+- **Looking at the page found a defect again, for the second phase running.**
+  Clicking an option on the SQL set showed the trace pane rendering a psql
+  result table as "1. count 2. ------- 3. 0". Ninety such lines across six
+  sets. Rewritten as steps, and `validate-theory` grew a twelfth check.
+- **Two gate assertions failed on every route and both were the check.** See
+  the blind spot; the pattern is now three-for-three across Phases 6, 7 and 8.
+- **Search reaches the new corpus.** 1,361 entries. `strangler` returns
+  exactly one result and it is the new tier-2 decomposition drill.
+- **No console errors across 103 routes in a fresh tab**, with the reader
+  proved alive by a deliberate error afterwards.
+- **`file://` was NOT opened by hand.** Eighth gate. Unchanged reason, and it
+  is still the oldest open item in this file.
 
 **Phase 7 — Theory, tracks 5–8 and the §5.9 insertions.** PASSED. 42 modules
 authored, taking the reading path to **83 modules and 687 chapters** across all
@@ -377,6 +408,41 @@ unknown language (a Kotlin snippet — the Java-only rule holds), disallowed tag
 inline event handler.
 
 ### Known blind spots — recorded now, not discovered in Phase 9
+
+- **The renderer has two output kinds and the data cannot tell you which one
+  a line was written for.** `stdout` draws a `<pre>` of literal console text;
+  `trace` draws an `<ol>` headed "What happens, in order". A psql result table
+  pasted into a trace therefore renders as "1. count · 2. ------- · 3. 0 ·
+  4. (1 row)", and nothing objects: the pane draws, the validators pass, the
+  search index finds the text. Ninety such lines went in across six predict
+  sets in one phase, because when the answer genuinely IS what a console
+  printed, pasting the console is the obvious thing to write.
+  `validate-theory` check 12 now holds the four shapes a transcript has and a
+  step list never does. **The rewrite improved the content, which is the part
+  worth remembering** — six numbered steps explaining why `NOT IN` returns
+  zero rows is the answer; a copied result table was never the answer, it was
+  a picture of one.
+- **Two gate assertions failed on every route in Phase 8 and both were the
+  check.** The set routes emit no `.chapter[data-chapter-id]` at all, because
+  `predict.js` and `synthesis.js` flatten a set into a list of blocks; and
+  "eight revealed panes" was one real `.is-revealed` plus seven
+  `.predict-reveal` elements hidden by CLASS rather than by the `hidden`
+  attribute. That is now three phases running — the tier-badge double-count in
+  6, the glossary double-count in 7, these two in 8. **The rule has earned its
+  place: look at one case by hand before believing any aggregate**, and a
+  count that is an exact multiple of the truth is the selector, every time.
+- **A sweep that measures a collapsed component measures the wrong page.** The
+  first Phase 8 overflow sweep ran with every predict answer pane closed,
+  which is the narrowest state a predict route ever has and therefore the one
+  least likely to overflow. Re-run with all 81 revealed — where the long
+  prose steps actually live — it was still clean, but the first result had not
+  established that. **Sweep the widest state a route can reach**, not its
+  initial one.
+- **A helper that dedupes on a field nothing sets silently does one item.**
+  The reveal-everything helper keyed on `card.id || card.dataset.id`, both
+  undefined on a predict card, so it clicked one option per route and reported
+  11 instead of 81 — a plausible-looking number that would have passed
+  unexamined if the expected value had not been written down first.
 
 - **A field that is escaped and a field that is markup look identical in the
   data.** A `types` item is `{ name, html }`: the name goes through `esc()`
