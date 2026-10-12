@@ -715,6 +715,25 @@ commits. Two counts derived from opposite ends agreeing exactly is the
 strongest check available on a manifest that no validator can read, and it is
 worth more than either number on its own.
 
+**Phase 8 actual, the two catalogues completed:** 46 drills across four tiers
+(8 tier-1, 12 tier-2, 15 tier-3, 11 tier-4) and 81 predict puzzles across
+eleven sets. Both figures are the ones Parts 6 and 7 wrote down before any of
+it existed, because both catalogues are held as hard lists in
+`validate-theory.js` — a drill that is not in the list is an error and a drill
+in the list that is not written is a warning, so the corpus could not drift
+from the plan in either direction.
+
+**Of the 47 puzzles written in Phase 8, seven claim `stdout` and forty declare
+`behaviour`, `query-count`, `sql-result` or `http-response`.** Part 7 marks
+`predict-io-and-time` as a `stdout` set and seven of its eight are; the eighth
+is a `serialVersionUID` mismatch, which needs bytes written by one compilation
+and read by another and therefore cannot be a single-file program. Part 9's
+rule decided it: a snippet the toolchain cannot run does not claim `stdout`.
+The other six sets are inherently unrunnable — a Spring answer needs a
+refreshed context, a JPA answer needs a persistence context, a SQL answer
+needs an engine — and every one of the forty carries a `verification` string
+naming the specification section or documentation chapter it was read from.
+
 **Every one of the 95 outputs in the theory corpus is a `trace`. Not one claims
 `stdout`,** which is the honest position while no JDK exists on the build
 machine: the validator only checks that the *language* is runnable, and that is
@@ -726,8 +745,10 @@ totals:                       # targets, not commitments
   questions: 853              # across all 26 topics; 244 authored in Phase 2
   theory:    687              # chapters in the SUBJECT tracks only. MET EXACTLY
                               # at the end of Phase 7: 318 in Phase 3, 369 in Phase 7
-  synthesis:  46              # drill blocks
-  predict:    81              # predict blocks
+  synthesis:  46              # drill blocks. MET EXACTLY at the end of Phase 8:
+                              # 19 in Phase 4, 27 in Phase 8
+  predict:    81              # predict blocks. MET EXACTLY at the end of Phase 8:
+                              # 34 in Phase 4, 47 in Phase 8
   glossary:   61              # definition blocks — COUNTED, never estimated.
                               # 47 at the end of Phase 3, re-counted at the end
                               # of Phase 7 as the section below instructed.

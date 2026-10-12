@@ -14,7 +14,11 @@ Five modes, two corpora, one page:
 
 ## What is built
 
-**Questions mode is complete** — all 26 topics, 486 questions, 63 code
+All five modes are complete. What remains is verification — every documentation
+link followed by hand, every `stdout` pane re-executed against a real JDK — and
+the per-topic triage pass.
+
+**Questions mode** — all 26 topics, 486 questions, 63 code
 snippets and 19 diagrams, across every one of the eight subject tracks plus
 one topic that belongs to none of them.
 
@@ -92,16 +96,40 @@ Filter by importance with the chips, or share a filtered view directly —
 at. `?cram` is the same thing in one flag. Progress is stored per question in
 `localStorage`, and each mode counts its own noun; nothing adds them together.
 
-**The other three modes are in.** Synthesis holds 19 drills across two sets —
-eight ninety-to-hundred-and-twenty-minute machine coding builds and eleven
-debug-and-review exercises, the round-5 material almost nobody rehearses.
-Predict holds 34 puzzles across four sets; 23 of them are complete
-deterministic Java programs whose output a runner re-executes and diffs, and
-the other 11 declare `behaviour` instead, because a lost-update counter prints
-a different number on every machine and a deck that prints one is teaching
-that the number is the lesson. The Glossary is harvested from the `definition`
-blocks in the chapters that teach them, never authored, so a term arrives with
-its chapter already attached.
+**The other three modes are complete too.** Synthesis holds 46 drills across
+four sets, one per interview round: eight ninety-to-hundred-and-twenty-minute
+machine coding builds, twelve forty-five-minute design exercises, fifteen
+focused implementation tasks, and eleven debug-and-review exercises — the
+round-5 material almost nobody rehearses.
+
+| Tier | Round | Drills | Minutes |
+|---|---|--:|--:|
+| 1 — Machine coding | 2 | 8 | 90–120 |
+| 2 — System design | 4 | 12 | 45 |
+| 3 — Focused implementation | 3 | 15 | 20–45 |
+| 4 — Debug, review, extend | 5 | 11 | 20–40 |
+
+The tier-2 drills carry no code sketch and every other tier does, which is a
+decision rather than an inconsistency: a design round is a conversation, and
+an outline would be answering the machine-coding question instead.
+
+Predict holds 81 puzzles across eleven sets. Thirty of them are complete
+deterministic Java programs whose output a runner re-executes and diffs; the
+other 51 declare `behaviour`, `query-count`, `sql-result` or `http-response`
+instead, each with a `verification` string naming the specification section
+its answer was read from. That split is not squeamishness. A lost-update
+counter prints a different number on every machine, a `serialVersionUID`
+mismatch needs two compilations of one class, and a `@Transactional` rollback
+needs a proxy — a deck that shows a console frame over any of them is
+teaching that the number is the lesson.
+
+Every SQL answer names PostgreSQL 16, and says what MySQL would answer where
+the two differ. Every Maven answer names Maven 3, and says that Gradle
+resolves the same dependency graph to a different version.
+
+The Glossary is harvested from the `definition` blocks in the chapters that
+teach them, never authored, so a term arrives with its chapter already
+attached.
 
 **Search covers both corpora and groups by mode.** One box, five groups, and
 the entry it finds is the thing you navigate to: a question opens expanded, a
@@ -147,14 +175,17 @@ resolve and are attributed, `stdout` is refused for any language the runner
 cannot execute, snippet languages are ones the highlighter knows, and authored
 HTML stays inside a fixed tag subset.
 
-`validate-theory.js` runs eleven, and two of them are the reason it exists: every
+`validate-theory.js` runs twelve, and two of them are the reason it exists: every
 module prerequisite must resolve to a **strictly lower** position in the reading
 order, which is what makes the path a path; and every `relatedQuestions`
 reference must resolve against the question bank, so a question id invented
 while writing a chapter fails the build instead of dangling. The eleventh is
 newer and duller: a block's strings are either markup or words, the renderer
 escapes the second kind, and a `<code>` tag written into one of them renders
-as literal angle brackets on the page without failing anything at all.
+as literal angle brackets on the page without failing anything at all. The
+twelfth is its sibling: an output pane declared `trace` renders as a numbered
+list of steps, so a console transcript pasted into one becomes "1. count
+2. ------- 3. 0" and nothing anywhere objects.
 
 `validate-search.js` runs six, and it exists because search fails soft in the
 worst way: a result whose route does not resolve navigates to an empty state,
