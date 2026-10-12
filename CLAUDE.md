@@ -50,8 +50,8 @@ Not yet written, each one a deliverable of the phase that needs it:
 
 | Tool | Arrives in | What it will guard |
 |---|---|---|
-| `check-doc-links.js` | Phase 9 | every `docs[]` and `referenceLinks[]` URL — 761 theory links plus 424 question links, 1,185 in all |
-| `run-snippets.js` | Phase 9 | every `stdout` claim, against a real JDK — 63 question snippets and 30 predict puzzles |
+| `check-doc-links.js` | Phase 9 | every `docs[]`, `docHub` and `referenceLinks[]` URL — 843 chapter links, 98 module hubs, 424 question links: **1,365** |
+| `run-snippets.js` | Phase 9 | every `stdout` claim, against a real JDK — **58**: 28 of the 63 question snippets, and 30 of the 81 predicts. The other 35 snippets and 51 predicts are `trace` and are not its business |
 
 **`validate-nav.js` holds the five mode totals as hard numbers.** Changing the
 corpus means changing `EXPECTED_TOTALS` by hand in the same commit. If that
