@@ -34,7 +34,7 @@
 const fs   = require('fs');
 const path = require('path');
 const { ROOT } = require('./load-corpus');
-const { makeReport } = require('./schema');
+const { makeReport, existsCaseExact } = require('./schema');
 
 /* Replace the contents of every string literal and comment with spaces,
    preserving length and line breaks so that offsets and line numbers computed
@@ -162,21 +162,17 @@ function run() {
 
         localRefs++;
 
-        /* Case-exact existence. fs.existsSync is case-insensitive on macOS, so
-           it would pass here and fail on a Linux host or in a container —
-           which is the worst place to discover it. */
-        const full = path.join(ROOT, ref);
-        if (!fs.existsSync(full)) {
+        /* Case-exact existence, from schema.js since Phase 9 — the images[]
+           check in validate-questions.js needed the same rule and there is
+           no version of this that should be written twice. */
+        const found = existsCaseExact(ROOT, ref);
+        if (found === 'missing') {
             report.error(`index.html references ${ref}, which is not on disk`);
-        } else {
-            const dir = path.dirname(full);
-            const base = path.basename(full);
-            if (!fs.readdirSync(dir).includes(base)) {
-                report.error(
-                    `index.html references ${ref}, which differs in case from the file ` +
-                    `on disk. This works on macOS and fails on Linux.`
-                );
-            }
+        } else if (found === 'case') {
+            report.error(
+                `index.html references ${ref}, which differs in case from the file ` +
+                `on disk. This works on macOS and fails on Linux.`
+            );
         }
     }
 

@@ -28,7 +28,8 @@ const path = require('path');
 const { loadCorpus, ROOT } = require('./load-corpus');
 const {
     TIERS, LANGUAGES, RUNNABLE_LANGUAGES, DIAGRAM_TYPES, OUTPUT_KINDS,
-    ALLOWED_TAGS, KEBAB, RESERVED_SEGMENTS, htmlIssues, checkDiagram, makeReport
+    ALLOWED_TAGS, KEBAB, RESERVED_SEGMENTS, htmlIssues, checkDiagram, makeReport,
+    existsCaseExact
 } = require('./schema');
 
 /* -----------------------------------------------------------------------
@@ -170,8 +171,20 @@ function run() {
             (question.images || []).forEach(image => {
                 if (!image.src || path.isAbsolute(image.src) || image.src.startsWith('http')) {
                     report.error(`${q}: image src "${image.src}" is not repo-relative`);
-                } else if (!fs.existsSync(path.join(ROOT, image.src))) {
-                    report.error(`${q}: image "${image.src}" is not on disk`);
+                } else {
+                    /* Case-exact, not existsSync. See existsCaseExact in
+                       schema.js — a case-only mismatch passes on the machine
+                       this deck is built on and 404s on the one it is served
+                       from. */
+                    const found = existsCaseExact(ROOT, image.src);
+                    if (found === 'missing') {
+                        report.error(`${q}: image "${image.src}" is not on disk`);
+                    } else if (found === 'case') {
+                        report.error(
+                            `${q}: image "${image.src}" differs in case from the file on ` +
+                            `disk. This works on macOS and 404s on Linux.`
+                        );
+                    }
                 }
                 if (!image.alt || image.alt.length <= 20) {
                     report.error(`${q}: image alt text is missing or under 21 characters`);

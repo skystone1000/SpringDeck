@@ -13,6 +13,9 @@
 
 'use strict';
 
+const fs   = require('fs');
+const path = require('path');
+
 /* The three importance tiers, in order of weight. Stored, never derived: a
    tier computed from the theory chapters that link a question could not be
    overridden, and a question with no theory link would silently get none. */
@@ -109,6 +112,27 @@ function htmlIssues(html, where) {
     }
 
     return issues;
+}
+
+/* --------------------------------------------------------------------------
+   existsCaseExact(root, relative) -> 'ok' | 'missing' | 'case'
+
+   fs.existsSync IS CASE-INSENSITIVE ON MACOS, and this deck is built on one.
+   `assets/img/Foo.png` therefore finds `foo.png`, the validator goes green,
+   and the reader gets a broken image the first time the deck is served off a
+   Linux host or out of a container — which is the worst place to find out.
+
+   check-offline.js has done this since Phase 2 for the references in
+   index.html. It lived only there until Phase 9 noticed that the images[]
+   check in validate-questions.js used a bare existsSync, so a figure could
+   have been vendored under one case and cited under another with nothing to
+   say so. One definition, in the file that exists to stop two validators
+   meaning different things by the same word.
+   -------------------------------------------------------------------------- */
+function existsCaseExact(root, relative) {
+    const full = path.join(root, relative);
+    if (!fs.existsSync(full)) return 'missing';
+    return fs.readdirSync(path.dirname(full)).includes(path.basename(full)) ? 'ok' : 'case';
 }
 
 /* A small shared reporter, so both validators print the same shape and a
@@ -215,5 +239,5 @@ function checkDiagram(report, where, type, config) {
 module.exports = {
     TIERS, LANGUAGES, RUNNABLE_LANGUAGES, DIAGRAM_TYPES, OUTPUT_KINDS,
     PREDICT_ARTEFACTS, VERSION_STATES, BLOCK_TYPES, ALLOWED_TAGS, KEBAB,
-    RESERVED_SEGMENTS, htmlIssues, checkDiagram, makeReport
+    RESERVED_SEGMENTS, htmlIssues, checkDiagram, makeReport, existsCaseExact
 };
