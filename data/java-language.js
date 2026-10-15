@@ -396,7 +396,11 @@ const javaLanguageData = {
                 '    }\n' +
                 '\n' +
                 '    static class Sub extends Base {\n' +
-                '        private final String name = "set by the field initialiser";\n' +
+                '        // NOT a literal. A `private final String` initialised from a\n' +
+                '        // constant expression is a compile-time constant, and javac\n' +
+                '        // inlines those at every use site — the override below would\n' +
+                '        // then print the text and the hazard would be invisible.\n' +
+                '        private final String name = label();\n' +
                 '\n' +
                 '        Sub() {\n' +
                 '            super();\n' +
@@ -406,6 +410,8 @@ const javaLanguageData = {
                 '        @Override void report() {\n' +
                 '            System.out.println("Sub.report, name = " + name);\n' +
                 '        }\n' +
+                '\n' +
+                '        private static String label() { return "set by the field initialiser"; }\n' +
                 '    }\n' +
                 '\n' +
                 '    public static void main(String[] args) {\n' +
@@ -1742,7 +1748,9 @@ const javaLanguageData = {
                 '        System.out.println(a);\n' +
                 '        System.out.println(a.equals(b));\n' +
                 '        System.out.println(a.plus(b).minorUnits());\n' +
-                '        System.out.println(Set.of(a, b).size());\n' +
+                '        // Set.copyOf, not Set.of — the factory REJECTS a duplicate\n' +
+                '        // rather than collapsing it, and two equal records are one.\n' +
+                '        System.out.println(Set.copyOf(List.of(a, b)).size());\n' +
                 '    }\n' +
                 '}',
             output: {
@@ -1751,7 +1759,11 @@ const javaLanguageData = {
                 explain:
                     '<p>Assigning to the parameter inside a compact constructor changes what ' +
                     'gets stored, which is what makes it the right place to normalise. The two ' +
-                    'instances are equal and share a hash, so the set holds one.</p>'
+                    'instances are equal and share a hash, so the set holds one.</p>' +
+                    '<p><code>Set.of(a, b)</code> would not have printed <code>1</code> — it ' +
+                    'throws <code>IllegalArgumentException: duplicate element</code>. The ' +
+                    'immutable factories treat a duplicate as a mistake in the call; ' +
+                    '<code>Set.copyOf</code> treats it as a collection to deduplicate.</p>'
             }
         }
     ]

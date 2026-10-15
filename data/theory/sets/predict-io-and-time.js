@@ -145,18 +145,18 @@ const predictIoAndTimeModule = {
                     language: 'java',
                     title: 'What the inner class is carrying',
                     prompt: '<p>Both classes have one declared field in the source. How many does each have at run time?</p>',
-                    code: 'public class Main {\n    static class Outer {\n        byte[] big = new byte[1024];\n\n        class Inner       { int x = 1; }          // not static\n        static class Nested { int x = 1; }        // static\n    }\n\n    public static void main(String[] args) {\n        for (var f : Outer.Inner.class.getDeclaredFields()) {\n            System.out.println(f.getName() + " : " + f.getType().getSimpleName());\n        }\n        for (var f : Outer.Nested.class.getDeclaredFields()) {\n            System.out.println(f.getName() + " : " + f.getType().getSimpleName());\n        }\n    }\n}',
+                    code: 'import java.lang.reflect.*;\nimport java.util.*;\n\npublic class Main {\n    static class Outer {\n        byte[] big = new byte[1024];\n\n        class Inner         { int x = big.length; }   // not static: reads the outer field\n        static class Nested { int x = 1024; }         // static\n    }\n\n    public static void main(String[] args) {\n        for (var cls : List.of(Outer.Inner.class, Outer.Nested.class)) {\n            Field[] fields = cls.getDeclaredFields();\n            long synthetic = Arrays.stream(fields).filter(Field::isSynthetic).count();\n            System.out.println(cls.getSimpleName() + ": " + fields.length\n                    + " field(s), " + synthetic + " of them synthetic");\n        }\n    }\n}',
                     options: [
-                        'x : int\\nthis$1 : Outer\\nx : int',
-                        'x : int\\nx : int',
-                        'x : int\\nouter : Outer\\nx : int\\nouter : Outer',
-                        'this$1 : Outer\\nx : int\\nthis$1 : Outer\\nx : int'
+                        'Inner: 2 field(s), 1 of them synthetic\\nNested: 1 field(s), 0 of them synthetic',
+                        'Inner: 1 field(s), 0 of them synthetic\\nNested: 1 field(s), 0 of them synthetic',
+                        'Inner: 2 field(s), 0 of them synthetic\\nNested: 2 field(s), 1 of them synthetic',
+                        'Inner: 2 field(s), 1 of them synthetic\\nNested: 2 field(s), 1 of them synthetic'
                     ],
                     answer: 0,
                     output: {
                         kind: 'stdout',
-                        lines: ['x : int', 'this$1 : Outer', 'x : int'],
-                        explain: '<p>A non-static inner class carries a synthetic reference to the instance that created it — the compiler-generated <code>this$1</code>. So one <code>Inner</code>, however small, keeps its whole <code>Outer</code> alive, including the kilobyte array. Cache a million of them and you have cached a million <code>Outer</code>s. The static nested class has no such field, which is why <strong>the default should be <code>static</code> and the non-static form should be a decision you can defend</strong>. The same synthetic capture is what makes a non-static inner <code>Runnable</code> submitted to a long-lived executor a classic leak.</p>'
+                        lines: ['Inner: 2 field(s), 1 of them synthetic', 'Nested: 1 field(s), 0 of them synthetic'],
+                        explain: '<p>The extra field on <code>Inner</code> is the compiler-generated <code>this$0</code>: a reference to the instance that created it. So one <code>Inner</code>, however small, keeps its whole <code>Outer</code> alive, including the kilobyte array. Cache a million of them and you have cached a million <code>Outer</code>s. The static nested class has no such field, which is why <strong>the default should be <code>static</code> and the non-static form should be a decision you can defend</strong>. The same synthetic capture is what makes a non-static inner <code>Runnable</code> submitted to a long-lived executor a classic leak.</p><p>Two details the code is written around, both of which cost this deck a wrong answer. <strong>javac only emits <code>this$0</code> if the inner class actually uses the enclosing instance</strong> — drop the <code>big.length</code> and the field disappears, which means the leak is real but the demonstration of it is not automatic. And the fields are counted rather than listed because <code>getDeclaredFields()</code> promises no order at all, so a transcript of names would be a claim about one compiler on one day.</p>'
                     }
                 }
             ],
