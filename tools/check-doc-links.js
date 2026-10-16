@@ -51,6 +51,44 @@ const CACHE        = path.join(os.tmpdir(), 'springdeck-doc-links.json');
 const UA = 'SpringDeck-link-check/1.0 (+static interview deck; validating its own references)';
 
 /* --------------------------------------------------------------------------
+   TWO NARROW ALLOW-LISTS, EACH ENTRY WITH ITS REASON WRITTEN DOWN.
+
+   Both exist because the checks above are right in general and wrong for a
+   handful of specific pages, and the honest way to say so is a list somebody
+   has to edit deliberately — not a heuristic that quietly forgives a class
+   of failure nobody looked at.
+
+   Keep them small. An allow-list that grows is a check being switched off.
+   -------------------------------------------------------------------------- */
+
+/* Alive in a browser, 403 to anything that admits to being a script. A 403
+   is not a dead link, it is a refusal to talk to this program, and reporting
+   it as dead would send someone to fix a page that is fine. Each was opened
+   BY HAND during the Phase 9 verification pass and the title read off the
+   rendered page. */
+const BOT_BLOCKED = {
+    'https://www.toptal.com/big-data/consistent-hashing':
+        'opened by hand 2026-10-16: "The Ultimate Guide to Consistent Hashing"',
+    'https://www.oreilly.com/library/view/effective-java/9780134686097/':
+        'opened by hand 2026-10-16: "Effective Java, 3rd Edition [Book]"'
+};
+
+/* Redirects that ARE the stable interface rather than a stale URL.
+   docs.junit.org/current/ is a permanent alias that 302s to whatever release
+   is current; pinning past it to /6.1.3/ would make the link break at the
+   next release, which is the opposite of what the zero-redirect rule is for.
+   The rule is about the corpus holding a URL the publisher has REPLACED. An
+   alias has not been replaced; it is doing its job. */
+const REDIRECT_IS_THE_POINT = [
+    ['https://docs.junit.org/current/', 'a "current" alias — pinning past it is what would rot']
+];
+
+function deliberateRedirect(url) {
+    const hit = REDIRECT_IS_THE_POINT.filter(([prefix]) => url.indexOf(prefix) === 0)[0];
+    return hit ? hit[1] : null;
+}
+
+/* --------------------------------------------------------------------------
    Collecting. Every link carries WHERE IT IS, because "404" is useless and
    "404, and it is the third doc on the persistence-context chapter" is a fix.
    -------------------------------------------------------------------------- */
@@ -132,14 +170,38 @@ function metaRefresh(html) {
     return null;
 }
 
-/* A fragment is live if some element carries it as an id or a name. Both
-   spellings, because the older specifications this deck links to — the JLS,
-   the JVMS, several RFCs — predate id being the only answer. */
+/* A fragment is live if some element carries it as an id or a name — both
+   spellings, because the older specifications this deck links to (the JLS,
+   the JVMS, several RFCs) predate id being the only answer.
+
+   OR IF THE PAGE ITSELF LINKS TO IT. That second rule is not laziness, it is
+   the only way to be right about a page whose body is assembled in script.
+   Eleven Kafka anchors and one on spring.io were reported dead by the id rule
+   alone: kafka.apache.org/documentation/ is a 19KB shell whose sections are
+   fetched after load, and a spring.io project page renders #support as a
+   client-side tab with no element carrying the id. In both cases the shell's
+   own navigation links to the fragment, which is the publisher asserting the
+   anchor exists — a different source of truth from the one the id rule reads,
+   and the reason this check is a warning rather than an error.
+
+   It is not a free pass. Two of those eleven Kafka anchors appeared NOWHERE
+   in the shell, including its navigation, and both were genuinely stale. */
 function hasFragment(html, fragment) {
-    const raw = decodeURIComponent(fragment);
+    const raw    = decodeURIComponent(fragment);
     const quoted = raw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return new RegExp(`(?:id|name)\\s*=\\s*["']${quoted}["']`, 'i').test(html) ||
-           new RegExp(`(?:id|name)\\s*=\\s*${quoted}[\\s>]`, 'i').test(html);
+
+    const asTarget = new RegExp(`(?:id|name)\\s*=\\s*["']${quoted}["']`, 'i').test(html) ||
+                     new RegExp(`(?:id|name)\\s*=\\s*${quoted}[\\s>]`, 'i').test(html);
+    if (asTarget) return true;
+
+    /* Quoted and unquoted, because kafka.apache.org writes
+       `href=/documentation#design` with no quotes at all and the first
+       version of this rule — which required them — reported nine live
+       anchors as dead. Same lesson metaRefresh() above already carries:
+       attribute quoting in the wild varies and a pattern that assumes one
+       form is a pattern that is wrong about real pages. */
+    return new RegExp(`href\\s*=\\s*["'][^"']*#${quoted}["']`, 'i').test(html) ||
+           new RegExp(`href\\s*=\\s*[^"'\\s>][^\\s>]*#${quoted}[\\s>]`, 'i').test(html);
 }
 
 /* --------------------------------------------------------------------------
@@ -277,8 +339,17 @@ const FRAGMENT_PROBES = [
     ['<h2 id="caching">Caching</h2>',   'caching',  true],
     ['<a name=jls-17.4>Threads</a>',    'jls-17.4', true],
     ['<h2 id="intern()">intern</h2>',   'intern()', true],
+    /* The script-rendered case: no element carries the id, but the page's own
+       navigation links to it. This is the branch that keeps eleven live Kafka
+       anchors out of the report. */
+    ['<a href="/documentation/#design">Design</a>', 'design',   true],
+    /* Unquoted, exactly as kafka.apache.org writes it. */
+    ['<a class=x href=/documentation#design>Design</a>', 'design', true],
     ['<h2 id="other">Other</h2>',       'caching',  false],
-    ['<p>caching is good</p>',          'caching',  false]
+    ['<p>caching is good</p>',          'caching',  false],
+    /* ...and the branch that must still fail, or the rule above forgives
+       everything: a fragment in neither an id nor any href. */
+    ['<a href="#design">Design</a>',    'semantics', false]
 ];
 
 function selftest() {
@@ -370,7 +441,7 @@ async function run() {
     if (process.stdout.isTTY) process.stdout.write('\r' + ' '.repeat(30) + '\r');
 
     /* ---- 2, 3, 4. the verdicts, reported at every USE of the URL ------- */
-    const counts = { ok: 0, redirect: 0, dead: 0, stub: 0, unreachable: 0, fragmentGone: 0 };
+    const counts = { ok: 0, redirect: 0, dead: 0, stub: 0, unreachable: 0, fragmentGone: 0, excused: 0 };
     const seen   = new Set();
 
     usable.forEach(link => {
@@ -383,6 +454,21 @@ async function run() {
            The full list of uses is one grep away and the summary says so. */
         if (seen.has(link.url)) return;
         seen.add(link.url);
+
+        /* Checked before the status, because the point of both lists is that
+           the status is not the last word on these particular URLs. */
+        const excused = BOT_BLOCKED[link.url];
+        if (excused && r.status === 403) {
+            counts.excused++;
+            report.warn(`${link.url} — 403 to this checker, ${excused}`);
+            return;
+        }
+        const alias = r.status >= 300 && r.status < 400 ? deliberateRedirect(link.url) : null;
+        if (alias) {
+            counts.excused++;
+            report.warn(`${link.url} — ${r.status} to ${r.location}, and that is intended: ${alias}`);
+            return;
+        }
 
         if (r.status === 0) {
             counts.unreachable++;
@@ -423,6 +509,7 @@ async function run() {
     if (counts.stub)         console.log(`  ${counts.stub} meta-refresh stub(s)`);
     if (counts.unreachable)  console.log(`  ${counts.unreachable} unreachable`);
     if (counts.fragmentGone) console.log(`  ${counts.fragmentGone} live page(s) whose #fragment was not found — warnings`);
+    if (counts.excused)      console.log(`  ${counts.excused} on an allow-list, each with its reason — warnings`);
 
     /* WHAT THIS CANNOT SEE. Said every run, in the report, because the
        temptation after a green link check is to believe the references have
@@ -436,7 +523,7 @@ async function run() {
 
     report.finish(
         `${unique.length} distinct URL(s) across ${links.length} use(s), ` +
-        `${counts.ok} clean, ${counts.fragmentGone} fragment warning(s)`
+        `${counts.ok} clean, ${counts.excused} allow-listed, ${counts.fragmentGone} fragment warning(s)`
     );
 }
 
