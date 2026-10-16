@@ -467,7 +467,7 @@ const beyondRestData = {
         'join. Assuming the wrong one is how a request gets made twice, or how a subscriber ' +
         'silently misses the first events.</p>',
     referenceLinks: [
-        { title: 'Reactor Core — Mono and Flux', url: 'https://projectreactor.io/docs/core/release/reference/' }
+        { title: 'Reactor Core — Mono and Flux', url: 'https://projectreactor.io/docs/core/release/reference/coreFeatures.html' }
     ],
     tags: ['reactive', 'reactor', 'must-know'],
     images: [],
@@ -549,7 +549,7 @@ const beyondRestData = {
         'way to find the one buried in a dependency.</li>' +
         '</ul>',
     referenceLinks: [
-        { title: 'Reactor — Schedulers', url: 'https://projectreactor.io/docs/core/release/reference/' }
+        { title: 'Reactor — Schedulers', url: 'https://projectreactor.io/docs/core/release/reference/coreFeatures/schedulers.html' }
     ],
     tags: ['reactive', 'pitfalls', 'must-know'],
     images: [],
@@ -669,7 +669,7 @@ const beyondRestData = {
         'the better tool there, because a million virtual threads each with a thread-local map is ' +
         'a lot of memory.</p>',
     referenceLinks: [
-        { title: 'Reactor — Adding a Context to a Reactive Sequence', url: 'https://projectreactor.io/docs/core/release/reference/' }
+        { title: 'Reactor — Adding a Context to a Reactive Sequence', url: 'https://projectreactor.io/docs/core/release/reference/advancedFeatures/context.html' }
     ],
     tags: ['reactive', 'context', 'observability'],
     images: [],
@@ -754,7 +754,7 @@ const beyondRestData = {
         'the decision about whether to adopt it, and mentioning it is a stronger signal than ' +
         'listing the operators.</p>',
     referenceLinks: [
-        { title: 'Reactor — Debugging Reactive Applications', url: 'https://projectreactor.io/docs/core/release/reference/' }
+        { title: 'Reactor — Debugging Reactive Applications', url: 'https://projectreactor.io/docs/core/release/reference/debugging.html' }
     ],
     tags: ['reactive', 'debugging', 'operations'],
     images: [],

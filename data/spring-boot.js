@@ -978,7 +978,7 @@ const springBootData = {
         'support calendar moves, and a confidently stated wrong date is worse than saying you ' +
         'would look it up — which is also the honest answer in an interview.</p>',
     referenceLinks: [
-        { title: 'Spring Boot Support Policy', url: 'https://spring.io/projects/spring-boot#support' }
+        { title: 'Spring Boot Support Policy', url: 'https://spring.io/projects/spring-boot/#support' }
     ],
     tags: ['spring-boot', 'versions', 'security', 'maintenance'],
     images: [],

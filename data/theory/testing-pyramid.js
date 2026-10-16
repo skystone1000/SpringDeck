@@ -21,7 +21,7 @@ const testingPyramidModule = {
     tagline: 'The pyramid, and the honest version of it.',
     estimatedMinutes: 35,
     prerequisites: ['rest-api-design'],
-    docHub: { title: 'JUnit 5 User Guide', url: 'https://junit.org/junit5/docs/current/user-guide/' },
+    docHub: { title: 'JUnit User Guide', url: 'https://docs.junit.org/current/overview.html' },
 
     chapters: [
         {
@@ -85,7 +85,7 @@ const testingPyramidModule = {
                 }
             ],
             docs: [
-                { title: 'JUnit 5 User Guide', url: 'https://junit.org/junit5/docs/current/user-guide/', kind: 'guide' }
+                { title: 'JUnit User Guide', url: 'https://docs.junit.org/current/overview.html', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'testing', questionId: 'junit5-features-worth-using' }
@@ -182,7 +182,7 @@ const testingPyramidModule = {
                 }
             ],
             docs: [
-                { title: 'JUnit 5 — Display Names', url: 'https://junit.org/junit5/docs/current/user-guide/', kind: 'guide' }
+                { title: 'JUnit 5 — Display Names', url: 'https://docs.junit.org/current/writing-tests/display-names.html', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'testing', questionId: 'junit5-features-worth-using' }
@@ -210,7 +210,7 @@ const testingPyramidModule = {
                 }
             ],
             docs: [
-                { title: 'JUnit 5 — Parameterized Tests', url: 'https://junit.org/junit5/docs/current/user-guide/', kind: 'guide' }
+                { title: 'JUnit 5 — Parameterized Tests', url: 'https://docs.junit.org/current/writing-tests/parameterized-classes-and-tests.html', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'testing', questionId: 'junit5-features-worth-using' }

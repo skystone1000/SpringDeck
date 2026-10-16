@@ -131,7 +131,7 @@ const methodSecurityModule = {
                 }
             ],
             docs: [
-                { title: 'Expression-Based Access Control', url: 'https://docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html', kind: 'guide' }
+                { title: 'Spring Expression Language (SpEL)', url: 'https://docs.spring.io/spring-framework/reference/core/expressions.html', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'spring-core', questionId: 'spel-in-value' }

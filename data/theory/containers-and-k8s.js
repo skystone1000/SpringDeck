@@ -328,7 +328,7 @@ const containersAndK8sModule = {
                 }
             ],
             docs: [
-                { title: 'Kubernetes — Horizontal Pod Autoscaling', url: 'https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/', kind: 'guide' }
+                { title: 'Kubernetes — Horizontal Pod Autoscaling', url: 'https://kubernetes.io/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'sql-databases', questionId: 'connection-pool-sizing' },

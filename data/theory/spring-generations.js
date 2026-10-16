@@ -239,7 +239,7 @@ const springGenerationsModule = {
                 }
             ],
             docs: [
-                { title: 'Spring Boot Support Policy', url: 'https://spring.io/projects/spring-boot', kind: 'guide' }
+                { title: 'Spring Boot Support Policy', url: 'https://spring.io/projects/spring-boot/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'spring-boot', questionId: 'version-support-windows' }

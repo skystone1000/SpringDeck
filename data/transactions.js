@@ -137,7 +137,7 @@ const transactionsData = {
         'not a 500. And in an API, an <code>ETag</code> with <code>If-Match</code> is the same ' +
         'mechanism at the HTTP layer.</p>',
     referenceLinks: [
-        { title: 'Locking — Hibernate User Guide', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#locking' }
+        { title: 'Locking — Hibernate User Guide', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#locking' }
     ],
     tags: ['transactions', 'optimistic-locking', 'pessimistic-locking', 'concurrency'],
     images: [],

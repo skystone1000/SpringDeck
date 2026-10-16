@@ -403,7 +403,7 @@ const apiStylesModule = {
                 }
             ],
             docs: [
-                { title: 'HTTP Conditional Requests', url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests', kind: 'guide' }
+                { title: 'HTTP Conditional Requests', url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Conditional_requests', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'beyond-rest', questionId: 'websockets-sse-or-polling' }

@@ -59,7 +59,7 @@ const jpaHibernateData = {
         'Hibernate application rather than a JPA one. That is usually a fine trade — provider ' +
         'switching is rare and the features are valuable — but it should be a decision.</p>',
     referenceLinks: [
-        { title: 'Hibernate ORM User Guide', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html' }
+        { title: 'Hibernate ORM User Guide', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/' }
     ],
     tags: ['jpa', 'hibernate', 'spring-data', 'orm'],
     images: [],
@@ -102,7 +102,7 @@ const jpaHibernateData = {
         'was my change saved when I did not call save" are the two most common JPA questions, ' +
         'and both are answered by the state.</p>',
     referenceLinks: [
-        { title: 'Entity Lifecycle — Hibernate User Guide', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#pc' }
+        { title: 'Entity Lifecycle — Hibernate User Guide', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#pc' }
     ],
     tags: ['jpa', 'hibernate', 'lifecycle', 'dirty-checking'],
     images: [],
@@ -162,7 +162,7 @@ const jpaHibernateData = {
         'on an entity.</strong> They include every field, which triggers lazy loading during a ' +
         'comparison and recurses infinitely through bidirectional relationships.</p>',
     referenceLinks: [
-        { title: 'Equals and HashCode — Hibernate User Guide', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#entity-pojo-equalshashcode' }
+        { title: 'Equals and HashCode — Hibernate User Guide', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#mapping-model-pojo-equalshashcode' }
     ],
     tags: ['jpa', 'hibernate', 'equals-hashcode', 'entities'],
     images: [],
@@ -207,7 +207,7 @@ const jpaHibernateData = {
         'this parent?</em> An order line cannot; a product can. Composition cascades, association ' +
         'does not.</p>',
     referenceLinks: [
-        { title: 'Cascading — Hibernate User Guide', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#pc-cascade' }
+        { title: 'Cascading — Hibernate User Guide', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#pc-cascade' }
     ],
     tags: ['jpa', 'hibernate', 'cascade', 'relationships'],
     images: [],
@@ -348,7 +348,7 @@ const jpaHibernateData = {
         '<p>MySQL has no sequences, so <code>IDENTITY</code> is effectively forced there. That ' +
         'is worth saying explicitly, because "use SEQUENCE" is advice that does not travel.</p>',
     referenceLinks: [
-        { title: 'Identifier Generators — Hibernate User Guide', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#identifiers' }
+        { title: 'Identifier Generators — Hibernate User Guide', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#identifiers' }
     ],
     tags: ['jpa', 'hibernate', 'identifiers', 'performance'],
     images: [],
@@ -434,7 +434,7 @@ const jpaHibernateData = {
         'queries, not only at commit.</li>' +
         '</ul>',
     referenceLinks: [
-        { title: 'Persistence Contexts — Hibernate User Guide', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#pc' }
+        { title: 'Persistence Contexts — Hibernate User Guide', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#pc' }
     ],
     tags: ['jpa', 'hibernate', 'persistence-context', 'dirty-checking'],
     images: [],
@@ -482,7 +482,7 @@ const jpaHibernateData = {
         'queries may not see your own pending changes. It is a deliberate optimisation for ' +
         'read-heavy code, not a default to reach for.</p>',
     referenceLinks: [
-        { title: 'Flushing — Hibernate User Guide', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#flushing' }
+        { title: 'Flushing — Hibernate User Guide', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#flushing' }
     ],
     tags: ['jpa', 'hibernate', 'flush', 'transactions'],
     images: [],
@@ -653,7 +653,7 @@ const jpaHibernateData = {
         'does not remove the extra queries — it just moves them to every query that touches the ' +
         'entity, including the ones that never needed the association.</p>',
     referenceLinks: [
-        { title: 'Fetching — Hibernate User Guide', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#fetching' }
+        { title: 'Fetching — Hibernate User Guide', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#fetching' }
     ],
     tags: ['jpa', 'hibernate', 'n-plus-one', 'performance'],
     images: [],
@@ -884,7 +884,7 @@ const jpaHibernateData = {
         'for an application-level cache with an explicit TTL — which has a comprehensible ' +
         'invalidation story — before the second-level cache.</p>',
     referenceLinks: [
-        { title: 'Caching — Hibernate User Guide', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#caching' }
+        { title: 'Caching — Hibernate User Guide', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#caching' }
     ],
     tags: ['jpa', 'hibernate', 'caching', 'performance'],
     images: [],
@@ -925,7 +925,7 @@ const jpaHibernateData = {
         'JPA is designed for a graph of objects in a transaction, not for bulk data movement, ' +
         'and saying so is a better answer than tuning it heroically.</p>',
     referenceLinks: [
-        { title: 'Batching — Hibernate User Guide', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#batch' }
+        { title: 'Batching — Hibernate User Guide', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#batch' }
     ],
     tags: ['jpa', 'hibernate', 'batching', 'performance', 'bulk'],
     images: [],

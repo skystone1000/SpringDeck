@@ -365,7 +365,7 @@ const jvmDiagnosticsModule = {
                 }
             ],
             docs: [
-                { title: 'Container Awareness — Java in Containers', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/ergonomics.html', kind: 'guide' }
+                { title: 'Container Awareness — Java in Containers', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/ergonomics1.html', kind: 'guide' }
             ],
             relatedQuestions: []
         }

@@ -27,7 +27,7 @@ const nosqlStoresModule = {
     tagline: 'When not relational — and the cost of the answer "both".',
     estimatedMinutes: 45,
     prerequisites: ['schema-and-scale'],
-    docHub: { title: 'Spring Data', url: 'https://spring.io/projects/spring-data' },
+    docHub: { title: 'Spring Data', url: 'https://spring.io/projects/spring-data/' },
 
     chapters: [
         {
@@ -132,7 +132,7 @@ const nosqlStoresModule = {
                 }
             ],
             docs: [
-                { title: 'MongoDB — Embedded Data Models', url: 'https://www.mongodb.com/docs/manual/core/data-model-design/', kind: 'guide' }
+                { title: 'MongoDB — Embedded Data Models', url: 'https://www.mongodb.com/docs/manual/data-modeling/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'nosql', questionId: 'embed-or-reference' }
@@ -334,7 +334,7 @@ const nosqlStoresModule = {
                 }
             ],
             docs: [
-                { title: 'Elasticsearch — Text analysis', url: 'https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html', kind: 'guide' },
+                { title: 'Elasticsearch — Text analysis', url: 'https://www.elastic.co/docs/manage-data/data-store/text-analysis', kind: 'guide' },
                 { title: 'PostgreSQL 16 — Full Text Search', url: 'https://www.postgresql.org/docs/16/textsearch.html', kind: 'guide' }
             ],
             relatedQuestions: [

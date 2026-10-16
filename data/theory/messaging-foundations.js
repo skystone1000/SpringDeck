@@ -205,7 +205,7 @@ const messagingFoundationsModule = {
                 }
             ],
             docs: [
-                { title: 'Kafka — Topics and Partitions', url: 'https://kafka.apache.org/documentation/#intro_concepts_and_terms', kind: 'guide' }
+                { title: 'Kafka — Topics and Partitions', url: 'https://kafka.apache.org/documentation/#introduction', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'kafka-messaging', questionId: 'partitions-and-ordering' }
@@ -242,7 +242,7 @@ const messagingFoundationsModule = {
                 }
             ],
             docs: [
-                { title: 'Kafka — Use Cases', url: 'https://kafka.apache.org/uses', kind: 'guide' }
+                { title: 'Kafka — Use Cases', url: 'https://kafka.apache.org/uses/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'kafka-messaging', questionId: 'kafka-versus-rabbitmq' }

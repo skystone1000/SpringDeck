@@ -203,7 +203,7 @@ const resiliencePatternsModule = {
                 }
             ],
             docs: [
-                { title: 'Avoiding fallback in distributed systems', url: 'https://aws.amazon.com/builders-library/avoiding-fallback-in-distributed-systems/', kind: 'guide' }
+                { title: 'Avoiding fallback in distributed systems', url: 'https://builder.aws.com/content/3EuS9Sakq7L3VLQIF3qzfMfke1Y/avoiding-fallback-in-distributed-systems', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'microservices', questionId: 'circuit-breaker-states' }
@@ -305,7 +305,7 @@ const resiliencePatternsModule = {
                 }
             ],
             docs: [
-                { title: 'Using load shedding to avoid overload', url: 'https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/', kind: 'guide' }
+                { title: 'Using load shedding to avoid overload', url: 'https://builder.aws.com/content/3Eun1EEyX6p2e3VYNyRLSJzLuMV/using-load-shedding-to-avoid-overload', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'observability-ops', questionId: 'latency-investigation-order' }

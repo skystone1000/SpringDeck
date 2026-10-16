@@ -102,7 +102,7 @@ const nosqlData = {
         'entities.</strong> Relational modelling describes the data and lets the query planner ' +
         'work it out; document modelling starts from the reads.</p>',
     referenceLinks: [
-        { title: 'MongoDB — Data Model Design', url: 'https://www.mongodb.com/docs/manual/core/data-model-design/' }
+        { title: 'MongoDB — Data Model Design', url: 'https://www.mongodb.com/docs/manual/data-modeling/' }
     ],
     tags: ['mongodb', 'modelling', 'must-know'],
     images: [],
@@ -273,7 +273,7 @@ const nosqlData = {
         'truth and the search index as a projection kept up to date by events, which brings back ' +
         'every dual-write consideration from the outbox question.</p>',
     referenceLinks: [
-        { title: 'Elasticsearch — Analysis', url: 'https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html' },
+        { title: 'Elasticsearch — Analysis', url: 'https://www.elastic.co/docs/manage-data/data-store/text-analysis' },
         { title: 'PostgreSQL 16 — Full Text Search', url: 'https://www.postgresql.org/docs/16/textsearch.html' }
     ],
     tags: ['search', 'elasticsearch', 'must-know'],

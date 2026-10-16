@@ -16,7 +16,7 @@ const persistenceContextModule = {
     tagline: 'Dirty checking, flush order, and the first-level cache you did not know you had.',
     estimatedMinutes: 45,
     prerequisites: ['jpa-mapping'],
-    docHub: { title: 'Hibernate — Persistence Contexts', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html' },
+    docHub: { title: 'Hibernate — Persistence Contexts', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/' },
 
     chapters: [
         {
@@ -102,7 +102,7 @@ const persistenceContextModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Persistence Context', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Persistence Context', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'first-and-second-level-cache' }
@@ -139,7 +139,7 @@ const persistenceContextModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Flushing', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Flushing', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'persistence-context-and-dirty-checking' }
@@ -175,7 +175,7 @@ const persistenceContextModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Flushing', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Flushing', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'flush-modes-and-when-flush-happens' }
@@ -217,7 +217,7 @@ const persistenceContextModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Persisting Data', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Persisting Data', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'save-vs-persist-vs-merge' }
@@ -252,7 +252,7 @@ const persistenceContextModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Detached Entities', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Detached Entities', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'getreferencebyid-vs-findbyid' }
@@ -289,7 +289,7 @@ const persistenceContextModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Fetching', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Fetching', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'lazy-initialization-exception' }

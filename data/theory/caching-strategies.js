@@ -271,7 +271,7 @@ const cachingStrategiesModule = {
                 }
             ],
             docs: [
-                { title: 'Redis — Distributed Locks', url: 'https://redis.io/docs/latest/develop/use/patterns/distributed-locks/', kind: 'guide' }
+                { title: 'Redis — Distributed Locks', url: 'https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'caching-scale', questionId: 'distributed-locks' }

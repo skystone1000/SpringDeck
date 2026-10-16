@@ -397,7 +397,7 @@ const apiHardeningModule = {
                 }
             ],
             docs: [
-                { title: 'OWASP A06:2021 Vulnerable and Outdated Components', url: 'https://owasp.org/Top10/A06_2021-Vulnerable_and_Outdated_Components/', kind: 'guide' }
+                { title: 'OWASP A06:2021 Vulnerable and Outdated Components', url: 'https://owasp.org/Top10/2021/A06_2021-Vulnerable_and_Outdated_Components/index.html', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'build-tools', questionId: 'dependency-vulnerabilities' },

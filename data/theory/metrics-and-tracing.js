@@ -175,7 +175,7 @@ const metricsAndTracingModule = {
                 }
             ],
             docs: [
-                { title: 'The RED Method', url: 'https://grafana.com/blog/2018/08/02/the-red-method-how-to-instrument-your-services/', kind: 'guide' }
+                { title: 'The RED Method', url: 'https://grafana.com/blog/the-red-method-how-to-instrument-your-services/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'observability-ops', questionId: 'what-to-alert-on' }

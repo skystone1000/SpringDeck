@@ -160,7 +160,7 @@ const kafkaMechanicsModule = {
                 }
             ],
             docs: [
-                { title: 'Kafka — Consumer Groups', url: 'https://kafka.apache.org/documentation/#intro_consumers', kind: 'guide' }
+                { title: 'Kafka — Consumer Groups', url: 'https://kafka.apache.org/documentation/#theconsumer', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'kafka-messaging', questionId: 'consumer-groups-and-parallelism' }

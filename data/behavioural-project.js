@@ -61,7 +61,7 @@ const behaviouralProjectData = {
         'minutes</strong>: long enough to be specific, short enough that they can ask a follow-up, ' +
         'which is where the real conversation happens.</p>',
     referenceLinks: [
-        { title: 'Amazon — Interviewing at Amazon', url: 'https://www.amazon.jobs/content/en/how-we-hire/interviewing-at-amazon' }
+        { title: 'Amazon — Interviewing at Amazon', url: 'https://www.amazon.jobs/content/en/how-we-hire' }
     ],
     tags: ['behavioural', 'interview-technique', 'must-know'],
     images: [],

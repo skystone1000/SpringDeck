@@ -438,7 +438,7 @@ const buildAndDependenciesModule = {
                 }
             ],
             docs: [
-                { title: 'OWASP Dependency-Check', url: 'https://jeremylong.github.io/DependencyCheck/', kind: 'guide' },
+                { title: 'OWASP Dependency-Check', url: 'https://dependency-check.github.io/DependencyCheck/index.html', kind: 'guide' },
                 { title: 'CycloneDX Maven Plugin', url: 'https://github.com/CycloneDX/cyclonedx-maven-plugin', kind: 'guide' }
             ],
             relatedQuestions: [

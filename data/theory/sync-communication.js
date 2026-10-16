@@ -168,7 +168,7 @@ const syncCommunicationModule = {
                 }
             ],
             docs: [
-                { title: 'Exponential Backoff and Jitter', url: 'https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/', kind: 'guide' }
+                { title: 'Exponential Backoff and Jitter', url: 'https://builder.aws.com/content/3EumjoZascWd1oZiEgL8ORlv3qE/timeouts-retries-and-backoff-with-jitter', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'caching-scale', questionId: 'cache-stampede' }
@@ -254,7 +254,7 @@ const syncCommunicationModule = {
                 }
             ],
             docs: [
-                { title: 'Avoiding fallback in distributed systems', url: 'https://aws.amazon.com/builders-library/avoiding-fallback-in-distributed-systems/', kind: 'guide' }
+                { title: 'Avoiding fallback in distributed systems', url: 'https://builder.aws.com/content/3EuS9Sakq7L3VLQIF3qzfMfke1Y/avoiding-fallback-in-distributed-systems', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'microservices', questionId: 'circuit-breaker-states' },
@@ -295,7 +295,7 @@ const syncCommunicationModule = {
                 }
             ],
             docs: [
-                { title: 'Avoiding fallback in distributed systems', url: 'https://aws.amazon.com/builders-library/avoiding-fallback-in-distributed-systems/', kind: 'guide' }
+                { title: 'Avoiding fallback in distributed systems', url: 'https://builder.aws.com/content/3EuS9Sakq7L3VLQIF3qzfMfke1Y/avoiding-fallback-in-distributed-systems', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'microservices', questionId: 'circuit-breaker-states' }

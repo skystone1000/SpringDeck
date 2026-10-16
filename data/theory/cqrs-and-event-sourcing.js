@@ -299,7 +299,7 @@ const cqrsAndEventSourcingModule = {
                 }
             ],
             docs: [
-                { title: 'Versioning in an Event Sourced System', url: 'https://leanpub.com/esversioning/read', kind: 'guide' }
+                { title: 'Versioning in an Event Sourced System', url: 'https://leanpub.com/read/esversioning', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'kafka-messaging', questionId: 'schema-registry-and-message-contracts' }

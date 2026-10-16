@@ -85,7 +85,7 @@ const predictCollectionsModule = {
             ],
             docs: [
                 { title: 'Arrays.asList — javadoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Arrays.html#asList(T...)', kind: 'api' },
-                { title: 'List.of — immutable list static factory methods', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html#immutable', kind: 'api' }
+                { title: 'List.of — immutable list static factory methods', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html#unmodifiable', kind: 'api' }
             ],
             relatedQuestions: [{ topicId: 'collections', questionId: 'sublist-is-a-view' }]
         },

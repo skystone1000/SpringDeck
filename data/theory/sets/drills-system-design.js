@@ -66,7 +66,7 @@ const drillsSystemDesignModule = {
                 }
             ],
             docs: [
-                { title: 'HTTP redirect status codes — MDN', url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#redirection_messages', kind: 'spec' }
+                { title: 'HTTP redirect status codes — MDN', url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status#redirection_messages', kind: 'spec' }
             ],
             relatedQuestions: []
         },
@@ -96,7 +96,7 @@ const drillsSystemDesignModule = {
                 }
             ],
             docs: [
-                { title: 'RFC 6585 §4 — 429 Too Many Requests', url: 'https://www.rfc-editor.org/rfc/rfc6585#section-4', kind: 'spec' }
+                { title: 'RFC 6585 §4 — 429 Too Many Requests', url: 'https://www.rfc-editor.org/rfc/rfc6585.html#section-4', kind: 'spec' }
             ],
             relatedQuestions: []
         },
@@ -249,7 +249,7 @@ const drillsSystemDesignModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate Envers — auditing', url: 'https://docs.jboss.org/hibernate/orm/6.4/userguide/html_single/Hibernate_User_Guide.html#envers', kind: 'guide' }
+                { title: 'Hibernate Envers — auditing', url: 'https://docs.hibernate.org/orm/6.4/userguide/html_single/#envers', kind: 'guide' }
             ],
             relatedQuestions: []
         },

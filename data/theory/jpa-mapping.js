@@ -15,7 +15,7 @@ const jpaMappingModule = {
     tagline: 'Entities, relationships, cascades — and equals for an entity.',
     estimatedMinutes: 50,
     prerequisites: ['jdbc-and-pooling', 'objects-and-contracts'],
-    docHub: { title: 'Hibernate ORM User Guide', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html' },
+    docHub: { title: 'Hibernate ORM User Guide', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/' },
 
     chapters: [
         {
@@ -59,7 +59,7 @@ const jpaMappingModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Identifiers', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Identifiers', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'id-generation-strategies' }
@@ -87,7 +87,7 @@ const jpaMappingModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Associations', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Associations', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'bidirectional-relationships' }
@@ -121,7 +121,7 @@ const jpaMappingModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Bidirectional Associations', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Bidirectional Associations', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'bidirectional-relationships' }
@@ -160,7 +160,7 @@ const jpaMappingModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Collections', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Collections', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: []
         },
@@ -196,7 +196,7 @@ const jpaMappingModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Cascading', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Cascading', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'cascade-types' }
@@ -234,7 +234,7 @@ const jpaMappingModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Orphan Removal', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Orphan Removal', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'cascade-types' }
@@ -262,7 +262,7 @@ const jpaMappingModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Embeddable Types', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Embeddable Types', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: []
         },
@@ -295,7 +295,7 @@ const jpaMappingModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Inheritance', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Inheritance', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'inheritance-strategies' }
@@ -343,7 +343,7 @@ const jpaMappingModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Equals and HashCode', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Equals and HashCode', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'entity-equals-hashcode' }

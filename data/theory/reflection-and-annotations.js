@@ -267,7 +267,7 @@ const reflectionAndAnnotationsModule = {
                 }
             ],
             docs: [
-                { title: 'Project Lombok — Features', url: 'https://projectlombok.org/features/all', kind: 'guide' }
+                { title: 'Project Lombok — Features', url: 'https://projectlombok.org/features/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'java-language', questionId: 'records-what-they-give-you' }
@@ -295,7 +295,7 @@ const reflectionAndAnnotationsModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Equality and identity', url: 'https://docs.jboss.org/hibernate/orm/6.4/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Equality and identity', url: 'https://docs.hibernate.org/orm/6.4/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'entity-equals-hashcode' },

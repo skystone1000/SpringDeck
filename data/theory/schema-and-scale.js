@@ -405,7 +405,7 @@ const schemaAndScaleModule = {
                 }
             ],
             docs: [
-                { title: 'Vitess — Sharding', url: 'https://vitess.io/docs/reference/features/sharding/', kind: 'guide' },
+                { title: 'Vitess — Sharding', url: 'https://vitess.io/docs/24.0/reference/features/sharding/', kind: 'guide' },
                 { title: 'Citus — Distributed tables', url: 'https://docs.citusdata.com/en/stable/sharding/data_modeling.html', kind: 'guide' }
             ],
             relatedQuestions: [

@@ -231,7 +231,7 @@ const predictHttpSecurityModule = {
                 }
             ],
             docs: [
-                { title: 'RFC 9110 — HTTP semantics, status codes', url: 'https://www.rfc-editor.org/rfc/rfc9110#name-status-codes', kind: 'spec' }
+                { title: 'RFC 9110 — HTTP semantics, status codes', url: 'https://www.rfc-editor.org/rfc/rfc9110.html#name-status-codes', kind: 'spec' }
             ],
             relatedQuestions: []
         }

@@ -334,7 +334,7 @@ const patternsThatGetAskedModule = {
                 }
             ],
             docs: [
-                { title: 'Hexagonal Architecture', url: 'https://alistair.cockburn.us/hexagonal-architecture/', kind: 'guide' }
+                { title: 'Hexagonal Architecture', url: 'https://alistair.cockburn.us/hexagonal-architecture', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'design-patterns', questionId: 'decorator-proxy-adapter' },

@@ -283,7 +283,7 @@ const platformConcernsModule = {
                 }
             ],
             docs: [
-                { title: 'AWS — Multi-Region Fundamentals', url: 'https://docs.aws.amazon.com/whitepapers/latest/aws-multi-region-fundamentals/aws-multi-region-fundamentals.html', kind: 'guide' }
+                { title: 'AWS — Multi-Region Fundamentals', url: 'https://docs.aws.amazon.com/prescriptive-guidance/latest/aws-multi-region-fundamentals/aws-multi-region-fundamentals.html', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'cloud', questionId: 'cloud-agnostic-or-not' }

@@ -119,7 +119,7 @@ const heapAndGcModule = {
                 }
             ],
             docs: [
-                { title: 'GC Tuning Guide — Generations', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/garbage-collector-implementation.html', kind: 'guide' }
+                { title: 'GC Tuning Guide — Generations', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/garbage-collector-implementation1.html', kind: 'guide' }
             ],
             relatedQuestions: []
         },
@@ -292,7 +292,7 @@ const heapAndGcModule = {
             ],
             docs: [
                 { title: 'JEP 439: Generational ZGC', url: 'https://openjdk.org/jeps/439', kind: 'spec' },
-                { title: 'Z Garbage Collector', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/z-garbage-collector.html', kind: 'guide' }
+                { title: 'Z Garbage Collector', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/z-garbage-collector2.html', kind: 'guide' }
             ],
             relatedQuestions: []
         },
@@ -344,7 +344,7 @@ const heapAndGcModule = {
                 }
             ],
             docs: [
-                { title: 'Ergonomics', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/ergonomics.html', kind: 'guide' }
+                { title: 'Ergonomics', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/ergonomics1.html', kind: 'guide' }
             ],
             relatedQuestions: []
         },

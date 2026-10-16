@@ -290,7 +290,7 @@ const cachingScaleData = {
         '— stopping ten pods from doing the same expensive job — <strong>and not for ' +
         'correctness</strong>, where a double execution would be a bug.</p>',
     referenceLinks: [
-        { title: 'Redis — Distributed Locks', url: 'https://redis.io/docs/latest/develop/use/patterns/distributed-locks/' }
+        { title: 'Redis — Distributed Locks', url: 'https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/' }
     ],
     tags: ['redis', 'distributed', 'locking', 'must-know'],
     images: [],

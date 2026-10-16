@@ -183,7 +183,7 @@ const applicationArchitectureModule = {
                 }
             ],
             docs: [
-                { title: 'Hexagonal Architecture', url: 'https://alistair.cockburn.us/hexagonal-architecture/', kind: 'guide' }
+                { title: 'Hexagonal Architecture', url: 'https://alistair.cockburn.us/hexagonal-architecture', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'architecture-ddd', questionId: 'hexagonal-architecture' },

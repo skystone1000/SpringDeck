@@ -85,7 +85,7 @@ const reactiveAndWebfluxModule = {
                 }
             ],
             docs: [
-                { title: 'Reactor Core — Flux and Mono', url: 'https://projectreactor.io/docs/core/release/reference/', kind: 'guide' }
+                { title: 'Reactor Core — Flux and Mono', url: 'https://projectreactor.io/docs/core/release/reference/coreFeatures.html', kind: 'guide' }
             ],
             relatedQuestions: []
         },
@@ -162,7 +162,7 @@ const reactiveAndWebfluxModule = {
                 }
             ],
             docs: [
-                { title: 'Reactor — Schedulers', url: 'https://projectreactor.io/docs/core/release/reference/', kind: 'guide' }
+                { title: 'Reactor — Schedulers', url: 'https://projectreactor.io/docs/core/release/reference/coreFeatures/schedulers.html', kind: 'guide' }
             ],
             relatedQuestions: []
         },

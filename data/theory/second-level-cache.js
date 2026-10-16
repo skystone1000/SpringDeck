@@ -18,7 +18,7 @@ const secondLevelCacheModule = {
     prerequisites: ['spring-data-jpa'],
     docHub: {
         title: 'Hibernate User Guide — Caching',
-        url: 'https://docs.jboss.org/hibernate/orm/6.4/userguide/html_single/Hibernate_User_Guide.html#caching'
+        url: 'https://docs.hibernate.org/orm/6.4/userguide/html_single/#caching'
     },
 
     chapters: [
@@ -61,8 +61,8 @@ const secondLevelCacheModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate User Guide — Caching', url: 'https://docs.jboss.org/hibernate/orm/6.4/userguide/html_single/Hibernate_User_Guide.html#caching', kind: 'guide' },
-                { title: 'Jakarta Persistence 3.1 — Shared cache mode', url: 'https://jakarta.ee/specifications/persistence/3.1/jakarta-persistence-spec-3.1.html#a11648', kind: 'spec' }
+                { title: 'Hibernate User Guide — Caching', url: 'https://docs.hibernate.org/orm/6.4/userguide/html_single/#caching', kind: 'guide' },
+                { title: 'Jakarta Persistence 3.1 — The Cacheable annotation', url: 'https://jakarta.ee/specifications/persistence/3.1/jakarta-persistence-spec-3.1.html#cacheable-annotation', kind: 'spec' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'first-and-second-level-cache' },
@@ -107,7 +107,7 @@ const secondLevelCacheModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Configuring second-level caching', url: 'https://docs.jboss.org/hibernate/orm/6.4/userguide/html_single/Hibernate_User_Guide.html#caching-config', kind: 'guide' },
+                { title: 'Hibernate — Configuring second-level caching', url: 'https://docs.hibernate.org/orm/6.4/userguide/html_single/#caching-config', kind: 'guide' },
                 { title: 'Spring Boot — Caching', url: 'https://docs.spring.io/spring-boot/reference/io/caching.html', kind: 'guide' }
             ],
             relatedQuestions: []
@@ -164,7 +164,7 @@ const secondLevelCacheModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Cache concurrency strategies', url: 'https://docs.jboss.org/hibernate/orm/6.4/userguide/html_single/Hibernate_User_Guide.html#caching-mappings', kind: 'guide' }
+                { title: 'Hibernate — Cache concurrency strategies', url: 'https://docs.hibernate.org/orm/6.4/userguide/html_single/#caching-mappings', kind: 'guide' }
             ],
             relatedQuestions: []
         },
@@ -219,7 +219,7 @@ const secondLevelCacheModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — The query cache', url: 'https://docs.jboss.org/hibernate/orm/6.4/userguide/html_single/Hibernate_User_Guide.html#caching-query', kind: 'guide' }
+                { title: 'Hibernate — The query cache', url: 'https://docs.hibernate.org/orm/6.4/userguide/html_single/#caching-query', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'n-plus-one' }
@@ -361,7 +361,7 @@ const secondLevelCacheModule = {
             ],
             docs: [
                 { title: 'Spring Boot Actuator — Metrics', url: 'https://docs.spring.io/spring-boot/reference/actuator/metrics.html', kind: 'guide' },
-                { title: 'Hibernate — Statistics', url: 'https://docs.jboss.org/hibernate/orm/6.4/userguide/html_single/Hibernate_User_Guide.html#statistics', kind: 'guide' }
+                { title: 'Hibernate — Statistics', url: 'https://docs.hibernate.org/orm/6.4/userguide/html_single/#statistics', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'first-and-second-level-cache' }

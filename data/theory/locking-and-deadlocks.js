@@ -123,7 +123,7 @@ const lockingAndDeadlocksModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Optimistic Locking', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Optimistic Locking', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'transactions', questionId: 'optimistic-locking-details' }

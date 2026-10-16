@@ -484,7 +484,7 @@ const drillsFocusedImplementationModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate 6 — Fetching', url: 'https://docs.jboss.org/hibernate/orm/6.4/userguide/html_single/Hibernate_User_Guide.html#fetching', kind: 'guide' }
+                { title: 'Hibernate 6 — Fetching', url: 'https://docs.hibernate.org/orm/6.4/userguide/html_single/#fetching', kind: 'guide' }
             ],
             relatedQuestions: []
         },
@@ -596,7 +596,7 @@ const drillsFocusedImplementationModule = {
                 }
             ],
             docs: [
-                { title: 'Alistair Cockburn — Hexagonal architecture', url: 'https://alistair.cockburn.us/hexagonal-architecture/', kind: 'guide' }
+                { title: 'Alistair Cockburn — Hexagonal architecture', url: 'https://alistair.cockburn.us/hexagonal-architecture', kind: 'guide' }
             ],
             relatedQuestions: []
         }

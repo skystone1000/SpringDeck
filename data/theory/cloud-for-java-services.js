@@ -124,7 +124,7 @@ const cloudForJavaServicesModule = {
                 }
             ],
             docs: [
-                { title: 'Amazon SQS — FIFO queues', url: 'https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html', kind: 'guide' }
+                { title: 'Amazon SQS — FIFO queues', url: 'https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues-understanding-logic.html', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'cloud', questionId: 'managed-queues' },

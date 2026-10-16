@@ -107,7 +107,7 @@ const drillsDebugAndReviewModule = {
                     }
                 }
             ],
-            docs: [{ title: 'Hibernate — Fetching strategies', url: 'https://docs.jboss.org/hibernate/orm/6.4/userguide/html_single/Hibernate_User_Guide.html#fetching', kind: 'guide' }],
+            docs: [{ title: 'Hibernate — Fetching strategies', url: 'https://docs.hibernate.org/orm/6.4/userguide/html_single/#fetching', kind: 'guide' }],
             relatedQuestions: [{ topicId: 'jpa-hibernate', questionId: 'n-plus-one' }]
         },
 
@@ -431,7 +431,7 @@ const drillsDebugAndReviewModule = {
                     }
                 }
             ],
-            docs: [{ title: 'Refactoring — characterisation tests', url: 'https://martinfowler.com/bliki/CharacterizationTest.html', kind: 'guide' }],
+            docs: [{ title: 'Legacy Seam', url: 'https://martinfowler.com/bliki/LegacySeam.html', kind: 'guide' }],
             relatedQuestions: []
         },
 

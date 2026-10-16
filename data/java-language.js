@@ -1710,7 +1710,7 @@ const javaLanguageData = {
         'runs before the fields are assigned.</p>',
     referenceLinks: [
         { title: 'JEP 395: Records', url: 'https://openjdk.org/jeps/395' },
-        { title: 'Record Classes — The Java Tutorials', url: 'https://docs.oracle.com/javase/tutorial/java/javaOO/records.html' }
+        { title: 'Record Classes — dev.java', url: 'https://dev.java/learn/records/' }
     ],
     tags: ['records', 'modern-java', 'immutability'],
     images: [],

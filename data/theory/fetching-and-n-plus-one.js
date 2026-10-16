@@ -15,7 +15,7 @@ const fetchingAndNPlusOneModule = {
     tagline: 'The most common JPA performance bug, and its three fixes.',
     estimatedMinutes: 45,
     prerequisites: ['persistence-context'],
-    docHub: { title: 'Hibernate — Fetching', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html' },
+    docHub: { title: 'Hibernate — Fetching', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/' },
 
     chapters: [
         {
@@ -48,7 +48,7 @@ const fetchingAndNPlusOneModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Fetching Strategies', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Fetching Strategies', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'lazy-vs-eager-defaults' }
@@ -80,7 +80,7 @@ const fetchingAndNPlusOneModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Fetching', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Fetching', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'lazy-vs-eager-defaults' }
@@ -127,7 +127,7 @@ const fetchingAndNPlusOneModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Statistics', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Statistics', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'n-plus-one' }
@@ -168,7 +168,7 @@ const fetchingAndNPlusOneModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Fetch Joins', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Fetch Joins', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'n-plus-one' }
@@ -231,7 +231,7 @@ const fetchingAndNPlusOneModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Batch Fetching', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Batch Fetching', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'n-plus-one' }
@@ -265,7 +265,7 @@ const fetchingAndNPlusOneModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate — Pagination', url: 'https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html', kind: 'guide' }
+                { title: 'Hibernate — Pagination', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'jpa-hibernate', questionId: 'join-fetch-and-pagination' }

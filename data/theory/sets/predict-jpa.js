@@ -30,7 +30,7 @@ const predictJpaModule = {
     prerequisites: [],
     docHub: {
         title: 'Hibernate 6 — User guide',
-        url: 'https://docs.jboss.org/hibernate/orm/6.4/userguide/html_single/Hibernate_User_Guide.html'
+        url: 'https://docs.hibernate.org/orm/6.4/userguide/html_single/'
     },
 
     chapters: [
@@ -128,7 +128,7 @@ const predictJpaModule = {
                 }
             ],
             docs: [
-                { title: 'Hibernate 6 — Fetching', url: 'https://docs.jboss.org/hibernate/orm/6.4/userguide/html_single/Hibernate_User_Guide.html#fetching', kind: 'guide' }
+                { title: 'Hibernate 6 — Fetching', url: 'https://docs.hibernate.org/orm/6.4/userguide/html_single/#fetching', kind: 'guide' }
             ],
             relatedQuestions: []
         },

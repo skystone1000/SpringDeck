@@ -186,7 +186,7 @@ const jvmMemoryData = {
         'evidence and <code>-XX:+ExitOnOutOfMemoryError</code> to die immediately and let the ' +
         'orchestrator restart you.</p>',
     referenceLinks: [
-        { title: 'Troubleshooting Guide — OutOfMemoryError', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/troubleshoot-memory-leaks.html' }
+        { title: 'Troubleshooting Guide — OutOfMemoryError', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/troubleshooting-memory-leaks.html' }
     ],
     tags: ['jvm', 'errors', 'must-know'],
     images: [],
@@ -790,7 +790,7 @@ const jvmMemoryData = {
         '-XX:HeapDumpPath=/var/log/app</code>, set <em>before</em> the incident. A restarted pod ' +
         'with no dump means starting the investigation from nothing.</p>',
     referenceLinks: [
-        { title: 'Troubleshooting Memory Leaks', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/troubleshoot-memory-leaks.html' }
+        { title: 'Troubleshooting Memory Leaks', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/troubleshooting-memory-leaks.html' }
     ],
     tags: ['jvm', 'errors', 'diagnostics'],
     images: [],
@@ -830,7 +830,7 @@ const jvmMemoryData = {
         'be freed if this went away") is the one worth asking, and that the leak is a ' +
         '<em>reference</em> nobody dropped rather than memory nobody freed.</p>',
     referenceLinks: [
-        { title: 'Troubleshooting Memory Leaks', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/troubleshoot-memory-leaks.html' },
+        { title: 'Troubleshooting Memory Leaks', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/troubleshooting-memory-leaks.html' },
         { title: 'Eclipse Memory Analyzer', url: 'https://eclipse.dev/mat/' }
     ],
     tags: ['jvm', 'diagnostics', 'leaks', 'must-know'],
@@ -945,7 +945,7 @@ const jvmMemoryData = {
         '<code>ClassLoader</code> instances and ask for the path to the GC root from the ' +
         '<em>loader</em>. The answer is a single reference, and removing it is the fix.</p>',
     referenceLinks: [
-        { title: 'Troubleshooting Memory Leaks', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/troubleshoot-memory-leaks.html' }
+        { title: 'Troubleshooting Memory Leaks', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/troubleshooting-memory-leaks.html' }
     ],
     tags: ['jvm', 'leaks', 'classloading'],
     images: [],
@@ -983,7 +983,7 @@ const jvmMemoryData = {
         'headroom is what converts one into the other.</li>' +
         '</ul>',
     referenceLinks: [
-        { title: 'JEP 343: Packaging Tool / container awareness notes', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/ergonomics.html' }
+        { title: 'JEP 343: Packaging Tool / container awareness notes', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/ergonomics1.html' }
     ],
     tags: ['jvm', 'containers', 'operations'],
     images: [],
@@ -1186,7 +1186,7 @@ const jvmMemoryData = {
         'regex with catastrophic backtracking on user input, and a <code>HashMap</code> being ' +
         'mutated concurrently, which in old Java could spin forever in <code>get</code>.</p>',
     referenceLinks: [
-        { title: 'Troubleshooting Guide — Hangs and Loops', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/troubleshoot-process-hangs-and-loops.html' }
+        { title: 'Troubleshooting Guide — Hangs and Loops', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/troubleshoot-process-hangs-loops.html' }
     ],
     tags: ['jvm', 'diagnostics', 'performance'],
     images: [],

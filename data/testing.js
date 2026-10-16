@@ -410,7 +410,7 @@ const testingData = {
         'and its collection and exception assertions are far richer than the built-in ones. ' +
         'Spring Boot\'s test starter brings it in.</p>',
     referenceLinks: [
-        { title: 'JUnit 5 — User Guide', url: 'https://junit.org/junit5/docs/current/user-guide/' }
+        { title: 'JUnit User Guide', url: 'https://docs.junit.org/current/overview.html' }
     ],
     tags: ['testing', 'junit'],
     images: [],

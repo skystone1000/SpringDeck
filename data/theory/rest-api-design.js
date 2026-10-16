@@ -16,7 +16,7 @@ const restApiDesignModule = {
     tagline: 'Resources, pagination, versioning, idempotency keys.',
     estimatedMinutes: 45,
     prerequisites: ['dispatcher-lifecycle'],
-    docHub: { title: 'Spring — REST Web Services', url: 'https://spring.io/guides/gs/rest-service' },
+    docHub: { title: 'Spring — REST Web Services', url: 'https://spring.io/guides/gs/rest-service/' },
 
     chapters: [
         {
@@ -50,7 +50,7 @@ const restApiDesignModule = {
                 }
             ],
             docs: [
-                { title: 'Building REST services with Spring', url: 'https://spring.io/guides/tutorials/rest', kind: 'guide' }
+                { title: 'Building REST services with Spring', url: 'https://spring.io/guides/tutorials/rest/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'rest-api', questionId: 'resource-naming' }
