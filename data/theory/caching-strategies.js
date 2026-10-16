@@ -51,7 +51,7 @@ const cachingStrategiesModule = {
                 }
             ],
             docs: [
-                { title: 'Caching Best Practices', url: 'https://aws.amazon.com/builders-library/caching-challenges-and-strategies/', kind: 'guide' }
+                { title: 'Caching challenges and strategies', url: 'https://aws.amazon.com/builders-library/caching-challenges-and-strategies/', kind: 'guide' }
             ],
             relatedQuestions: [
                 { topicId: 'caching-scale', questionId: 'caching-strategies' }

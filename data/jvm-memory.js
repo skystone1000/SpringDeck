@@ -228,7 +228,7 @@ const jvmMemoryData = {
         'summary</code>. It accounts for every pool by name and is the only tool that answers ' +
         'this question directly.</p>',
     referenceLinks: [
-        { title: 'Native Memory Tracking', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/diagnostic-tools.html' }
+        { title: 'Diagnostic Tools — Native Memory Tracking', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/diagnostic-tools.html' }
     ],
     tags: ['jvm', 'memory', 'containers'],
     images: [],
@@ -551,7 +551,7 @@ const jvmMemoryData = {
         'OpenJDK builds from Red Hat and others.</p>',
     referenceLinks: [
         { title: 'JEP 439: Generational ZGC', url: 'https://openjdk.org/jeps/439' },
-        { title: 'Available Collectors — HotSpot Tuning Guide', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/available-collectors.html' }
+        { title: 'Garbage Collector Implementation — the collectors on offer', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/garbage-collector-implementation1.html' }
     ],
     tags: ['jvm', 'gc', 'zgc', 'versions'],
     images: [],
@@ -983,7 +983,7 @@ const jvmMemoryData = {
         'headroom is what converts one into the other.</li>' +
         '</ul>',
     referenceLinks: [
-        { title: 'JEP 343: Packaging Tool / container awareness notes', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/ergonomics1.html' }
+        { title: 'Ergonomics — container awareness and default heap sizing', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/ergonomics1.html' }
     ],
     tags: ['jvm', 'containers', 'operations'],
     images: [],
