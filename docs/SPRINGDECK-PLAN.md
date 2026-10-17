@@ -1537,6 +1537,21 @@ human finds it.
 carries `sourceTitle`/`sourceUrl`; findings written to
 `docs/verification-log.md` including what was *not* checked.
 
+**Phase 9 actual — PASSED, 2026-10-16.** Every criterion met, and the phase
+was never blocked: the JDK it waited eight gates for was inside Android
+Studio the whole time. 58/58 `stdout` claims execute and match against
+OpenJDK 25, twice each. 762 distinct doc URLs, zero errors — 57 were broken
+when the tool first ran, **four of them meta-refresh stubs**, which is the
+blind spot this section names being caught mechanically rather than by a
+human. The manual pass was done in two parts: every one of the 762 pages had
+its `<title>` compared against the title the deck gives the link, which found
+five links describing the wrong page, and the handful a machine cannot settle
+were opened by hand. **Zero figures, and the empty directory is the decision
+rather than the omission** — the contract for vendoring one is in
+`assets/img/README.md`, and check 4 was exercised against a real PNG through
+all six branches, which found the existence check was case-insensitive.
+Findings, and the four things still unverified, in `docs/verification-log.md`.
+
 ### Phase 10 — Documentation and triage
 `ARCHITECTURE.md`, `CODEBASE.md`, `FEATURES.md`, `README.md`, and one
 `docs/triage/<topic-id>.md` per topic recording a single read of every question
