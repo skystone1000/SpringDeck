@@ -199,6 +199,37 @@ And, for the invariant that the page works from disk:
 node tools/check-offline.js
 ```
 
+Two more take longer, because one needs a JDK and the other needs the network.
+They are not part of the pre-commit chain:
+
+```bash
+node tools/run-snippets.js --selftest
+node tools/check-doc-links.js
+```
+
+`run-snippets.js` compiles and runs every snippet that claims a literal
+`stdout` pane — 58 of them — and diffs the real output against the authored
+lines. Each runs **twice**, and the two runs must agree with each other before
+either is compared to the corpus, because a snippet whose output depends on
+hash order or thread interleaving can match once by luck. The other 86 output
+panes are `trace`, which is prose about behaviour that no runner can confirm,
+and the summary counts them out loud rather than passing over them.
+
+`check-doc-links.js` checks all 1,365 documentation URLs — 762 distinct. Not
+just the status: it reads the body, because a page can answer 200 and bounce
+the reader elsewhere from a `<meta http-equiv="refresh">`, and four of this
+deck's links were doing exactly that. It also checks that a cited `#fragment`
+still exists, counting the page's own navigation as evidence for the many
+documentation sites that build their sections in script.
+
+**Both take `--selftest`, and both should be given it.** A runner that always
+returns "matched" and a corpus that is entirely correct print the same thing.
+The first time `run-snippets --selftest` ran, one of its four probes found a
+real defect in the runner.
+
+What Phase 9 found by running these — and, more usefully, what it could not
+check — is in [`docs/verification-log.md`](docs/verification-log.md).
+
 To see the data layer the way the browser assembles it:
 
 ```bash
