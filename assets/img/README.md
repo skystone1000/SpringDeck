@@ -54,6 +54,31 @@ Keep the file small enough that the deck still opens from a memory stick, name
 it after what it shows rather than where it came from, and put the licence in
 the commit message body along with the reason no diagram would have done.
 
+## The licence question, resolved
+
+`SPRINGDECK-PLAN.md` Part 9 lists six shapes it judged worth a vendored
+figure, and requires the licence of each to be settled in Phase 9 with the
+finding written here. Only Kafka's and PostgreSQL's documentation were
+unambiguously vendorable; Oracle's Java SE documentation is not, and
+everything else was marked `verify`.
+
+**None of it needed resolving, because all six were drawn as data instead:**
+
+| Shape the plan named | Where it lives now |
+|---|---|
+| JVM memory layout | `heap-and-gc/memory-areas` |
+| G1 heap regions | `heap-and-gc/young-and-old-generations` |
+| Spring Security filter chain | `security-filter-chain/filter-chain-proxy` |
+| DispatcherServlet sequence | `patterns-in-spring/front-controller-in-dispatcherservlet` |
+| Kafka partition and consumer-group topology | `messaging-foundations/kafka-model` |
+| Saga compensation flow | `saga-and-consistency/saga-definition` |
+
+That is the answer to "does a figure earn its place" for this subject, and it
+is a stronger one than a licence audit: a diagram this deck draws itself has
+no licence, inherits the theme, reflows on a phone, and can be checked by
+`checkDiagram()`. **The Oracle restriction cost nothing**, which is worth
+knowing before anyone spends an afternoon re-litigating it.
+
 ## What Phase 9 could and could not confirm
 
 Check 4 had been broken on purpose against a **synthetic** entry in Phase 1 and
