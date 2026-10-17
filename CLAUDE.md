@@ -180,7 +180,7 @@ Where a cross-language comparison earns its place it is **prose in a
 | **Catalogues** | Both complete and both still held as hard lists in `validate-theory.js`. An invented id is an error; an unwritten one is a warning. There are now none of either |
 | **Search index** | 1,361 entries — questions 486 · theory 687 · synthesis 46 · predict 81 · glossary 61 |
 | **Verified** | 58/58 `stdout` claims executed against OpenJDK 25 · 762 distinct doc URLs, zero errors · findings in [`docs/verification-log.md`](docs/verification-log.md) |
-| **Last commit date used** | 2026-10-16 |
+| **Last commit date used** | 2026-10-17 |
 | **Commit cadence** | **Reduced by instruction on 2026-09-03.** Fewer, larger commits — one per unit of work rather than 15–17 a day. The hand-set dates and the ascending-within-a-day rule still hold. |
 
 ### Phase gates recorded
@@ -227,6 +227,17 @@ page — plus 57 rotted URLs.
   `schema.js`, shared with `check-offline.js`.
 - **`docs/verification-log.md` exists**, four phases after the plan asked for
   it, and its last section is what was *not* checked.
+- **20 routes swept in a fresh tab after 46 data files changed.** 224 external
+  links render, none malformed, no horizontal overflow, no `NaN`, no literal
+  `&lt;code&gt;`. All three of those assertions were then broken on purpose
+  and all three fired, because a check that passes everywhere may be vacuous.
+  **No console errors**, with the reader proved by a deliberate one.
+- **The cached-script blind spot recurred and the note in this file paid for
+  itself.** The first read of the rewritten predict block showed `this$1`,
+  the value the fix had removed. The fix was fine; the tab was serving the
+  previous `predict-io-and-time.js`. A reload with a changed query string
+  showed `this$0` and the new wording. **Reload with a cache-buster before
+  believing a fix failed** — this is the second time.
 - **`file://` was NOT opened by hand.** Ninth gate. Unchanged reason, and it
   is now the only item that has survived every gate this project has held.
 
