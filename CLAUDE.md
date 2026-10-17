@@ -46,12 +46,30 @@ the stylesheets or the load order:
 node tools/check-offline.js
 ```
 
-Not yet written, each one a deliverable of the phase that needs it:
+The two Phase 9 tools touch the network or a JDK, so they are **not** in the
+pre-commit chain. Run them when the thing they guard changes, and read the
+output rather than the exit code — both end with a paragraph naming what they
+did *not* check.
 
-| Tool | Arrives in | What it will guard |
+```bash
+node tools/run-snippets.js --selftest
+node tools/check-doc-links.js
+```
+
+| Tool | Guards | Run it when |
 |---|---|---|
-| `check-doc-links.js` | Phase 9 | every `docs[]`, `docHub` and `referenceLinks[]` URL — 843 chapter links, 98 module hubs, 424 question links: **1,365** |
-| `run-snippets.js` | Phase 9 | every `stdout` claim, against a real JDK — **58**: 28 of the 63 question snippets, and 30 of the 81 predicts. The other 35 snippets and 51 predicts are `trace` and are not its business |
+| `run-snippets.js` | the **58** `stdout` claims — 28 question snippets, 30 predicts — compiled and executed twice each. The other 35 snippets and 51 predicts are `trace` and are not its business | any snippet or its `output.lines` changes |
+| `check-doc-links.js` | the **1,365** `docs[]`, `docHub` and `referenceLinks[]` URLs, 762 distinct: https, no redirect, no meta-refresh stub, `#fragment` present | any link is added or edited; and once a phase regardless, because rot is not caused by a commit |
+
+**Always pass `--selftest` to `run-snippets`.** A runner that always returns
+"matched" and a corpus that is entirely correct print the same thing. Four
+probes with known answers cost two seconds, and the first time they ran, one
+of them found a real defect in the runner. `check-doc-links --selftest` is
+the same idea for the two checks that read a page body, and needs no network.
+
+`run-snippets` finds a JDK by searching a broad candidate list — Android
+Studio's bundled JBR among them — and prints the one it chose. Override with
+`SPRINGDECK_JAVA_HOME` or `--jdk`.
 
 **`validate-nav.js` holds the five mode totals as hard numbers.** Changing the
 corpus means changing `EXPECTED_TOTALS` by hand in the same commit. If that
@@ -153,18 +171,64 @@ Where a cross-language comparison earns its place it is **prose in a
 
 | | |
 |---|---|
-| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes · 5 — Search · 6 — The question bank, all 26 topics · 7 — Theory, tracks 5–8 and the §5.9 insertions · 8 — The drill and predict catalogues, completed |
-| **Next phase** | 9 — Verification. **BLOCKED until a JDK exists on this machine**; see the blind spot below |
+| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes · 5 — Search · 6 — The question bank, all 26 topics · 7 — Theory, tracks 5–8 and the §5.9 insertions · 8 — The drill and predict catalogues, completed · 9 — Verification |
+| **Next phase** | 10 — Documentation and triage. `ARCHITECTURE.md`, `CODEBASE.md`, `FEATURES.md`, and one `docs/triage/<topic-id>.md` per topic × 26 |
 | **Corpus** | Questions: **26 topics, 486 questions**, 63 snippets, 19 diagrams |
 | | Theory: **83 modules, 687 chapters** on the reading path, 2,045 blocks, 61 glossary terms, 35 diagrams, 346 syntax blocks |
 | | Tracks: java-platform 20/163 · spring-core 7/51 · web-api 8/64 · persistence 14/121 · security 6/48 · distributed 11/86 · production 10/86 · craft 7/68 |
 | | Sets: synthesis **4 modules / 46 drills** (tiers 8·12·15·11) · output **11 modules / 81 predicts** (30 `stdout`, 51 not) |
 | **Catalogues** | Both complete and both still held as hard lists in `validate-theory.js`. An invented id is an error; an unwritten one is a warning. There are now none of either |
 | **Search index** | 1,361 entries — questions 486 · theory 687 · synthesis 46 · predict 81 · glossary 61 |
-| **Last commit date used** | 2026-10-12 |
+| **Verified** | 58/58 `stdout` claims executed against OpenJDK 25 · 762 distinct doc URLs, zero errors · findings in [`docs/verification-log.md`](docs/verification-log.md) |
+| **Last commit date used** | 2026-10-16 |
 | **Commit cadence** | **Reduced by instruction on 2026-09-03.** Fewer, larger commits — one per unit of work rather than 15–17 a day. The hand-set dates and the ascending-within-a-day rule still hold. |
 
 ### Phase gates recorded
+
+**Phase 9 — Verification.** PASSED. Both tools written, both self-tested, and
+between them they found **eight defects that had been in the corpus for
+phases** — three wrong `stdout` claims, five link titles describing the wrong
+page — plus 57 rotted URLs.
+
+- **The phase was never actually blocked.** It had been deferred since Phase 3
+  on the belief that this machine had no JDK. Android Studio bundles a
+  complete OpenJDK 25, javac included, at
+  `Contents/jbr/Contents/Home`. `java -version` failing on the PATH is not
+  the same question as "is there a JDK here", and **eight consecutive gates
+  deferred an item on evidence nobody re-examined.** Recorded as a blind spot
+  below because the shape of it will recur.
+- **58/58 `stdout` claims execute and match**, twice each. The double run is
+  the check that keeps a racy snippet from being blessed by luck.
+- **`run-snippets --selftest` found a defect in `run-snippets` on its first
+  run.** The timeout probe reported "the JVM exited non-zero", because
+  `execFileSync` leaves `error.killed` undefined and signals a timeout through
+  an undocumented `code` field. `spawnSync` returns the two as distinguishable
+  fields. That is the entire argument for a selftest, made on day one.
+- **The three snippet defects were all mechanism, not lesson.** A `final`
+  field that was a compile-time constant and so never demonstrated the hazard
+  it was written for; a `Set.of` that throws on a duplicate rather than
+  collapsing it; and an inner class whose synthetic `this$0` javac elides
+  because the class never used its outer. Each taught a true thing with a
+  broken demonstration.
+- **1,365 doc links, 762 distinct, zero errors.** 57 were broken: 49
+  redirects, 4 dead, **4 meta-refresh stubs** — the exact blind spot this file
+  had recorded as "budget a manual pass for", now caught mechanically.
+- **Oracle answers a missing page with a 200 redirect to the current JDK
+  landing page rather than a 404**, which made five wrong filenames look like
+  withdrawn documentation for three phases. The JDK 21 tree is intact.
+- **12 of 15 dead-anchor reports were the check**, again. Both `kafka.apache.org`
+  and `spring.io` build their sections in script. Fixed by counting a fragment
+  as live when the page's own navigation links to it — a second source of
+  truth, not a softening — and then fixed again when the first version of that
+  rule required quoted attributes and Kafka writes `href=/documentation#design`.
+- **`validate-questions` check 4 was exercised against a real figure at last**,
+  through all six branches, and the existence check was wrong: a bare
+  `existsSync` is case-insensitive on macOS. Now `existsCaseExact()` in
+  `schema.js`, shared with `check-offline.js`.
+- **`docs/verification-log.md` exists**, four phases after the plan asked for
+  it, and its last section is what was *not* checked.
+- **`file://` was NOT opened by hand.** Ninth gate. Unchanged reason, and it
+  is now the only item that has survived every gate this project has held.
 
 **Phase 8 — The drill and predict catalogues, completed.** PASSED. 27 drills
 and 47 puzzles, taking Synthesis to **46 across four tiers** and Predict to
@@ -483,25 +547,80 @@ inline event handler.
   **when a count is exactly 2× or 3× what it should be, suspect the selector
   before the corpus.**
 
-- `check-doc-links.js` will follow HTTP redirects but **cannot see an HTML
-  meta-refresh**. Spring's documentation restructured its URL scheme between
-  the 2.x and 3.x reference layouts, and a stub page that answers 200 and
-  refreshes elsewhere will pass. Budget one manual link-reading pass per
-  documentation source, per phase that adds links.
+- **`check-doc-links.js` DOES see a meta-refresh now, and the blind spot this
+  entry used to describe was real: four stubs were found on the first run.**
+  What it still cannot see is a page that was emptied, rewritten for a later
+  version, or replaced by a "this content has moved" sentence with no refresh
+  tag — that answers 200 and titles itself plausibly. Phase 9 proxied it by
+  comparing every page's `<title>` against the title the deck gives the link;
+  113 of 762 disagreed and **five were real**, the rest being links that name
+  a section of a page the publisher names by its chapter. The proxy is worth
+  re-running per phase that adds links; it is not a reading.
+- **A publisher's 404 handler can be a 200.** Oracle answers a missing page
+  under `docs.oracle.com/en/java/javase/NN/` with a redirect to the current
+  JDK landing page, so five filenames that had been wrong since Phase 3 looked
+  like withdrawn documentation rather than typos. **A redirect to a
+  suspiciously generic destination is a missing page, not a moved one** —
+  check whether the sibling pages still resolve before bumping a version.
+- **Some redirects are the stable interface and pinning past them is the
+  fragile choice.** `docs.junit.org/current/` 302s to the release of the day;
+  `kafka.apache.org/documentation/#design` is kept alive by a JS alias map
+  whose destinations carry a version number. The zero-redirect rule is about
+  the corpus holding a URL the publisher has *replaced*, and an alias has not
+  been replaced. Both are allow-listed in `check-doc-links.js` **with their
+  reasons written down**, which is the only form of exemption that stays
+  honest. An allow-list that grows is a check being switched off.
+- **A 403 is a refusal to talk to your program, not a dead link.** Two pages
+  in this corpus answer 403 to any User-Agent that admits to being a script
+  and render perfectly in a browser. Open them by hand before recording them
+  as broken, and put the date and the rendered title in the allow-list entry.
 - SQL predict answers are dialect-dependent. Every `artefact: 'sql-result'`
   entry must name the engine and version it was checked against. Write
   "PostgreSQL 16", never "SQL".
-- `validate-questions.js` check 4 (images) has been exercised against a
-  synthetic failure but no real figure exists in the corpus yet. Re-confirm it
-  against the first vendored figure rather than assuming.
-- **There is no JDK on the machine this deck is being built on.** `java -version`
-  fails. So `run-snippets.js` cannot actually execute anything yet, and every
-  `kind: 'stdout'` authored so far is a claim the toolchain has not verified —
-  the validator only checks that the *language* is runnable, which is a
-  different assertion. Phase 9 does not start until a JDK is installed and
-  `run-snippets.js --selftest` has been run against the whole corpus. Until
-  then, prefer `trace` whenever the output is not certain, and never write an
-  output pane for anything timing-dependent, machine-dependent or racy.
+- **`validate-questions.js` check 4 has now been exercised against a real file
+  and one branch of it was wrong.** `fs.existsSync` is case-insensitive on
+  macOS, so a figure vendored as `probe-figure.png` and cited as
+  `Probe-Figure.png` passed here and would have 404ed off Linux. It uses
+  `existsCaseExact()` from `schema.js` now, which `check-offline.js` had been
+  applying to `index.html` since Phase 2 and this check had never got. **The
+  general form: when the same question is asked in two validators, ask whether
+  they are asking it the same way** — "is this file on disk" had quietly
+  become two different questions depending on which one you asked.
+- **"There is no JDK on this machine" was written once and believed for eight
+  gates, and it was false.** `java -version` fails on the PATH and
+  `/usr/libexec/java_home` reports nothing, which is what the note was based
+  on — and neither is the question. Android Studio bundles a complete
+  OpenJDK 25 with javac at `Contents/jbr/Contents/Home`, and had done since
+  before Phase 3. A whole phase was deferred nine times over a fact nobody
+  re-derived. **The general form: a blocker recorded as a property of the
+  environment ages exactly as badly as a blocker recorded as a TODO, and
+  neither re-checks itself.** Re-derive a blocker before deferring on it for
+  the second time, and note what evidence it rests on so the next reader can
+  see what to re-run — "`java -version` fails" would have been re-testable in
+  one line; "there is no JDK" was not.
+- **Prefer `trace` whenever the output is not certain**, and never write an
+  output pane for anything timing-dependent, machine-dependent or racy. This
+  survives the JDK arriving: `run-snippets` executes each claim twice and
+  requires the two runs to agree with each other before comparing either to
+  the corpus, which catches hash-order and interleaving dependence — but only
+  probabilistically, and a `trace` never needed catching.
+- **`getDeclaredFields()` and its family promise no order, and a transcript of
+  names is a claim about one compiler on one day.** A predict puzzle listed
+  the fields of an inner class in order and was wrong twice over: the
+  synthetic field is `this$0` and not `this$1`, and javac does not emit it at
+  all unless the inner class actually uses its enclosing instance. Rewritten
+  to *count* the fields and the synthetic ones among them, which says the same
+  thing about every compiler. **When the JDK is the thing under test, ask
+  which part of the answer the specification actually guarantees.**
+- **A snippet can teach a true thing with a broken demonstration, and only
+  running it tells you.** `private final String name = "literal"` is a
+  compile-time constant that javac inlines at every use site, so the snippet
+  written to show a `final` field observed as `null` during `super()` printed
+  the text instead. `Set.of(a, b)` rejects a duplicate rather than collapsing
+  it, so the line meant to prove two equal records are one instance threw.
+  Both had passed every validator since the phase that wrote them. **The
+  lesson was right in all three cases; the mechanism chosen to show it was
+  not.**
 - CSS custom properties fail *silently* when the name is wrong: `var(--typo)`
   is an unset property, not an error. The colour grep cannot catch it and
   neither validator looks at CSS. One such typo shipped in Phase 2 and was
