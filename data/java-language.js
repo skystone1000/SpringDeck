@@ -477,7 +477,8 @@ const javaLanguageData = {
     question: 'What is the difference between a static nested class and an inner class, and why does it matter for memory?',
     answer:
         '<p>An <strong>inner class</strong> — a nested class without <code>static</code> — holds ' +
-        'a hidden reference to the instance of the enclosing class that created it. That is how ' +
+        'a hidden reference to the instance of the enclosing class that created it — <em>if it ' +
+        'uses that instance</em>. That is how ' +
         'it can read the outer object\'s fields. A <strong>static nested class</strong> does not ' +
         'and cannot; it is simply a class that happens to be namespaced inside another.</p>' +
         '<p>The memory consequence is the practical one. If an inner-class instance outlives its ' +
@@ -489,6 +490,13 @@ const javaLanguageData = {
         '<p>Anonymous classes and non-static lambdas that capture <code>this</code> have exactly ' +
         'the same property. A lambda that captures nothing from the enclosing instance does ' +
         'not, which is one reason a lambda is usually the lighter choice.</p>' +
+        '<p>That condition is where the popular answer is wrong. <strong>javac emits the ' +
+        'synthetic field only when the inner class actually reads something from its ' +
+        'enclosing instance.</strong> An inner class that never touches its outer has no ' +
+        'such field and retains nothing — which is also the sign that it should have been ' +
+        '<code>static</code> all along. The field is named <code>this$0</code>, and ' +
+        'reflecting over <code>getDeclaredFields()</code> is how you confirm whether a given ' +
+        'class carries one.</p>' +
         '<p><strong>Default to <code>static</code>.</strong> Make it an inner class only when it ' +
         'genuinely needs the outer instance.</p>',
     referenceLinks: [

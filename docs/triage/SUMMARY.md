@@ -8,7 +8,7 @@ to 486.
 
 | | |
 |---|---|
-| **Not true** | **1** |
+| **Not true** | **1** — fixed |
 | Asked, with a reservation | 2 |
 | Tier, with a reservation | 16 |
 | **No reference** | **81** |
@@ -29,7 +29,10 @@ describe does not apply to an inner class that never touches its outer.
 output was wrong for exactly this reason. The prose form of the same error was
 two files away and nothing connected them, because `run-snippets.js` reads
 `output.lines` and **no tool reads an answer**. That is the gap this whole
-phase exists to cover.
+phase exists to cover, demonstrated on its first day.
+
+**Fixed.** The answer now carries the condition and states the elision, and
+says the field is `this$0` — which is also what the predict block had wrong.
 
 ## Four structural findings
 

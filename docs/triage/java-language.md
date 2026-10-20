@@ -17,7 +17,7 @@ Columns are `T` true · `A` asked · `R` right tier · `L` has a reference link.
 | 5 | `static-binding-vs-dynamic-dispatch` | should | ✓ | ✓ | ✓ | ✗ |
 | 6 | `initialisation-order` | should | ✓ | ✓ | ✓ | ✗ |
 | 7 | `final-three-meanings` | should | ✓ | ✓ | ✓ | ✓ |
-| 8 | `static-nested-vs-inner` | should | **✗** | ✓ | ✓ | ✓ |
+| 8 | `static-nested-vs-inner` | should | **✗ → fixed** | ✓ | ✓ | ✓ |
 | 9 | `access-modifiers` | good | ✓ | ✓ | ✓ | ✗ |
 | 10 | `covariant-return-types` | good | ✓ | ✓ | ✓ | ✗ |
 | 11 | `why-no-multiple-inheritance-of-state` | good | ✓ | ✓ | ✓ | ✗ |
@@ -76,9 +76,11 @@ output was wrong for exactly this reason. **The prose form of the same error
 was two files away and nothing connected them**, because the runner reads
 `output.lines` and no tool reads an answer.
 
-The fix is one clause, and the elision is worth stating rather than hiding —
+**Fixed in the commit that follows this file.** The opening sentence now
+carries the condition, and a paragraph states the elision outright — because
 "an inner class that never touches its outer is one you should have made
-`static`" is the practical advice the answer is already reaching for.
+`static`" is the practical advice the answer was already reaching for, and the
+compiler agreeing with that advice is the interesting part.
 
 The other 43 answers are correct as read, including the two whose snippets
 Phase 9 rewrote (#6, #33) — in both cases the prose was right and the
