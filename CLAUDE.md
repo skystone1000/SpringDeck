@@ -171,8 +171,8 @@ Where a cross-language comparison earns its place it is **prose in a
 
 | | |
 |---|---|
-| **Phases complete** | 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes · 5 — Search · 6 — The question bank, all 26 topics · 7 — Theory, tracks 5–8 and the §5.9 insertions · 8 — The drill and predict catalogues, completed · 9 — Verification |
-| **Next phase** | 10 — Documentation and triage. `ARCHITECTURE.md`, `CODEBASE.md`, `FEATURES.md`, and one `docs/triage/<topic-id>.md` per topic × 26 |
+| **Phases complete** | **All eleven.** 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes · 5 — Search · 6 — The question bank, all 26 topics · 7 — Theory, tracks 5–8 and the §5.9 insertions · 8 — The drill and predict catalogues · 9 — Verification · 10 — Documentation and triage |
+| **Next** | Nothing is planned. The open items are the seven Phase 10 findings below and the four unverified things in `docs/verification-log.md` §6 |
 | **Corpus** | Questions: **26 topics, 486 questions**, 63 snippets, 19 diagrams |
 | | Theory: **83 modules, 687 chapters** on the reading path, 2,045 blocks, 61 glossary terms, 35 diagrams, 346 syntax blocks |
 | | Tracks: java-platform 20/163 · spring-core 7/51 · web-api 8/64 · persistence 14/121 · security 6/48 · distributed 11/86 · production 10/86 · craft 7/68 |
@@ -180,10 +180,40 @@ Where a cross-language comparison earns its place it is **prose in a
 | **Catalogues** | Both complete and both still held as hard lists in `validate-theory.js`. An invented id is an error; an unwritten one is a warning. There are now none of either |
 | **Search index** | 1,361 entries — questions 486 · theory 687 · synthesis 46 · predict 81 · glossary 61 |
 | **Verified** | 58/58 `stdout` claims executed against OpenJDK 25 · 762 distinct doc URLs, zero errors · findings in [`docs/verification-log.md`](docs/verification-log.md) |
-| **Last commit date used** | 2026-10-17 |
+| **Last commit date used** | 2026-10-21 |
 | **Commit cadence** | **Reduced by instruction on 2026-09-03.** Fewer, larger commits — one per unit of work rather than 15–17 a day. The hand-set dates and the ascending-within-a-day rule still hold. |
 
 ### Phase gates recorded
+
+**Phase 10 — Documentation and triage.** PASSED. `ARCHITECTURE.md`,
+`CODEBASE.md`, `FEATURES.md` and **26 triage files carrying 486 table rows**,
+one per question, marked against the four judgements the plan names.
+
+- **All 486 questions read once.** The row counts add up to 486 and the 81
+  rows marked as having no reference agree exactly with what the corpus
+  reports — which is the only mechanical proof available that the read
+  covered everything and was recorded honestly.
+- **One answer was wrong, and the way it survived is the finding.**
+  `static-nested-vs-inner` asserted that an inner class holds a reference to
+  its enclosing instance, full stop. javac elides that field when the class
+  never uses the outer. **Phase 9 found and fixed the identical fact in a
+  predict block two files away**, because `run-snippets` reads `output.lines`
+  — and nothing reads an answer. Fixed.
+- **Ten topics have no subsections**, so 148 questions render as one flat list
+  while sixteen topics get headings. `streams-functional` is the worst at 28.
+- **`heap-and-gc` has nine chapters and zero `relatedQuestions`** — the only
+  subject module in the deck with none — and `jvm-memory` has 28 questions it
+  should be pointing at. With `streams-and-lambdas` missing
+  `streams-functional`, those two gaps are **45 of the 80 uncited questions**.
+- **81 questions carry no reference and the distribution is not random**:
+  `aop-proxies` is at 50% and the gap is positional, every question from the
+  eighth onward, while sixteen topics have complete coverage.
+- **A hypothesis was tested and refused rather than repeated.** Security-
+  flavoured questions are not under-cited — 14% against a 17% baseline. Two
+  bad cases are not a pattern, and the refusal is recorded so the next reader
+  does not form the same impression from the same two examples.
+- **Every topic's `keyTopics` is fully covered**, 26 for 26.
+- **All five validators green** throughout; no corpus totals changed.
 
 **Phase 9 — Verification.** PASSED. Both tools written, both self-tested, and
 between them they found **eight defects that had been in the corpus for
@@ -483,6 +513,50 @@ unknown language (a Kotlin snippet — the Java-only rule holds), disallowed tag
 inline event handler.
 
 ### Known blind spots — recorded now, not discovered in Phase 9
+
+- **NOTHING IN THIS REPOSITORY READS AN ANSWER.** `run-snippets` reads
+  `output.lines`. `validate-questions` reads tiers, ids, links, languages and
+  tags. `validate-theory` reads block structure. `check-doc-links` reads a
+  URL. **Not one of them reads the prose a reader actually reads**, and Phase
+  10 proved what that permits: `static-nested-vs-inner` stated an inner class
+  holds its enclosing instance unconditionally, which is false, and it
+  survived every check — including Phase 9, which found and fixed *the
+  identical fact* in a predict block two files away, because that one lived in
+  a field a tool reads. The only instrument for this class of defect is
+  reading, and the record of the one reading that has happened is
+  `docs/triage/`.
+- **A validator that checks a reference RESOLVES has not checked that a module
+  HAS one.** `heap-and-gc` has nine chapters and zero `relatedQuestions`, and
+  `validate-theory` is green: it verifies every reference that exists, and a
+  module with none produces no reference to verify. **A check over a
+  collection needs to assert something about the empty collection**, or an
+  absence is indistinguishable from correctness. Same shape as the diagram
+  renderers that `return ''`.
+- **"Has a reference" and "is supported by a reference" are different
+  properties, and only the first is checked.** Check 3 requires a `must-know`
+  question to carry a link and verifies it is https. `behavioural-project`
+  cites Oracle's Java SE Troubleshooting Guide for a question about how to
+  *tell* a debugging story, and three of its questions share one generic
+  hiring page. Nothing is wrong by the rule and four references help nobody.
+- **Two questions can say the same thing under different ids and nothing
+  notices.** Check 2 refuses a duplicate *id* across topics — that is what
+  fired on `graceful-shutdown` in Phase 6 — and compares no content.
+  `try-with-resources` is answered in both `java-language` and `java-io-time`;
+  `dto-vs-entity` in both `rest-api` and `architecture-ddd`. Both pairs are
+  defensible, and both are one answer maintained in two places, **so if one is
+  corrected the other will not be** — which is exactly how the inner-class
+  error above survived.
+- **`subsections` is optional and its absence is silent.** `app.js` emits a
+  heading whenever a question's subsection changes; a topic with an empty
+  `subsections[]` simply gets none, and ten topics — 148 questions — render as
+  a flat list. Nothing distinguishes "this topic does not need grouping" from
+  "nobody wrote the groups".
+- **`keyTopics` is a coverage manifest, not a tier list, and nothing says so.**
+  It asserts the topic must *address* a thing, not that the thing is
+  `must-know`. Sixteen `keyTopics` across the deck land at `should-know` or
+  lower and every one is a defensible call, but a reader will read the
+  mismatch as an oversight and re-derive the distinction. Worth stating
+  wherever `keyTopics` is next touched.
 
 - **The renderer has two output kinds and the data cannot tell you which one
   a line was written for.** `stdout` draws a `<pre>` of literal console text;
