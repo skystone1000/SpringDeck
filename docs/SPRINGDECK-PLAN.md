@@ -1558,6 +1558,27 @@ Findings, and the four things still unverified, in `docs/verification-log.md`.
 against four judgements: *is it true*, *is it asked*, *is it at the right tier*,
 *does it have a reference*.
 
+**Phase 10 actual — PASSED, 2026-10-20.** All four documents written and 26
+triage files carrying **486 table rows**, one per question. The row counts add
+up to 486 and the 81 rows marked as having no reference agree exactly with
+what the corpus reports, which is the only mechanical proof available that the
+read happened and was recorded honestly.
+
+**One answer was wrong** — `static-nested-vs-inner` stated unconditionally
+that an inner class holds its enclosing instance — and the way it survived is
+the finding rather than the fix: Phase 9 had found and corrected the identical
+fact in a predict block two files away, because that one lived in a field a
+tool reads and **nothing in this repository reads an answer**.
+
+Four structural findings no validator could have produced: ten topics have no
+subsections and render 148 questions as a flat list; `heap-and-gc` has nine
+chapters and zero `relatedQuestions`, which with `streams-and-lambdas` missing
+`streams-functional` accounts for 45 of the 80 uncited questions; the 81
+missing references are concentrated rather than spread, with `aop-proxies` at
+50% and sixteen topics at zero; and "has a reference" turns out not to mean
+"is supported by a reference". Every topic's `keyTopics` is fully covered, 26
+for 26. Summary in `docs/triage/SUMMARY.md`.
+
 ---
 
 # PART 9 — Sourcing, licences and honesty
