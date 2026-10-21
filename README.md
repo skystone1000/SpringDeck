@@ -14,9 +14,13 @@ Five modes, two corpora, one page:
 
 ## What is built
 
-All five modes are complete. What remains is verification — every documentation
-link followed by hand, every `stdout` pane re-executed against a real JDK — and
-the per-topic triage pass.
+**All eleven phases are complete.** Five modes, both corpora, and the two
+passes that check them: every `stdout` pane compiled and executed against a
+real JDK, all 1,365 documentation links followed, and all 486 questions read
+once against four judgements. What each pass found — and what it could **not**
+check — is in
+[`docs/verification-log.md`](docs/verification-log.md) and
+[`docs/triage/SUMMARY.md`](docs/triage/SUMMARY.md).
 
 **Questions mode** — all 26 topics, 486 questions, 63 code
 snippets and 19 diagrams, across every one of the eight subject tracks plus
@@ -245,6 +249,26 @@ DSA practice is deliberately outside it: that needs a judge that runs your code
 against hidden tests, which a static site cannot be.
 
 ## Documentation
+
+**Start here:**
+
+- [`ARCHITECTURE.md`](ARCHITECTURE.md) — the design, the constraint that
+  decided it, and what the shape costs
+- [`CODEBASE.md`](CODEBASE.md) — where everything is and what each file is
+  responsible for
+- [`FEATURES.md`](FEATURES.md) — what the deck does for a reader, and what is
+  still unverified
+
+**The record of what was checked:**
+
+- [`docs/verification-log.md`](docs/verification-log.md) — Phase 9: the 58
+  `stdout` claims executed, the 1,365 links followed, and the four things that
+  remain unverified
+- [`docs/triage/SUMMARY.md`](docs/triage/SUMMARY.md) — Phase 10: one read of
+  all 486 questions, with a per-topic file beside it carrying a row per
+  question
+
+**The plan it was built to:**
 
 - [`docs/DECK-BLUEPRINT.md`](docs/DECK-BLUEPRINT.md) — the architecture, and why it is shaped the way it is
 - [`docs/SPRINGDECK-PLAN.md`](docs/SPRINGDECK-PLAN.md) — what backend interviews ask, and the content manifest that answers it
