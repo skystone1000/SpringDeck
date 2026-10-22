@@ -39,7 +39,11 @@ than the usual hand-wave at Redlock.
 **Reference — 12 of 12 have one.** #7 cites RFC 6585 for 429, which is the
 right primary source for the status code half of a rate-limiting answer.
 
-**Structural — this topic has no subsections.** See the summary.
+**Structural — this topic is deliberately flat, and that was checked.** It
+declares `subsections: null` and its file header gives the reason. The first
+triage pass recorded the flatness as a gap; **re-reading the ten flat topics'
+headers showed every one of them carries an argued reason**, so the finding
+was withdrawn. See [`SUMMARY.md`](SUMMARY.md).
 
 **Cross-links — 0 uncited, 28 citations** from `caching-strategies`,
 `scaling-data` and `resilience-patterns`. Fully connected.

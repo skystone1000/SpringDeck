@@ -57,8 +57,11 @@ already cites that reference seven times for its front half. **The gap is
 positional rather than topical, which usually means the second half was
 written in one sitting and the habit lapsed.**
 
-**Structural — this topic has no subsections.** Fourteen questions render as
-one flat list. See the summary; ten topics share this.
+**Structural — this topic is deliberately flat, and that was checked.** It
+declares `subsections: null` and its file header gives the reason. The first
+triage pass recorded the flatness as a gap; **re-reading the ten flat topics'
+headers showed every one of them carries an argued reason**, so the finding
+was withdrawn. See [`SUMMARY.md`](SUMMARY.md).
 
 **Cross-links.** Theory cites this topic **29 times** for 14 questions — the
 highest ratio in the deck — from `aop-and-proxies` and `patterns-in-spring`.

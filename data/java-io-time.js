@@ -277,6 +277,42 @@ const javaIoTimeData = {
     codeSnippets: []
 },
 
+{
+    id: 'buffering-and-why-it-matters',
+    importance: 'should-know',
+    subsection: 'io',
+    question: 'What does BufferedInputStream actually buy you?',
+    answer:
+        '<p>Fewer system calls. An unbuffered <code>FileInputStream.read()</code> asks the kernel ' +
+        'for one byte; a <code>BufferedInputStream</code> asks for 8KB and serves the next 8,191 ' +
+        'calls from an array in the heap. The difference on a large file is one or two orders of ' +
+        'magnitude, and it is the single cheapest I/O improvement available.</p>' +
+        '<p>Two things about it are worth getting right.</p>' +
+        '<p><strong>The wrapping order matters.</strong> ' +
+        '<code>new BufferedReader(new InputStreamReader(in, UTF_8))</code> — buffer outermost, so ' +
+        'the decoding happens on bulk reads rather than per byte. Wrapping the other way round ' +
+        'buffers bytes you then decode one at a time and buys much less.</p>' +
+        '<p><strong>Flushing is not automatic on the write side.</strong> A ' +
+        '<code>BufferedWriter</code> holds data until the buffer fills or you ' +
+        '<code>flush()</code>. Closing flushes, which is why try-with-resources quietly prevents ' +
+        'the classic bug of a file that is missing its last few hundred bytes — and why a program ' +
+        'that exits without closing loses them. <code>System.out</code> is a ' +
+        '<code>PrintStream</code> with autoflush on newline, which is why this never bites people ' +
+        'on console output and always bites them on files.</p>' +
+        '<p>The modern shortcut: <code>Files.newBufferedReader(path)</code> and ' +
+        '<code>Files.newBufferedWriter(path)</code> give you the whole stack correctly assembled, ' +
+        'UTF-8 by default, in one call.</p>',
+    referenceLinks: [
+        { title: 'BufferedInputStream — Java SE 25 API', url: 'https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/BufferedInputStream.html' }
+    ],
+    tags: ['io', 'performance'],
+    images: [],
+    hasDiagram: false,
+    diagramType: null,
+    diagramConfig: null,
+    codeSnippets: []
+},
+
 /* ==== Serialization =================================================== */
 
 {
@@ -470,6 +506,44 @@ const javaIoTimeData = {
         { title: 'Serialization Filtering', url: 'https://docs.oracle.com/en/java/javase/21/core/serialization-filtering1.html' }
     ],
     tags: ['serialization', 'api-design'],
+    images: [],
+    hasDiagram: false,
+    diagramType: null,
+    diagramConfig: null,
+    codeSnippets: []
+},
+
+{
+    id: 'externalizable-versus-serializable',
+    importance: 'good-to-know',
+    subsection: 'serialization',
+    question: 'What is Externalizable, and is it worth using?',
+    answer:
+        '<p><code>Serializable</code> is a marker: the JVM works out the format from the fields. ' +
+        '<code>Externalizable</code> extends it with two methods you must implement, ' +
+        '<code>writeExternal</code> and <code>readExternal</code>, and hands you complete control ' +
+        'of the bytes.</p>' +
+        '<p>Three differences that follow:</p>' +
+        '<ul>' +
+        '<li><strong>A public no-argument constructor is required</strong>, and it ' +
+        '<em>is</em> called on deserialization — unlike <code>Serializable</code>, where no ' +
+        'constructor runs at all. Then <code>readExternal</code> fills the object in.</li>' +
+        '<li><strong>Nothing is written automatically</strong>, including superclass state. ' +
+        'Forgetting a field is a silent data-loss bug rather than a compile error.</li>' +
+        '<li><strong>It can be considerably faster and smaller</strong>, because it skips the ' +
+        'reflective field discovery and the type metadata.</li>' +
+        '</ul>' +
+        '<p>Is it worth using? Almost never. It buys performance within a mechanism you should ' +
+        'not be using for anything performance-sensitive in the first place, and it keeps the ' +
+        'security problem — the class is still instantiated from an untrusted stream, and ' +
+        '<code>readExternal</code> is still attacker-triggered code. If serialization speed is ' +
+        'the constraint, the answer is a different format, not a hand-written one.</p>' +
+        '<p>Worth knowing because it comes up as a "do you know the difference" question, and ' +
+        'the complete answer includes "and I would not reach for it".</p>',
+    referenceLinks: [
+        { title: 'Externalizable — Java SE 25 API', url: 'https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Externalizable.html' }
+    ],
+    tags: ['serialization'],
     images: [],
     hasDiagram: false,
     diagramType: null,
@@ -740,80 +814,6 @@ const javaIoTimeData = {
         { title: 'System.nanoTime — Java SE 25 API', url: 'https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/System.html' }
     ],
     tags: ['time', 'measurement', 'distributed'],
-    images: [],
-    hasDiagram: false,
-    diagramType: null,
-    diagramConfig: null,
-    codeSnippets: []
-},
-
-{
-    id: 'buffering-and-why-it-matters',
-    importance: 'should-know',
-    subsection: 'io',
-    question: 'What does BufferedInputStream actually buy you?',
-    answer:
-        '<p>Fewer system calls. An unbuffered <code>FileInputStream.read()</code> asks the kernel ' +
-        'for one byte; a <code>BufferedInputStream</code> asks for 8KB and serves the next 8,191 ' +
-        'calls from an array in the heap. The difference on a large file is one or two orders of ' +
-        'magnitude, and it is the single cheapest I/O improvement available.</p>' +
-        '<p>Two things about it are worth getting right.</p>' +
-        '<p><strong>The wrapping order matters.</strong> ' +
-        '<code>new BufferedReader(new InputStreamReader(in, UTF_8))</code> — buffer outermost, so ' +
-        'the decoding happens on bulk reads rather than per byte. Wrapping the other way round ' +
-        'buffers bytes you then decode one at a time and buys much less.</p>' +
-        '<p><strong>Flushing is not automatic on the write side.</strong> A ' +
-        '<code>BufferedWriter</code> holds data until the buffer fills or you ' +
-        '<code>flush()</code>. Closing flushes, which is why try-with-resources quietly prevents ' +
-        'the classic bug of a file that is missing its last few hundred bytes — and why a program ' +
-        'that exits without closing loses them. <code>System.out</code> is a ' +
-        '<code>PrintStream</code> with autoflush on newline, which is why this never bites people ' +
-        'on console output and always bites them on files.</p>' +
-        '<p>The modern shortcut: <code>Files.newBufferedReader(path)</code> and ' +
-        '<code>Files.newBufferedWriter(path)</code> give you the whole stack correctly assembled, ' +
-        'UTF-8 by default, in one call.</p>',
-    referenceLinks: [
-        { title: 'BufferedInputStream — Java SE 25 API', url: 'https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/BufferedInputStream.html' }
-    ],
-    tags: ['io', 'performance'],
-    images: [],
-    hasDiagram: false,
-    diagramType: null,
-    diagramConfig: null,
-    codeSnippets: []
-},
-
-{
-    id: 'externalizable-versus-serializable',
-    importance: 'good-to-know',
-    subsection: 'serialization',
-    question: 'What is Externalizable, and is it worth using?',
-    answer:
-        '<p><code>Serializable</code> is a marker: the JVM works out the format from the fields. ' +
-        '<code>Externalizable</code> extends it with two methods you must implement, ' +
-        '<code>writeExternal</code> and <code>readExternal</code>, and hands you complete control ' +
-        'of the bytes.</p>' +
-        '<p>Three differences that follow:</p>' +
-        '<ul>' +
-        '<li><strong>A public no-argument constructor is required</strong>, and it ' +
-        '<em>is</em> called on deserialization — unlike <code>Serializable</code>, where no ' +
-        'constructor runs at all. Then <code>readExternal</code> fills the object in.</li>' +
-        '<li><strong>Nothing is written automatically</strong>, including superclass state. ' +
-        'Forgetting a field is a silent data-loss bug rather than a compile error.</li>' +
-        '<li><strong>It can be considerably faster and smaller</strong>, because it skips the ' +
-        'reflective field discovery and the type metadata.</li>' +
-        '</ul>' +
-        '<p>Is it worth using? Almost never. It buys performance within a mechanism you should ' +
-        'not be using for anything performance-sensitive in the first place, and it keeps the ' +
-        'security problem — the class is still instantiated from an untrusted stream, and ' +
-        '<code>readExternal</code> is still attacker-triggered code. If serialization speed is ' +
-        'the constraint, the answer is a different format, not a hand-written one.</p>' +
-        '<p>Worth knowing because it comes up as a "do you know the difference" question, and ' +
-        'the complete answer includes "and I would not reach for it".</p>',
-    referenceLinks: [
-        { title: 'Externalizable — Java SE 25 API', url: 'https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Externalizable.html' }
-    ],
-    tags: ['serialization'],
     images: [],
     hasDiagram: false,
     diagramType: null,

@@ -84,11 +84,30 @@ function run() {
         if (!Array.isArray(topic.keyTopics) || !topic.keyTopics.length) {
             report.error(`${where}: keyTopics is empty — the topic claims to cover nothing`);
         }
+        /* subsections is `null` — DELIBERATELY FLAT — or a non-empty array.
+           An empty array is neither: it renders exactly like null and reads
+           like an unfinished decision. Ten topics in this deck are flat and
+           every one argues the case in its file header; the Phase 10 triage
+           first recorded that as a gap and withdrew the finding on reading
+           them. This check is what survived: the distinction is now in the
+           data rather than only in a comment. */
         if (topic.subsections !== null && !Array.isArray(topic.subsections)) {
             report.error(`${where}: subsections must be an array or an explicit null`);
+        } else if (Array.isArray(topic.subsections) && !topic.subsections.length) {
+            report.error(
+                `${where}: subsections is an empty array. Write an explicit null if the ` +
+                `topic is meant to be flat — an empty array renders identically and says ` +
+                `nothing about whether anybody decided.`
+            );
         }
+        (topic.subsections || []).forEach((sub, i) => {
+            if (!sub || !sub.id || !sub.title) {
+                report.error(`${where}: subsections[${i}] needs both an id and a title`);
+            }
+        });
 
         const subsectionIds = (topic.subsections || []).map(s => s.id);
+        const subsectionRun = [];
         const localIds = new Set();
 
         topic.questions.forEach((question, index) => {
@@ -244,12 +263,34 @@ function run() {
             htmlIssues(question.answer, `${q} answer`).forEach(i => report.error(i));
 
             /* ---- subsection resolution ----------------------------------- */
+            if (question.subsection) subsectionRun.push(question.subsection);
             if (question.subsection && !subsectionIds.includes(question.subsection)) {
                 report.warn(`${q}: subsection "${question.subsection}" is not declared — it will fall into the More bucket`);
             }
             if (!question.subsection && subsectionIds.length) {
                 report.warn(`${q}: topic has subsections but this question declares none`);
             }
+        });
+
+        /* A SUBSECTION MUST BE CONTIGUOUS, and until Phase 10 nothing checked
+           it although app.js said it did. The renderer emits a heading where
+           the value CHANGES rather than grouping the cards, because grouping
+           would reorder them and a reordered card gets a different number —
+           the one thing the numbering rule forbids. The cost of that choice
+           is that a subsection appearing in two runs renders its heading
+           twice, with the cards between them filed under the wrong one, and
+           the page looks merely odd rather than broken. */
+        const runs = subsectionRun.filter((id, i) => id !== subsectionRun[i - 1]);
+        const seenRun = new Set();
+        runs.forEach(id => {
+            if (seenRun.has(id)) {
+                report.error(
+                    `${where}: subsection "${id}" appears in more than one run of questions. ` +
+                    `app.js emits a heading wherever the value changes, so this renders the ` +
+                    `heading twice. Keep each subsection's questions contiguous.`
+                );
+            }
+            seenRun.add(id);
         });
     });
 

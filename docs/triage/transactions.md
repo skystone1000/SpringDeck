@@ -49,8 +49,11 @@ after `aop-proxies`. Three of the seven matter:
   commit and why it is avoided, uncited. The answer is right; the reader has
   nowhere to go to check it.
 
-**Structural — this topic has no subsections.** Sixteen questions, one flat
-list. See the summary.
+**Structural — this topic is deliberately flat, and that was checked.** It
+declares `subsections: null` and its file header gives the reason. The first
+triage pass recorded the flatness as a gap; **re-reading the ten flat topics'
+headers showed every one of them carries an argued reason**, so the finding
+was withdrawn. See [`SUMMARY.md`](SUMMARY.md).
 
 **Cross-links.** Theory cites this topic **43 times** for 16 questions, from
 `transactions-and-isolation`, `spring-transactional` and

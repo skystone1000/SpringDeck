@@ -47,7 +47,11 @@ stable choice, and pinning past it to `/6.1.3/` is what would rot.
 **#11 cites `pitest.org`** rather than a coverage tool, which is the right
 call for an answer whose point is that line coverage measures the wrong thing.
 
-**Structural — this topic has no subsections.** See the summary.
+**Structural — this topic is deliberately flat, and that was checked.** It
+declares `subsections: null` and its file header gives the reason. The first
+triage pass recorded the flatness as a gap; **re-reading the ten flat topics'
+headers showed every one of them carries an argued reason**, so the finding
+was withdrawn. See [`SUMMARY.md`](SUMMARY.md).
 
 **Cross-links.** Theory cites this topic **18 times** from `testing-pyramid`
 and `testing-spring`. Two uncited.

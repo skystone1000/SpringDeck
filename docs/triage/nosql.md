@@ -41,8 +41,11 @@ this small: there is no room for a trivia layer.
 (`mongodb.com`, `redis.io`, `elastic.co`, `cassandra.apache.org`) rather than
 to summaries.
 
-**Structural — this topic has no subsections.** At ten questions this is the
-least harmful instance of the gap; see the summary.
+**Structural — this topic is deliberately flat, and that was checked.** It
+declares `subsections: null` and its file header gives the reason. The first
+triage pass recorded the flatness as a gap; **re-reading the ten flat topics'
+headers showed every one of them carries an argued reason**, so the finding
+was withdrawn. See [`SUMMARY.md`](SUMMARY.md).
 
 **Cross-links.** Theory cites this topic **13 times** from `nosql-stores`.
 One uncited.

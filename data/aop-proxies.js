@@ -1,7 +1,7 @@
 /* ==========================================================================
    data/aop-proxies.js — AOP, Proxies & Annotations
 
-   Twenty questions, no subsections. This topic is small and it is the one
+   Fourteen questions, no subsections. This topic is small and it is the one
    that explains the behaviour of half the annotations in the framework: why
    @Transactional does nothing on an internal call, why @Async returns null,
    why a final method cannot be advised. Everything here is one mechanism seen

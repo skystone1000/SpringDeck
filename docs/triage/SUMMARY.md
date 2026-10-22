@@ -34,19 +34,34 @@ phase exists to cover, demonstrated on its first day.
 **Fixed.** The answer now carries the condition and states the elision, and
 says the field is `this$0` — which is also what the predict block had wrong.
 
-## Four structural findings
+## Four structural findings — one of which was withdrawn
 
-### 1. Ten topics have no subsections — 148 questions render as a flat list
+### 1. WITHDRAWN — ten topics are flat, and every one of them meant to be
 
-`app.js:341` emits an `<h2 class="subsection-heading">` whenever a question's
-subsection changes. Sixteen topics get that grouping. These ten do not:
+The first pass recorded this as a gap: `app.js:341` emits an
+`<h2 class="subsection-heading">` whenever a question's subsection changes,
+sixteen topics get that grouping, and ten — 148 questions — do not.
+`streams-functional` at 28 questions looked like the worst case.
 
-`streams-functional` (28) · `transactions` (16) · `aop-proxies` (14) ·
-`kafka-messaging` (12) · `caching-scale` (12) · `testing` (11) ·
-`behavioural-project` (10) · `nosql` (10) · `build-tools` (10) · `cloud` (9)
+**Re-reading the ten files withdrew it.** Every one declares `subsections:
+null` — an explicit null, not an omission — and every one argues the case in
+its header. `streams-functional`: "the topic reads as one argument … cutting
+it into three headings would break the thread for no filing benefit."
+`transactions`: "splitting them into headings would imply those are
+separable. They are not." `aop-proxies`: "everything here is one mechanism
+seen from several angles."
 
-`streams-functional` is the worst case: 28 questions, one undifferentiated
-list, and its own `keyTopics` all but names the groups it should have.
+Those are decisions, and better ones than the finding that questioned them.
+**The correction is recorded rather than quietly removed**, because the
+original wording — "nothing distinguishes *this topic does not need grouping*
+from *nobody wrote the groups*" — was itself the error: the file headers
+distinguish them, and the pass had not read the file headers.
+
+What survives is narrower and still true: **nothing machine-readable separates
+a considered `null` from an unconsidered one.** `validate-questions` now
+requires `subsections` to be either an explicit `null` or a non-empty array,
+and requires a declared subsection to stay contiguous — the rule `app.js` has
+always assumed and no tool checked.
 
 ### 2. Two theory modules do not link to the topics they teach
 

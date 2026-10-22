@@ -46,8 +46,11 @@ nothing tells them the translation is expected. `SPRINGDECK-PLAN.md` does not
 name a target cloud either way. **This is a manifest question rather than a
 question-level defect**, which is why every row above is `✓`.
 
-**Structural — this topic has no subsections.** At nine questions this is the
-least harmful instance; see the summary.
+**Structural — this topic is deliberately flat, and that was checked.** It
+declares `subsections: null` and its file header gives the reason. The first
+triage pass recorded the flatness as a gap; **re-reading the ten flat topics'
+headers showed every one of them carries an argued reason**, so the finding
+was withdrawn. See [`SUMMARY.md`](SUMMARY.md).
 
 **Cross-links — 0 uncited, 17 citations** from `cloud-for-java-services` and
 `platform-concerns`. Fully connected.

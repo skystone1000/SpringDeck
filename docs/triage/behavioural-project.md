@@ -58,7 +58,11 @@ first.** Six of the ten here are properly sourced — Amazon's hiring page, the
 C4 model, ADRs twice, the SRE book's postmortem chapter, Google's code-review
 practices — which is what makes the other four visible.
 
-**Structural — this topic has no subsections.** See the summary.
+**Structural — this topic is deliberately flat, and that was checked.** It
+declares `subsections: null` and its file header gives the reason. The first
+triage pass recorded the flatness as a gap; **re-reading the ten flat topics'
+headers showed every one of them carries an argued reason**, so the finding
+was withdrawn. See [`SUMMARY.md`](SUMMARY.md).
 
 **Cross-links.** Theory cites this topic **10 times** — one per question,
 though not evenly — from `lld-method` and the craft modules. Three uncited.

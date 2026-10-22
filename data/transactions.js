@@ -1,7 +1,7 @@
 /* ==========================================================================
    data/transactions.js — Transactions & Concurrency Control
 
-   Eighteen questions, no subsections. Transactions cut across JPA, JDBC, the
+   Sixteen questions, no subsections. Transactions cut across JPA, JDBC, the
    database and Spring's proxies, and splitting them into headings would imply
    those are separable. They are not: the reason @Transactional silently does
    nothing is a proxy fact, the reason REQUIRES_NEW deadlocks is a connection

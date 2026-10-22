@@ -37,7 +37,11 @@ at that. That reframing is the answer; the rest is detail.
 cite the right kind of source rather than a vendor: `git-scm.com` for
 branching and Google's engineering practices for review.
 
-**Structural — this topic has no subsections.** See the summary.
+**Structural — this topic is deliberately flat, and that was checked.** It
+declares `subsections: null` and its file header gives the reason. The first
+triage pass recorded the flatness as a gap; **re-reading the ten flat topics'
+headers showed every one of them carries an argued reason**, so the finding
+was withdrawn. See [`SUMMARY.md`](SUMMARY.md).
 
 **Cross-links.** Theory cites this topic **16 times** from
 `build-and-dependencies`. One uncited.

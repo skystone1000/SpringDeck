@@ -84,16 +84,24 @@ reference **resolves**, which is a different assertion from a module linking
 to the topic it is about. **A module that links nowhere and a module that
 links to the wrong place both pass.**
 
-## Structural — this topic has no subsections
+## Structural — deliberately flat, and the finding against it was withdrawn
 
-`subsections` is empty, so all 28 questions render as one undifferentiated
-list. `app.js:341` emits an `<h2 class="subsection-heading">` whenever a
-question's subsection changes, and sixteen topics get that grouping; this one
-does not, and at 28 questions it is the largest topic affected.
+At 28 questions this is the largest topic that declares `subsections: null`,
+and the first triage pass recorded that as a gap: `app.js:341` emits a heading
+whenever a question's subsection changes, sixteen topics get that grouping and
+this one does not.
 
-Its own `keyTopics` all but names the groups it should have — the stream
-model, collectors, parallelism, `Optional`, and lambdas and method
-references. **Ten topics share this gap**; see the summary.
+**That finding was wrong, and re-reading the file header is what showed it.**
+This topic's header argues the case:
+
+> No subsections. The topic reads as one argument that starts at "a stream is
+> a pipeline, not a collection" and ends at "here is where a loop is the
+> better answer", and cutting it into three headings would break the thread
+> for no filing benefit.
+
+All ten flat topics carry a reason of that kind. See [`SUMMARY.md`](SUMMARY.md)
+for what the real gap turned out to be, which is narrower: nothing
+*machine-readable* separates a considered `null` from an unconsidered one.
 
 ## Not judged here
 

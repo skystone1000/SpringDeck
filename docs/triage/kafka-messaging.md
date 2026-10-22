@@ -51,7 +51,11 @@ gets a stub page from half the references in this topic.** Nothing is being
 changed here; it is recorded so the trade is visible from the topic as well as
 from the link report.
 
-**Structural — this topic has no subsections.** See the summary.
+**Structural — this topic is deliberately flat, and that was checked.** It
+declares `subsections: null` and its file header gives the reason. The first
+triage pass recorded the flatness as a gap; **re-reading the ten flat topics'
+headers showed every one of them carries an argued reason**, so the finding
+was withdrawn. See [`SUMMARY.md`](SUMMARY.md).
 
 **Cross-links — 0 uncited, 28 citations** from `messaging-foundations`,
 `kafka-mechanics` and `delivery-and-outbox`. Fully connected.
