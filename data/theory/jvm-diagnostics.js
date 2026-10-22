@@ -65,7 +65,9 @@ const jvmDiagnosticsModule = {
             docs: [
                 { title: 'ClassLoader', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/ClassLoader.html', kind: 'api' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'classloader-leak' }
+            ]
         },
 
         {
@@ -102,7 +104,9 @@ const jvmDiagnosticsModule = {
             docs: [
                 { title: 'JEP 122: Remove the Permanent Generation', url: 'https://openjdk.org/jeps/122', kind: 'spec' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'metaspace-and-permgen' }
+            ]
         },
 
         {
@@ -135,7 +139,10 @@ const jvmDiagnosticsModule = {
             docs: [
                 { title: 'Tomcat — Memory Leak Protection', url: 'https://tomcat.apache.org/tomcat-10.1-doc/config/listeners.html', kind: 'guide' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'classloader-leak' },
+                { topicId: 'jvm-memory', questionId: 'static-collection-leak' }
+            ]
         },
 
         {
@@ -171,7 +178,10 @@ const jvmDiagnosticsModule = {
             docs: [
                 { title: 'Troubleshooting Guide — Understand the OutOfMemoryError Exception', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/troubleshooting-memory-leaks.html', kind: 'guide' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'outofmemoryerror-flavours' },
+                { topicId: 'jvm-memory', questionId: 'stackoverflow-versus-outofmemory' }
+            ]
         },
 
         {
@@ -206,7 +216,9 @@ const jvmDiagnosticsModule = {
             docs: [
                 { title: 'Eclipse Memory Analyzer', url: 'https://eclipse.dev/mat/', kind: 'guide' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'diagnosing-a-memory-leak' }
+            ]
         },
 
         {
@@ -282,7 +294,9 @@ const jvmDiagnosticsModule = {
             docs: [
                 { title: 'JDK Tool Specifications', url: 'https://docs.oracle.com/en/java/javase/21/docs/specs/man/index.html', kind: 'guide' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'jvm-diagnostic-tools' }
+            ]
         },
 
         {
@@ -325,7 +339,10 @@ const jvmDiagnosticsModule = {
                 { title: 'JEP 328: Flight Recorder', url: 'https://openjdk.org/jeps/328', kind: 'spec' },
                 { title: 'JDK Flight Recorder Runtime Guide', url: 'https://docs.oracle.com/en/java/javase/21/jfapi/index.html', kind: 'guide' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'jit-compilation-and-warmup' },
+                { topicId: 'jvm-memory', questionId: 'high-cpu-with-low-throughput' }
+            ]
         },
 
         {
@@ -367,7 +384,9 @@ const jvmDiagnosticsModule = {
             docs: [
                 { title: 'Container Awareness — Java in Containers', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/ergonomics1.html', kind: 'guide' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'jvm-in-a-container' }
+            ]
         }
     ]
 };

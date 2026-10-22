@@ -52,7 +52,11 @@ const heapAndGcModule = {
                 { title: 'JVMS 2.5 — Run-Time Data Areas', url: 'https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html#jvms-2.5', kind: 'spec' },
                 { title: 'Native Memory Tracking', url: 'https://docs.oracle.com/en/java/javase/21/vm/native-memory-tracking.html', kind: 'guide' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'stack-versus-heap' },
+                { topicId: 'jvm-memory', questionId: 'memory-outside-the-heap' },
+                { topicId: 'jvm-memory', questionId: 'direct-byte-buffers' }
+            ]
         },
 
         {
@@ -121,7 +125,10 @@ const heapAndGcModule = {
             docs: [
                 { title: 'GC Tuning Guide — Generations', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/garbage-collector-implementation1.html', kind: 'guide' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'heap-generations-and-survivors' },
+                { topicId: 'jvm-memory', questionId: 'minor-major-and-full-gc' }
+            ]
         },
 
         {
@@ -158,7 +165,10 @@ const heapAndGcModule = {
             docs: [
                 { title: 'JEP 341: Default CDS Archives', url: 'https://openjdk.org/jeps/341', kind: 'spec' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'tlab-allocation' },
+                { topicId: 'jvm-memory', questionId: 'escape-analysis-and-scalar-replacement' }
+            ]
         },
 
         {
@@ -210,7 +220,11 @@ const heapAndGcModule = {
             docs: [
                 { title: 'java.lang.ref — package summary', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/ref/package-summary.html', kind: 'api' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'what-makes-an-object-collectable' },
+                { topicId: 'jvm-memory', questionId: 'reference-strengths' },
+                { topicId: 'jvm-memory', questionId: 'finalize-and-cleaner' }
+            ]
         },
 
         {
@@ -249,7 +263,10 @@ const heapAndGcModule = {
             docs: [
                 { title: 'Garbage-First Garbage Collector', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/garbage-first-g1-garbage-collector1.html', kind: 'guide' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'how-g1-works' },
+                { topicId: 'jvm-memory', questionId: 'humongous-allocations' }
+            ]
         },
 
         {
@@ -294,7 +311,9 @@ const heapAndGcModule = {
                 { title: 'JEP 439: Generational ZGC', url: 'https://openjdk.org/jeps/439', kind: 'spec' },
                 { title: 'Z Garbage Collector', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/z-garbage-collector2.html', kind: 'guide' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'is-gc-stop-the-world' }
+            ]
         },
 
         {
@@ -346,7 +365,10 @@ const heapAndGcModule = {
             docs: [
                 { title: 'Ergonomics', url: 'https://docs.oracle.com/en/java/javase/21/gctuning/ergonomics1.html', kind: 'guide' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'choosing-a-collector' },
+                { topicId: 'jvm-memory', questionId: 'compressed-oops-and-the-32gb-cliff' }
+            ]
         },
 
         {
@@ -376,7 +398,9 @@ const heapAndGcModule = {
             docs: [
                 { title: 'java command — Extra Options', url: 'https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html', kind: 'guide' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'does-the-jvm-return-memory' }
+            ]
         },
 
         {
@@ -421,7 +445,10 @@ const heapAndGcModule = {
             docs: [
                 { title: 'JEP 158: Unified JVM Logging', url: 'https://openjdk.org/jeps/158', kind: 'spec' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'jvm-memory', questionId: 'reading-a-gc-log' },
+                { topicId: 'jvm-memory', questionId: 'leak-or-undersized-heap' }
+            ]
         }
     ]
 };

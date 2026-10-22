@@ -57,7 +57,9 @@ const streamsAndLambdasModule = {
                 { title: 'java.util.function', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/package-summary.html', kind: 'api' }
             ],
             relatedQuestions: [
-                { topicId: 'java-language', questionId: 'checked-vs-unchecked' }
+                { topicId: 'java-language', questionId: 'checked-vs-unchecked' },
+                { topicId: 'streams-functional', questionId: 'functional-interfaces-and-sam' },
+                { topicId: 'streams-functional', questionId: 'method-reference-kinds' }
             ]
         },
 
@@ -103,7 +105,9 @@ const streamsAndLambdasModule = {
                 { title: 'LambdaMetafactory', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/invoke/LambdaMetafactory.html', kind: 'api' }
             ],
             relatedQuestions: [
-                { topicId: 'java-language', questionId: 'static-nested-vs-inner' }
+                { topicId: 'java-language', questionId: 'static-nested-vs-inner' },
+                { topicId: 'streams-functional', questionId: 'lambda-vs-anonymous-class' },
+                { topicId: 'streams-functional', questionId: 'effectively-final-capture' }
             ]
         },
 
@@ -152,7 +156,10 @@ const streamsAndLambdasModule = {
             docs: [
                 { title: 'Stream — package documentation on laziness', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/package-summary.html', kind: 'guide' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'streams-functional', questionId: 'what-a-stream-is-not' },
+                { topicId: 'streams-functional', questionId: 'laziness-and-element-order' }
+            ]
         },
 
         {
@@ -186,7 +193,11 @@ const streamsAndLambdasModule = {
             docs: [
                 { title: 'Stream.toList', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/Stream.html#toList()', kind: 'api' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'streams-functional', questionId: 'intermediate-vs-terminal-operations' },
+                { topicId: 'streams-functional', questionId: 'stream-is-single-use' },
+                { topicId: 'streams-functional', questionId: 'when-a-loop-beats-a-stream' }
+            ]
         },
 
         {
@@ -239,7 +250,10 @@ const streamsAndLambdasModule = {
                 { title: 'Collectors', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/Collectors.html', kind: 'api' }
             ],
             relatedQuestions: [
-                { topicId: 'collections', questionId: 'compute-and-merge' }
+                { topicId: 'collections', questionId: 'compute-and-merge' },
+                { topicId: 'streams-functional', questionId: 'collectors-tomap-traps' },
+                { topicId: 'streams-functional', questionId: 'reduce-vs-collect' },
+                { topicId: 'streams-functional', questionId: 'stream-tolist-vs-collectors-tolist' }
             ]
         },
 
@@ -266,7 +280,10 @@ const streamsAndLambdasModule = {
             docs: [
                 { title: 'Collectors.groupingBy', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/Collectors.html#groupingBy(java.util.function.Function,java.util.stream.Collector)', kind: 'api' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'streams-functional', questionId: 'collectors-groupingby' },
+                { topicId: 'streams-functional', questionId: 'partitioningby-vs-groupingby' }
+            ]
         },
 
         {
@@ -288,7 +305,9 @@ const streamsAndLambdasModule = {
             docs: [
                 { title: 'Optional.stream', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html#stream()', kind: 'api' }
             ],
-            relatedQuestions: []
+            relatedQuestions: [
+                { topicId: 'streams-functional', questionId: 'map-vs-flatmap' }
+            ]
         },
 
         {
@@ -330,7 +349,10 @@ const streamsAndLambdasModule = {
             ],
             relatedQuestions: [
                 { topicId: 'collections', questionId: 'collections-and-parallel-streams' },
-                { topicId: 'concurrency', questionId: 'forkjoin-common-pool' }
+                { topicId: 'concurrency', questionId: 'forkjoin-common-pool' },
+                { topicId: 'streams-functional', questionId: 'when-parallel-streams-help' },
+                { topicId: 'streams-functional', questionId: 'parallel-stream-common-pool' },
+                { topicId: 'streams-functional', questionId: 'side-effects-in-lambdas' }
             ]
         },
 
@@ -383,7 +405,10 @@ const streamsAndLambdasModule = {
             ],
             relatedQuestions: [
                 { topicId: 'java-language', questionId: 'optional-in-a-field-or-parameter' },
-                { topicId: 'jpa-hibernate', questionId: 'getreferencebyid-vs-findbyid' }
+                { topicId: 'jpa-hibernate', questionId: 'getreferencebyid-vs-findbyid' },
+                { topicId: 'streams-functional', questionId: 'what-optional-is-for' },
+                { topicId: 'streams-functional', questionId: 'orelse-vs-orelseget' },
+                { topicId: 'streams-functional', questionId: 'optional-chaining-methods' }
             ]
         }
     ]

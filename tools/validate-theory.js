@@ -24,7 +24,8 @@
         REFUSED for any language the runner cannot execute
      7  a predict block whose artefact is not stdout must be trace AND must
         say how its answer was established
-     8  relatedQuestions resolve against the question bank
+     8  relatedQuestions resolve against the question bank, AND a subject
+        module links to at least one question somewhere in it
      9  the drill catalogue and the predict-set catalogue are HELD HERE
     10  the modules that must carry a version block do carry one
     11  no markup in a field the renderer escapes — a <code> tag written
@@ -366,6 +367,7 @@ function run() {
 
         const seenChapterIds = new Set();
         let moduleHasVersionBlock = false;
+        let moduleRelated = 0;
 
         chapters.forEach((chapter, index) => {
             const c = `${m}/${chapter.id}`;
@@ -441,6 +443,7 @@ function run() {
                 if (!questionIds.has(key)) {
                     report.error(`${c}: relatedQuestions "${key}" does not resolve against the question bank`);
                 }
+                moduleRelated++;
             });
 
             const blocks = chapter.blocks || [];
@@ -607,6 +610,29 @@ function run() {
         /* ---- CHECK 10 — the module-level version requirement ---------- */
         if (VERSION_BLOCK_MODULES.includes(module.id) && !moduleHasVersionBlock) {
             report.error(`${m}: this module must carry at least one version block`);
+        }
+
+        /* ---- CHECK 8, second half — a module must link SOMEWHERE ------
+           Check 8 above verifies every relatedQuestions entry that exists.
+           It says nothing about a module that has none, because a module
+           with no entries produces no entry to verify — so a module linking
+           nowhere and a module whose links are all correct produced the same
+           green run.
+
+           They did. `heap-and-gc` had nine chapters and zero
+           relatedQuestions until Phase 10, while `jvm-memory` held 28
+           questions on heap structure, collectors, GC logs and heap dumps
+           that no chapter pointed at. A reader finishing the module was
+           offered nothing to practise on.
+
+           Subject modules only. A drill set or a predict set is a view over
+           blocks and has no reason to link out. */
+        if (trackScope.get(module.trackId) === 'subject' && moduleRelated === 0) {
+            report.error(
+                `${m}: ${chapters.length} chapter(s) and not one relatedQuestions entry. ` +
+                `A reader finishing this module is offered nothing to practise on, and ` +
+                `check 8 cannot see it because there is no entry to resolve.`
+            );
         }
     });
 
