@@ -213,7 +213,19 @@ one per question, marked against the four judgements the plan names.
   bad cases are not a pattern, and the refusal is recorded so the next reader
   does not form the same impression from the same two examples.
 - **Every topic's `keyTopics` is fully covered**, 26 for 26.
-- **All five validators green** throughout; no corpus totals changed.
+- **All five validators green** throughout; no corpus totals changed, and
+  `run-snippets` and `check-doc-links` re-run clean after the one content fix.
+- **The corrected answer renders**, with the condition and `this$0` present and
+  `this$1` gone, and no console errors with the reader proved by a deliberate
+  one.
+- **The overflow sweep was NOT completed and the reason is the harness, not
+  the deck.** The browser pane reported `clientWidth: 0` on 17 of 24
+  measurements, which makes `scrollWidth > clientWidth` trivially true and
+  produced a "531 elements overflow" reading that was entirely an artefact.
+  The seven measurements taken at a real width (1121px) were clean. **Recorded
+  as neither a pass nor a failure**, exactly like the `file://` item, and worth
+  re-running when the pane is stable — this phase changed one answer's prose
+  and nothing structural, so the risk is low.
 
 **Phase 9 — Verification.** PASSED. Both tools written, both self-tested, and
 between them they found **eight defects that had been in the corpus for
@@ -513,6 +525,14 @@ unknown language (a Kotlin snippet — the Java-only rule holds), disallowed tag
 inline event handler.
 
 ### Known blind spots — recorded now, not discovered in Phase 9
+
+- **A viewport of zero makes every overflow check pass and every element an
+  offender.** The Phase 10 render check reported 531 elements wider than the
+  viewport and `scrollWidth > clientWidth` on every route; `clientWidth` was
+  **0**, because the browser pane had collapsed. `237 > 0` is true and means
+  nothing. **Assert the viewport is non-zero before believing an overflow
+  result** — the sweeps in Phases 5, 7 and 8 never did, and would have
+  reported clean or dirty for the same reason without saying which.
 
 - **NOTHING IN THIS REPOSITORY READS AN ANSWER.** `run-snippets` reads
   `output.lines`. `validate-questions` reads tiers, ids, links, languages and
