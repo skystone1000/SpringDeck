@@ -280,6 +280,14 @@ page — plus 57 rotted URLs.
   previous `predict-io-and-time.js`. A reload with a changed query string
   showed `this$0` and the new wording. **Reload with a cache-buster before
   believing a fix failed** — this is the second time.
+- **The CDN-blocked half of the offline promise is now DEMONSTRATED rather
+  than asserted.** A copy of the deck with all three `<script src="https://…">`
+  tags removed was served and driven: `THREE`, `gsap` and `ScrollTrigger` all
+  `undefined`, all three corpora loaded, all five modes rendered content
+  (26 cards, 8 chapters, 8 drills, 10 predicts, 3 terms), the gutter and the
+  source agreed on line count in every code block, one diagram mounted with no
+  `NaN`, and **no console errors** with the reader proved by a deliberate one.
+  That invariant has been in this file since Phase 0 and had never been run.
 - **`file://` was NOT opened by hand.** Ninth gate. Unchanged reason, and it
   is now the only item that has survived every gate this project has held.
 

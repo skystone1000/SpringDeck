@@ -109,7 +109,9 @@ and nothing leaves your machine.
 - **Open `index.html` from a disk and it works.** No server, no build, no
   install.
 - **Block all three CDNs and you lose a particle background and some scroll
-  animation.** Nothing else.
+  animation.** Nothing else — and that is measured, not asserted: served with
+  the three script tags removed, all five modes render, code blocks keep their
+  line numbers, diagrams still draw, and the console stays clean.
 - **Both themes are first-class**, and the theme is applied before the body
   parses, so there is no flash.
 - **It prints.** `print.css` hides the line gutter so a wrapped code line
