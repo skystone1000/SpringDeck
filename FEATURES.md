@@ -118,10 +118,11 @@ and nothing leaves your machine.
   is a link to exactly what you were looking at.
 - **Old links keep working.** `#collections` normalises to
   `#questions/collections` rather than 404ing.
-- **No horizontal scrolling** at 390px, 768px or 1280px. The deck has **147
-  addressable routes** — 5 mode indexes, 26 topics, 83 theory modules, 15 sets
-  and 18 glossary letters — and the sweeps in Phases 5, 7 and 8 covered every
-  one of them at all three widths.
+- **No horizontal scrolling** at 390px, 768px or 1280px, on any route. The
+  deck has 155 addressable routes — 5 mode indexes, 26 topics, 83 theory
+  modules, 15 sets and 26 glossary letters — and **all 465 route/width
+  combinations were swept**, with the viewport asserted non-zero before and
+  after every measurement.
 
 ## Accuracy, and what is still unverified
 

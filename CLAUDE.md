@@ -218,14 +218,14 @@ one per question, marked against the four judgements the plan names.
 - **The corrected answer renders**, with the condition and `this$0` present and
   `this$1` gone, and no console errors with the reader proved by a deliberate
   one.
-- **The overflow sweep was NOT completed and the reason is the harness, not
-  the deck.** The browser pane reported `clientWidth: 0` on 17 of 24
-  measurements, which makes `scrollWidth > clientWidth` trivially true and
-  produced a "531 elements overflow" reading that was entirely an artefact.
-  The seven measurements taken at a real width (1121px) were clean. **Recorded
-  as neither a pass nor a failure**, exactly like the `file://` item, and worth
-  re-running when the pane is stable — this phase changed one answer's prose
-  and nothing structural, so the risk is low.
+- **The overflow sweep failed the first time as an artefact, and then ran
+  clean.** The first attempt reported 531 overflowing elements because the
+  browser pane had collapsed to `clientWidth: 0`, which makes
+  `scrollWidth > clientWidth` trivially true of any page. Re-run with the
+  viewport pinned and asserted before and after every measurement:
+  **465 route/width combinations — all 155 routes at 390px, 768px and 1280px
+  — with zero horizontal overflow** and no console errors beyond a deliberate
+  probe. The sweep now refuses to run at all if `clientWidth` is zero.
 
 **Phase 9 — Verification.** PASSED. Both tools written, both self-tested, and
 between them they found **eight defects that had been in the corpus for
@@ -526,13 +526,16 @@ inline event handler.
 
 ### Known blind spots — recorded now, not discovered in Phase 9
 
-- **A viewport of zero makes every overflow check pass and every element an
+- **A viewport of zero makes every overflow check fire and every element an
   offender.** The Phase 10 render check reported 531 elements wider than the
   viewport and `scrollWidth > clientWidth` on every route; `clientWidth` was
   **0**, because the browser pane had collapsed. `237 > 0` is true and means
   nothing. **Assert the viewport is non-zero before believing an overflow
   result** — the sweeps in Phases 5, 7 and 8 never did, and would have
-  reported clean or dirty for the same reason without saying which.
+  reported clean or dirty for the same reason without saying which. The
+  re-run asserts the width before and after every measurement and refuses to
+  start at zero; that is four lines and it is the difference between a sweep
+  and a number.
 
 - **NOTHING IN THIS REPOSITORY READS AN ANSWER.** `run-snippets` reads
   `output.lines`. `validate-questions` reads tiers, ids, links, languages and
