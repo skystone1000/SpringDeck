@@ -756,9 +756,19 @@ inline event handler.
   reads `data:`, `typeof topics` is `undefined`, nothing renders — so no
   relative `<script src="js/…">` can resolve. That is a limitation of the
   harness, not a finding about the deck, and it must be recorded as neither a
-  pass nor a failure. `check-offline.js` still covers the mechanical half.
-  **Open `index.html` from a real browser's File → Open before the Phase 3
-  gate**, and read a question, a chapter, a code block and a diagram there.
+  pass nor a failure. **Re-confirmed 2026-10-23** rather than left inherited:
+  `location.protocol` reads `data:`, all 145 script tags are present in the
+  DOM, not one has executed, and `topics`, `theoryModules` and `appModes` are
+  all `undefined`.
+  **What remains untested is now narrow.** `check-offline.js` covers the
+  mechanical half — every local reference relative, present and case-exact,
+  every remote one optional, no network APIs — and the CDN-blocked half was
+  demonstrated on 2026-10-23 by serving a copy with the three script tags
+  stripped. So the open question is only whether a browser's `file://`
+  restrictions affect a page that uses no ES modules and no network APIs,
+  which is a far smaller claim than "`file://` has never been tried".
+  **Open `index.html` from a real browser's File → Open** and read a question,
+  a chapter, a code block and a diagram there.
 - **Every diagram renderer fails soft, and so does anything else that returns
   a string.** `flowchart`, `sequence` and `animation` each `return ''` when
   their config is empty, which is right at run time — a half-drawn diagram must
