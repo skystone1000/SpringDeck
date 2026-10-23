@@ -177,7 +177,9 @@ const javaLanguageData = {
         '<li><strong>Otherwise you must override.</strong> The class declares the method itself, ' +
         'and can delegate explicitly with <code>Interface.super.method()</code>.</li>' +
         '</ul>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JLS 9.4.1 — Inheritance and Overriding', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-9.html#jls-9.4.1' }
+    ],
     tags: ['oop', 'interfaces', 'default-methods'],
     images: [],
     hasDiagram: false,
@@ -309,7 +311,9 @@ const javaLanguageData = {
         '<p>Only instance methods are virtual. <code>private</code>, <code>static</code> and ' +
         '<code>final</code> methods are all statically bound, which is also why they are the ' +
         'ones a JIT can inline most aggressively.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JLS 8.4.8.2 — Hiding (by Class Methods)', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.4.8.2' }
+    ],
     tags: ['oop', 'dispatch', 'static'],
     images: [],
     hasDiagram: false,
@@ -375,7 +379,9 @@ const javaLanguageData = {
         'yet, so a <code>final</code> field can be observed as <code>null</code> or ' +
         '<code>0</code> — a state that is impossible anywhere else in the object\'s life. Never ' +
         'call an overridable method from a constructor.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JLS 12.5 — Creation of New Class Instances', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.5' }
+    ],
     tags: ['oop', 'initialisation', 'constructors'],
     images: [],
     hasDiagram: false,
@@ -528,7 +534,9 @@ const javaLanguageData = {
         'abstract base, a package-private helper, a package-private constructor with a public ' +
         'static factory. Combined with package-by-feature, it gives you real module boundaries ' +
         'without any module system at all, and it is the cheapest way to keep a refactor local.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JLS 6.6 — Access Control', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-6.html#jls-6.6' }
+    ],
     tags: ['oop', 'encapsulation', 'api-design'],
     images: [],
     hasDiagram: false,
@@ -555,7 +563,9 @@ const javaLanguageData = {
         'every override you intend: it turns a silent accidental overload into a compile error. ' +
         'The classic instance is <code>equals(MyType other)</code>, which compiles perfectly, ' +
         'is never called by any collection, and is caught immediately by the annotation.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JLS 8.4.8.3 — Requirements in Overriding and Hiding', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.4.8.3' }
+    ],
     tags: ['oop', 'overriding', 'variance'],
     images: [],
     hasDiagram: false,
@@ -585,7 +595,9 @@ const javaLanguageData = {
         'multiple inheritance of <em>state</em>. The whole design of default methods — including ' +
         'the rule that a class method always wins — exists so that adding one to an existing ' +
         'interface cannot break an implementation that already compiled.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JLS 8.1.4 — Superclasses and Subclasses', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.1.4' }
+    ],
     tags: ['oop', 'inheritance', 'language-design'],
     images: [],
     hasDiagram: false,
@@ -701,7 +713,9 @@ const javaLanguageData = {
         '<p>The general rule: <strong>there is no way to extend an instantiable class with a ' +
         'value component and preserve the equals contract.</strong> This is also why records ' +
         'are final.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.lang.Object — equals', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)' }
+    ],
     tags: ['object-contract', 'inheritance', 'liskov'],
     images: [],
     hasDiagram: false,
@@ -1147,7 +1161,9 @@ const javaLanguageData = {
         '<code>StringBuffer</code> only if the builder is genuinely shared between threads, ' +
         'which it almost never is — it is the synchronised version and every ' +
         '<code>append</code> pays for a lock nobody needs.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'StringConcatFactory — javadoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/invoke/StringConcatFactory.html' }
+    ],
     tags: ['strings', 'performance'],
     images: [],
     hasDiagram: false,
@@ -1216,7 +1232,9 @@ const javaLanguageData = {
         '(<code>Order.copyOf(order)</code>); or a <strong>copy constructor</strong>. All three ' +
         'are ordinary methods with ordinary types, they can be overloaded to convert between ' +
         'implementations, and none of them requires the caller to cast.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.lang.Object — clone', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()' }
+    ],
     tags: ['object-contract', 'cloning', 'api-design'],
     images: [],
     hasDiagram: false,
@@ -1250,7 +1268,9 @@ const javaLanguageData = {
         '</ul>' +
         '<p>Do not parse it either. The moment code parses <code>toString()</code> output, the ' +
         'format is a public API and can never be improved.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.lang.Object — toString', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()' }
+    ],
     tags: ['object-contract', 'logging', 'security'],
     images: [],
     hasDiagram: false,
@@ -1511,7 +1531,9 @@ const javaLanguageData = {
         'writing to it. Never use the raw type in new code — and <code>@SuppressWarnings</code> ' +
         'on a raw type is a decision to switch the type system off in that scope, which is worth ' +
         'a comment explaining why.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JLS 4.8 — Raw Types', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-4.html#jls-4.8' }
+    ],
     tags: ['generics', 'wildcards', 'raw-types'],
     images: [],
     hasDiagram: false,
@@ -1580,7 +1602,9 @@ const javaLanguageData = {
         'the component type at run time, which is the information erasure removed. Passing a ' +
         'zero-length array is the current recommended form — the JIT handles it well and a ' +
         'presized array is not faster on modern JDKs.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JLS 15.10.1 — Array Creation Expressions', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.10.1' }
+    ],
     tags: ['generics', 'arrays', 'erasure'],
     images: [],
     hasDiagram: false,
@@ -1611,7 +1635,9 @@ const javaLanguageData = {
         '<p>Explicit type arguments (<code>Collections.&lt;String&gt;emptyList()</code>) are ' +
         'legal but rarely needed. Inference handles almost everything, and the cases where it ' +
         'does not are usually a signal that the signature could be clearer.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JLS 8.4.4 — Generic Methods', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.4.4' }
+    ],
     tags: ['generics', 'api-design'],
     images: [],
     hasDiagram: false,
@@ -1678,7 +1704,9 @@ const javaLanguageData = {
         '<code>List&lt;Order&gt;</code> needs one and deserialising an <code>Order</code> does ' +
         'not.</li>' +
         '</ul>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JLS 4.7 — Reifiable Types', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-4.html#jls-4.7' }
+    ],
     tags: ['generics', 'erasure', 'reflection'],
     images: [],
     hasDiagram: false,
@@ -1798,7 +1826,9 @@ const javaLanguageData = {
         'does <em>not</em> change what <code>equals</code> and <code>hashCode</code> see — those ' +
         'read the fields directly. Copying in the constructor is the only version that ' +
         'works.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JLS 8.10 — Record Classes', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-8.html#jls-8.10' }
+    ],
     tags: ['records', 'immutability', 'defensive-copy'],
     images: [],
     hasDiagram: false,
@@ -2026,7 +2056,9 @@ const javaLanguageData = {
         '<p>When you genuinely want a catch-all, prefer a total type pattern such as ' +
         '<code>case Shape s</code> over <code>default</code>: it reads as a decision rather ' +
         'than as an omission, and it still binds a typed variable.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JEP 441: Pattern Matching for switch', url: 'https://openjdk.org/jeps/441' }
+    ],
     tags: ['switch', 'enums', 'sealed', 'modern-java'],
     images: [],
     hasDiagram: false,
@@ -2334,7 +2366,9 @@ const javaLanguageData = {
         '</ul>' +
         '<p>Spring does exactly this with <code>@Repository</code> and its exception translation ' +
         'post-processor, which is worth naming as the framework example of the pattern.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.lang.Throwable — chained exceptions', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html' }
+    ],
     tags: ['exceptions', 'layering', 'error-handling'],
     images: [],
     hasDiagram: false,
@@ -2362,7 +2396,9 @@ const javaLanguageData = {
         'the <code>finally</code> block runs, so mutating a local afterwards has no effect on ' +
         'what is returned — but mutating an <em>object</em> that was returned does, because the ' +
         'reference was what got captured.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JLS 14.20.2 — Execution of try-finally', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-14.html#jls-14.20.2' }
+    ],
     tags: ['exceptions', 'control-flow', 'finally'],
     images: [],
     hasDiagram: false,

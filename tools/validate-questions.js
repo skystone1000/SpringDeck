@@ -12,7 +12,8 @@
      1  every question carries an importance from TIERS
      2  ids are unique within a topic, and any cross-topic collision is
         ASSERTED as the complete list
-     3  every must-know question carries at least one referenceLink
+     3  EVERY question carries at least one referenceLink (must-know only
+        until Phase 10, which found 81 questions that carried none)
      4  images[] paths are repo-relative and on disk; alt is real; attribution
         is present
      5  output.kind is stdout or trace, and stdout is REFUSED for any language
@@ -169,10 +170,26 @@ function run() {
             /* ---- 3. reference links -------------------------------------
                Mirrors the rule theory applies to must-know chapters. A
                question worth revising the night before is worth being able to
-               check. */
+               check.
+
+               THE RULE APPLIES TO EVERY QUESTION, not only must-know. It used
+               to be must-know only, and the Phase 10 triage found what that
+               permitted: 81 questions with no reference at all, concentrated
+               rather than spread — aop-proxies at 50%, and the gap positional,
+               every question from the eighth onward, while sixteen topics had
+               complete coverage. Nothing was wrong by the old rule and a
+               reader on those 81 had nowhere to go.
+
+               All 486 now carry one, so the rule can be raised to where the
+               corpus already is. Raising it is the point: a standard that is
+               met everywhere costs nothing to enforce and stops the next
+               eighty from accumulating one lapsed sitting at a time. */
             const links = question.referenceLinks || [];
-            if (question.importance === 'must-know' && !links.length) {
-                report.error(`${q}: must-know with no referenceLinks`);
+            if (!links.length) {
+                report.error(
+                    `${q}: no referenceLinks. Every question carries at least one — ` +
+                    `a claim a reader cannot check is worth less than one they can.`
+                );
             }
             links.forEach(link => {
                 if (!link.title || !link.url) {

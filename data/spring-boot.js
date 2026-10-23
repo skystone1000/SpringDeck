@@ -695,7 +695,9 @@ const springBootData = {
         'instead of scattering them across files.</p>' +
         '<p>The largest practical difference is not in the format at all: YAML is ' +
         'whitespace-significant, and a misindented key binds nothing and reports nothing.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Externalized Configuration', url: 'https://docs.spring.io/spring-boot/reference/features/external-config.html' }
+    ],
     tags: ['spring-boot', 'configuration', 'yaml', 'properties'],
     images: [],
     hasDiagram: false,
@@ -775,7 +777,9 @@ const springBootData = {
         'sampling rates, rate limits — a purpose-built flag service read at use time is clearer ' +
         'than making the whole configuration mutable. And <code>/actuator/loggers</code> already ' +
         'changes log levels at runtime with no refresh mechanism at all.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring Cloud Config', url: 'https://docs.spring.io/spring-cloud-config/reference/' }
+    ],
     tags: ['spring-boot', 'configuration', 'refresh', 'operations'],
     images: [],
     hasDiagram: false,
@@ -1019,7 +1023,9 @@ const springBootData = {
         '<p>The specific things to test rather than assume: JSON serialisation of every API ' +
         'response, generated SQL for every non-trivial query, security configuration, and the ' +
         'Actuator paths the probes and dashboards depend on.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring Boot 3.0 Migration Guide', url: 'https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide' }
+    ],
     tags: ['spring-boot', 'migration', 'planning', 'operations'],
     images: [],
     hasDiagram: false,
@@ -1058,7 +1064,9 @@ const springBootData = {
         'one usually keeps working for at least one major version and the documentation says ' +
         'what to use instead. Reading the "what\'s new" page for each minor takes twenty minutes ' +
         'and is the difference between an upgrade and an archaeology project.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring — REST Clients', url: 'https://docs.spring.io/spring-framework/reference/integration/rest-clients.html' }
+    ],
     tags: ['spring-boot', 'versions', 'deprecations', 'api'],
     images: [],
     hasDiagram: false,

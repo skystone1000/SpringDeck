@@ -323,7 +323,9 @@ const sqlDatabasesData = {
         '<p>Choose on <strong>readability</strong> first — <code>EXISTS</code> reads as "where ' +
         'there is a", <code>JOIN</code> reads as "combined with" — and reach for the plan when a ' +
         'query is actually slow.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'PostgreSQL — Subquery Expressions', url: 'https://www.postgresql.org/docs/current/functions-subquery.html' }
+    ],
     tags: ['sql', 'querying', 'subqueries', 'performance'],
     images: [],
     hasDiagram: false,
@@ -443,7 +445,9 @@ const sqlDatabasesData = {
         'meaningless</strong>, and store a UUID as a native <code>uuid</code> type rather than ' +
         'as a 36-character string — the string form is more than double the bytes in every index ' +
         'that touches it.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'PostgreSQL — Constraints', url: 'https://www.postgresql.org/docs/current/ddl-constraints.html' }
+    ],
     tags: ['sql', 'primary-keys', 'schema-design', 'uuid'],
     images: [],
     hasDiagram: false,
@@ -484,7 +488,9 @@ const sqlDatabasesData = {
         'constraint, and it is the standard way to implement "create if not exists" safely.</p>' +
         '<p>What must never happen is the error message containing the constraint name, which ' +
         'tells a caller your schema.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'PostgreSQL — Constraints', url: 'https://www.postgresql.org/docs/current/ddl-constraints.html' }
+    ],
     tags: ['sql', 'constraints', 'schema-design', 'race-conditions'],
     images: [],
     hasDiagram: false,
@@ -525,7 +531,9 @@ const sqlDatabasesData = {
         'reason for keeping the row was auditing rather than recovery. Ask what the soft delete ' +
         'is actually for — undo, audit, or referential integrity — because each has a better ' +
         'specific answer than a flag on every table.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Hibernate ORM User Guide — Soft Delete', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#soft-delete' }
+    ],
     tags: ['sql', 'soft-delete', 'schema-design', 'gdpr'],
     images: [],
     hasDiagram: false,
@@ -748,7 +756,9 @@ const sqlDatabasesData = {
         '<p>PostgreSQL lets you test a hypothesis by disabling a plan type for one session — ' +
         '<code>SET enable_seqscan = off</code> — and comparing. That is a diagnostic, never a ' +
         'production setting: if the index plan turns out to be slower, the planner was right.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'PostgreSQL — Examining Index Usage', url: 'https://www.postgresql.org/docs/current/indexes-examine.html' }
+    ],
     tags: ['sql', 'indexes', 'query-plans', 'debugging'],
     images: [],
     hasDiagram: false,
@@ -968,7 +978,9 @@ const sqlDatabasesData = {
         'for writes. If the write path is the bottleneck, replicas make it slightly worse, ' +
         'because replication itself costs the primary something. Write scaling means sharding, ' +
         'or partitioning, or not writing so much — and each of those is a much larger change.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'PostgreSQL 16 — High Availability', url: 'https://www.postgresql.org/docs/16/high-availability.html' }
+    ],
     tags: ['sql', 'replication', 'scaling', 'consistency'],
     images: [],
     hasDiagram: false,

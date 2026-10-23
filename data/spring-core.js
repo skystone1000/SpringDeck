@@ -308,7 +308,9 @@ const springCoreData = {
         'Spring, which is exactly what the framework spent so much effort making unnecessary. ' +
         'Injecting the same thing through the constructor is equivalent and keeps the class ' +
         'plain.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Customizing the Nature of a Bean', url: 'https://docs.spring.io/spring-framework/reference/core/beans/factory-nature.html' }
+    ],
     tags: ['spring', 'container', 'service-locator', 'anti-patterns'],
     images: [],
     hasDiagram: false,
@@ -381,7 +383,9 @@ const springCoreData = {
         '<li><strong>Deliberate module isolation</strong> in a large application, which is rare ' +
         'and generally more trouble than it saves.</li>' +
         '</ul>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring Framework — Container Overview', url: 'https://docs.spring.io/spring-framework/reference/core/beans/basics.html' }
+    ],
     tags: ['spring', 'container', 'context-hierarchy', 'testing'],
     images: [],
     hasDiagram: false,
@@ -793,7 +797,9 @@ const springCoreData = {
         '<p>If startup time is the actual problem, the honest fixes are elsewhere: fewer ' +
         'auto-configurations, a narrower component scan, class data sharing, or a native image ' +
         '— all of which reduce the work rather than postponing it.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring Boot — SpringApplication', url: 'https://docs.spring.io/spring-boot/reference/features/spring-application.html' }
+    ],
     tags: ['spring', 'startup', 'lazy', 'fail-fast'],
     images: [],
     hasDiagram: false,
@@ -981,7 +987,9 @@ const springCoreData = {
         'bean an explicit name, or have the interface expose a <code>key()</code> method and ' +
         'build the map yourself from the injected list.</li>' +
         '</ul>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Using @Autowired', url: 'https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/autowired.html' }
+    ],
     tags: ['spring', 'injection', 'strategy-pattern', 'collections'],
     images: [],
     hasDiagram: false,
@@ -1198,7 +1206,9 @@ const springCoreData = {
         '</ul>' +
         '<p>The deeper point: if a method needs its own class\'s transactional behaviour, the ' +
         'transactional boundary probably belongs to a collaborator that does not exist yet.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Understanding AOP Proxies', url: 'https://docs.spring.io/spring-framework/reference/core/aop/proxying.html' }
+    ],
     tags: ['spring', 'proxies', 'self-invocation', 'transactions'],
     images: [],
     hasDiagram: false,
@@ -1234,7 +1244,9 @@ const springCoreData = {
         'better than the first two: supply a no-op implementation rather than making every ' +
         'caller handle absence. A <code>NoOpAuditLog</code> that does nothing is simpler than ' +
         'fifteen null checks, and it is the null object pattern earning its keep.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Using @Autowired', url: 'https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/autowired.html' }
+    ],
     tags: ['spring', 'injection', 'optional', 'null-object'],
     images: [],
     hasDiagram: false,
@@ -1272,7 +1284,9 @@ const springCoreData = {
         '<p>Worth knowing that this only catches <em>name</em> collisions. Two beans of the same ' +
         '<em>type</em> under different names are legal, and the failure surfaces later and ' +
         'differently, as <code>NoUniqueBeanDefinitionException</code> at the injection point.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring Framework — Container Overview', url: 'https://docs.spring.io/spring-framework/reference/core/beans/basics.html' }
+    ],
     tags: ['spring', 'beans', 'overriding', 'startup'],
     images: [],
     hasDiagram: false,

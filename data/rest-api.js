@@ -157,7 +157,9 @@ const restApiData = {
         '<li><strong><code>Optional&lt;T&gt;</code></strong> — Spring turns an empty one into ' +
         'a 404, which removes a common if-statement.</li>' +
         '</ul>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring Web MVC — @ResponseBody', url: 'https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/responsebody.html' }
+    ],
     tags: ['spring-mvc', 'controllers', 'annotations'],
     images: [],
     hasDiagram: false,
@@ -553,7 +555,9 @@ const restApiData = {
         'answer than either purity or ignorance.</li>' +
         '</ul>' +
         '<p>Consistency across the API matters more than which of the three you pick.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'RFC 3986 — URI Generic Syntax', url: 'https://www.rfc-editor.org/rfc/rfc3986.html' }
+    ],
     tags: ['rest', 'api-design', 'naming'],
     images: [],
     hasDiagram: false,
@@ -589,7 +593,9 @@ const restApiData = {
         'link builders if you want it. The answer that lands in an interview is knowing what it ' +
         'is, what it costs, and choosing deliberately — not claiming an API is RESTful when it ' +
         'is level 2.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring HATEOAS — Reference', url: 'https://docs.spring.io/spring-hateoas/docs/current/reference/html/' }
+    ],
     tags: ['rest', 'hateoas', 'api-design'],
     images: [],
     hasDiagram: false,
@@ -836,7 +842,9 @@ const restApiData = {
         'Spring Security handles.</p>' +
         '<p>Document the error codes alongside the endpoints. An error contract that is not ' +
         'written down is one that clients discover by guessing, and then depend on.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'RFC 9457 — Problem Details for HTTP APIs', url: 'https://www.rfc-editor.org/rfc/rfc9457.html' }
+    ],
     tags: ['rest', 'error-handling', 'api-design', 'security'],
     images: [],
     hasDiagram: false,
@@ -876,7 +884,9 @@ const restApiData = {
         'unmapped exception falls through to the catch-all. Reviewing the actual distribution of ' +
         'status codes in production — how many 500s, and for what — is the cheapest way to find ' +
         'the mappings that were never written.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring Web MVC — Error Responses', url: 'https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-ann-rest-exceptions.html' }
+    ],
     tags: ['spring-mvc', 'error-handling', 'layering'],
     images: [],
     hasDiagram: false,
@@ -966,7 +976,9 @@ const restApiData = {
         'which differs between a developer laptop and a UTC container.</p>' +
         '<p>Store instants in the database as <code>timestamptz</code> or the equivalent, and ' +
         'convert to a user\'s zone only at the point of display.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Jackson — Java 8 date/time module', url: 'https://github.com/FasterXML/jackson-modules-java8' }
+    ],
     tags: ['jackson', 'json', 'date-time', 'api-design'],
     images: [],
     hasDiagram: false,
@@ -1002,7 +1014,9 @@ const restApiData = {
         'clearer and has no reflection in it at all.</p>' +
         '<p>The same reasoning is why Java\'s own serialisation is treated as a hazard, and why ' +
         '<code>ObjectInputFilter</code> exists.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Jackson — Polymorphic Deserialization', url: 'https://github.com/FasterXML/jackson-docs/wiki/JacksonPolymorphicDeserialization' }
+    ],
     tags: ['jackson', 'json', 'polymorphism', 'security', 'deserialization'],
     images: [],
     hasDiagram: false,
@@ -1085,7 +1099,9 @@ const restApiData = {
         'the client has already been told 200 and now receives truncated JSON. Whatever consumes ' +
         'the stream has to be able to detect an incomplete response, which is another argument ' +
         'for newline-delimited records over one array.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring Web MVC — Asynchronous Requests', url: 'https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-ann-async.html' }
+    ],
     tags: ['rest', 'streaming', 'performance', 'memory'],
     images: [],
     hasDiagram: false,

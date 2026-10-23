@@ -237,7 +237,9 @@ const collectionsData = {
         'otherwise. And note that a <code>HashSet</code>\'s iteration order is not random — it ' +
         'is stable for a given set of elements, which is exactly why relying on it accidentally ' +
         'works until the day it does not.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.util.Set — javadoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html' }
+    ],
     tags: ['collections', 'sets', 'ordering'],
     images: [],
     hasDiagram: false,
@@ -299,7 +301,9 @@ const collectionsData = {
         'to <code>Object</code>. The general lesson is broader than this one method: an API that ' +
         'overloads on <code>int</code> and <code>Object</code> where both are plausible is an ' +
         'API that will be called wrongly, and the compiler will not help.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.util.List — remove(int)', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html#remove(int)' }
+    ],
     tags: ['collections', 'autoboxing', 'overloading'],
     images: [],
     hasDiagram: false,
@@ -397,7 +401,9 @@ const collectionsData = {
         'quiet way to retain a hundred megabytes to hold ten elements. The same is true of ' +
         '<code>Map.keySet()</code>, <code>values()</code> and <code>entrySet()</code>, which ' +
         'are all views for exactly the same reasons.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.util.List — subList', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html#subList(int,int)' }
+    ],
     tags: ['collections', 'views', 'memory'],
     images: [],
     hasDiagram: false,
@@ -430,7 +436,9 @@ const collectionsData = {
         '</ul>' +
         '<p>What never works is <code>collection.remove()</code> inside a <code>for-each</code>. ' +
         'What works only by accident is the same thing on the second-to-last element.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Collection.removeIf — javadoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Collection.html#removeIf(java.util.function.Predicate)' }
+    ],
     tags: ['collections', 'iterators', 'removeIf'],
     images: [],
     hasDiagram: false,
@@ -787,7 +795,9 @@ const collectionsData = {
         'mutable <code>Map.Entry</code> object during iteration in some implementations, so ' +
         'collecting the entries into a list gives you n references to one entry holding the last ' +
         'value. Copy the key and value out rather than keeping the entry.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.util.Map — entrySet', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html#entrySet()' }
+    ],
     tags: ['collections', 'maps', 'iteration'],
     images: [],
     hasDiagram: false,
@@ -818,7 +828,9 @@ const collectionsData = {
         'application layer is to bound the input: limit the number of request parameters, header ' +
         'count and JSON document depth. Spring Boot and the servlet containers ship with such ' +
         'limits already set, which is worth knowing before raising one.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'OWASP — Denial of Service Cheat Sheet', url: 'https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html' }
+    ],
     tags: ['collections', 'maps', 'hashing', 'security'],
     images: [],
     hasDiagram: false,
@@ -852,7 +864,9 @@ const collectionsData = {
         'would. This surprises people who reach for it as a leak fix. Entries also vanish ' +
         'without warning, so <code>size()</code> can change between two calls with no ' +
         'modification in between.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.util.WeakHashMap — javadoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/WeakHashMap.html' }
+    ],
     tags: ['collections', 'maps', 'weak-references', 'memory'],
     images: [],
     hasDiagram: false,
@@ -1119,7 +1133,9 @@ const collectionsData = {
         'snapshot. Summing values during concurrent updates gives a number that was never ' +
         'necessarily true of the map at any instant — which is fine for a metric and wrong for ' +
         'a balance.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.util.concurrent — package summary', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/package-summary.html' }
+    ],
     tags: ['collections', 'concurrency', 'iterators'],
     images: [],
     hasDiagram: false,
@@ -1149,7 +1165,9 @@ const collectionsData = {
         'want a cache. The map is right for a <em>memoisation table with a bounded key space</em> ' +
         '— per-class reflection metadata, compiled patterns, parsed configuration — where every ' +
         'possible key is known and finite.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring Framework — Cache Abstraction', url: 'https://docs.spring.io/spring-framework/reference/integration/cache.html' }
+    ],
     tags: ['collections', 'caching', 'memory'],
     images: [],
     hasDiagram: false,
@@ -1182,7 +1200,9 @@ const collectionsData = {
         '<p>The general rule: <strong>let the collector own the mutation.</strong> If you find ' +
         'yourself calling <code>forEach</code> with a side effect on a parallel stream, the ' +
         'operation wanted to be a <code>collect</code> or a <code>reduce</code>.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.util.stream — package summary', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/package-summary.html' }
+    ],
     tags: ['collections', 'streams', 'concurrency'],
     images: [],
     hasDiagram: false,

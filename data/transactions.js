@@ -322,7 +322,9 @@ const transactionsData = {
         'primary deliberately.</p>' +
         '<p>The habit worth building: <code>readOnly = true</code> on every query method by ' +
         'default, and a plain <code>@Transactional</code> only where something is written.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Using @Transactional', url: 'https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html' }
+    ],
     tags: ['transactions', 'readonly', 'performance', 'replicas'],
     images: [],
     hasDiagram: false,
@@ -404,7 +406,9 @@ const transactionsData = {
         'to retry.</p>' +
         '<p>To diagnose: <code>SHOW ENGINE INNODB STATUS</code> on MySQL prints the last ' +
         'deadlock in full, and PostgreSQL logs both statements involved.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'PostgreSQL — Explicit Locking', url: 'https://www.postgresql.org/docs/current/explicit-locking.html' }
+    ],
     tags: ['transactions', 'deadlock', 'locking', 'databases'],
     images: [],
     hasDiagram: false,
@@ -446,7 +450,9 @@ const transactionsData = {
         'travel to the client and back for the check to be meaningful across a stateless HTTP ' +
         'request, which is exactly what an <code>ETag</code> plus <code>If-Match</code> ' +
         'formalises.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Hibernate ORM User Guide — Optimistic Locking', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#locking-optimistic' }
+    ],
     tags: ['transactions', 'optimistic-locking', 'jpa', 'concurrency'],
     images: [],
     hasDiagram: false,
@@ -492,7 +498,9 @@ const transactionsData = {
         '<p><code>SKIP LOCKED</code> deserves a mention of its own: it is how you build a work ' +
         'queue in a relational database, letting several workers each grab different unlocked ' +
         'rows without contending.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Hibernate ORM User Guide — Pessimistic Locking', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#locking-pessimistic' }
+    ],
     tags: ['transactions', 'pessimistic-locking', 'jpa', 'concurrency'],
     images: [],
     hasDiagram: false,
@@ -532,7 +540,9 @@ const transactionsData = {
         'context, MDC correlation ids and request-scoped beans all fail to cross to the async ' +
         'thread unless propagated deliberately. Spring provides delegating executors for the ' +
         'security context and Micrometer provides context propagation for the rest.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Task Execution and Scheduling', url: 'https://docs.spring.io/spring-framework/reference/integration/scheduling.html' }
+    ],
     tags: ['transactions', 'async', 'spring', 'threading'],
     images: [],
     hasDiagram: false,
@@ -615,7 +625,9 @@ const transactionsData = {
         'well, and it is what a reviewer expects. Reach for the template when the boundary ' +
         'genuinely does not line up with a method, which is the case that the annotation cannot ' +
         'express at all rather than merely expresses awkwardly.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Programmatic Transaction Management', url: 'https://docs.spring.io/spring-framework/reference/data-access/transaction/programmatic.html' }
+    ],
     tags: ['transactions', 'spring', 'programmatic', 'transactiontemplate'],
     images: [],
     hasDiagram: false,
@@ -662,7 +674,9 @@ const transactionsData = {
         '<p>The honest framing: if two things genuinely must be atomic, that is strong evidence ' +
         'they belong in the same service and the same database. A distributed transaction is ' +
         'usually a service boundary drawn in the wrong place.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Saga pattern', url: 'https://microservices.io/patterns/data/saga.html' }
+    ],
     tags: ['transactions', 'distributed', 'saga', 'outbox', 'microservices'],
     images: [],
     hasDiagram: false,

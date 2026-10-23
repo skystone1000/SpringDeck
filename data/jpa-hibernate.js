@@ -247,7 +247,9 @@ const jpaHibernateData = {
         'parent, a unidirectional <code>@ManyToOne</code> on the child is simpler, and it ' +
         'removes the synchronisation problem entirely. That is the answer worth offering.</li>' +
         '</ul>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Hibernate ORM User Guide — Associations', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#associations' }
+    ],
     tags: ['jpa', 'hibernate', 'relationships', 'mappedby'],
     images: [],
     hasDiagram: false,
@@ -390,7 +392,9 @@ const jpaHibernateData = {
         'to evolve. Reach for <code>SINGLE_TABLE</code> when the subclasses differ by a couple ' +
         'of fields and <code>JOINED</code> when they genuinely differ, and be suspicious of a ' +
         'hierarchy more than one level deep.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Hibernate ORM User Guide — Inheritance', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#entity-inheritance' }
+    ],
     tags: ['jpa', 'hibernate', 'inheritance', 'schema-design'],
     images: [],
     hasDiagram: false,
@@ -567,7 +571,9 @@ const jpaHibernateData = {
         '<p><code>saveAll()</code> is a loop over <code>save()</code>, not a batch operation. ' +
         'Real batching requires <code>hibernate.jdbc.batch_size</code>, ordered inserts, and an ' +
         'id strategy that is not <code>IDENTITY</code>.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring Data JPA Reference', url: 'https://docs.spring.io/spring-data/jpa/reference/index.html' }
+    ],
     tags: ['jpa', 'spring-data', 'save', 'merge'],
     images: [],
     hasDiagram: false,
@@ -602,7 +608,9 @@ const jpaHibernateData = {
         '<p>Related: a <code>@ManyToOne(fetch = LAZY)</code> association is exactly this proxy, ' +
         'which is why <code>order.getCustomer().getId()</code> costs no query while ' +
         '<code>order.getCustomer().getName()</code> costs one.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring Data JPA Reference', url: 'https://docs.spring.io/spring-data/jpa/reference/index.html' }
+    ],
     tags: ['jpa', 'spring-data', 'proxies', 'performance'],
     images: [],
     hasDiagram: false,
@@ -753,7 +761,9 @@ const jpaHibernateData = {
         'about collections — and fetching <strong>two</strong> collections in one query produces ' +
         'a cartesian product, which Hibernate 6 will let you do and which is almost never what ' +
         'you want.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Hibernate ORM User Guide — Fetching', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#fetching' }
+    ],
     tags: ['jpa', 'hibernate', 'pagination', 'join-fetch', 'performance'],
     images: [],
     hasDiagram: false,
@@ -1009,7 +1019,9 @@ const jpaHibernateData = {
         'or at the start of one, and do not mix them with entity manipulation of the same rows. ' +
         'A bulk update and dirty checking racing over the same row is a bug that depends on ' +
         'flush ordering.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Hibernate ORM User Guide — Batching', url: 'https://docs.hibernate.org/orm/current/userguide/html_single/#batch' }
+    ],
     tags: ['jpa', 'hibernate', 'bulk', 'modifying', 'caching'],
     images: [],
     hasDiagram: false,

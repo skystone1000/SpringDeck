@@ -450,7 +450,9 @@ const aopProxiesData = {
         '<p>Related and worth knowing: injecting <code>this</code> anywhere during construction ' +
         '— registering a listener, starting a thread — publishes the raw object, so whatever ' +
         'holds it will never see the proxy either.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Customizing the Nature of a Bean', url: 'https://docs.spring.io/spring-framework/reference/core/beans/factory-nature.html' }
+    ],
     tags: ['spring', 'aop', 'proxies', 'lifecycle'],
     images: [],
     hasDiagram: false,
@@ -491,7 +493,9 @@ const aopProxiesData = {
         'Spring Security\'s annotations for authorisation. An aspect is powerful and it makes ' +
         'behaviour invisible at the call site, which is a real cost to pay only when the ' +
         'crosscutting is genuine.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: '@AspectJ Support', url: 'https://docs.spring.io/spring-framework/reference/core/aop/ataspectj.html' }
+    ],
     tags: ['spring', 'aop', 'annotations', 'meta-annotations'],
     images: [],
     hasDiagram: false,
@@ -532,7 +536,9 @@ const aopProxiesData = {
         '<p>Also worth naming: <code>@ControllerAdvice</code> for exception handling across ' +
         'controllers, which is neither of the three and is the right tool for that specific ' +
         'job.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Spring Web MVC — Interceptors', url: 'https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-config/interceptors.html' }
+    ],
     tags: ['spring', 'aop', 'filters', 'interceptors', 'web'],
     images: [],
     hasDiagram: false,
@@ -566,11 +572,18 @@ const aopProxiesData = {
         '<p><strong>Always use exponential back-off with jitter.</strong> Fixed-delay retries ' +
         'from many instances synchronise into a thundering herd against a service that is ' +
         'already struggling, which is how a brief blip becomes an outage.</p>' +
+        '<p><strong>Know where the library stands.</strong> The <code>spring-retry</code> ' +
+        'repository was moved to <code>spring-attic</code> and marked archived, so ' +
+        '<code>@Retryable</code> is a maintained-but-not-developed API. It still works, ' +
+        'and Spring Boot still manages its version — but new code with a free choice ' +
+        'should reach for Resilience4j, which is where the investment is.</p>' +
         '<p>Retry belongs with a <strong>circuit breaker</strong>, not instead of one. Retry ' +
         'handles a transient failure; a breaker stops hammering a dependency that is genuinely ' +
         'down. Resilience4j provides both plus a bulkhead and a rate limiter, and its ordering ' +
         'of the decorators is defined and worth reading rather than guessing.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Resilience4j — Getting Started', url: 'https://resilience4j.readme.io/docs/getting-started' }
+    ],
     tags: ['spring', 'aop', 'retry', 'resilience', 'idempotency'],
     images: [],
     hasDiagram: false,
@@ -608,7 +621,9 @@ const aopProxiesData = {
         '<p>A test that asserts the behaviour — that a rollback actually rolls back — is the ' +
         'only thing that catches this reliably, because reading the code shows an annotation ' +
         'that looks right.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Using @Transactional', url: 'https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html' }
+    ],
     tags: ['spring', 'aop', 'proxies', 'transactions'],
     images: [],
     hasDiagram: false,
@@ -645,7 +660,9 @@ const aopProxiesData = {
         '<p>Narrow the pointcuts. An aspect matching <code>execution(* com.example..*(..))</code> ' +
         'proxies the entire application to advise a handful of methods; ' +
         '<code>@annotation</code> proxies only the beans that actually carry the annotation.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'Understanding AOP Proxies', url: 'https://docs.spring.io/spring-framework/reference/core/aop/proxying.html' }
+    ],
     tags: ['spring', 'aop', 'performance', 'startup'],
     images: [],
     hasDiagram: false,
@@ -685,7 +702,9 @@ const aopProxiesData = {
         '<em>correctness</em> rather than for convenience, write the test that fails if the ' +
         'proxy stops applying. Caching quietly not caching is a performance regression; a ' +
         'transaction quietly not opening is data loss.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: '@AspectJ Support', url: 'https://docs.spring.io/spring-framework/reference/core/aop/ataspectj.html' }
+    ],
     tags: ['spring', 'aop', 'testing', 'proxies'],
     images: [],
     hasDiagram: false,

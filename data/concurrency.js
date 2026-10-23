@@ -489,7 +489,9 @@ const concurrencyData = {
         'including a plain non-volatile field, provided <code>this</code> did not escape during ' +
         'construction. That last clause is why "do not start a thread in a constructor" is a ' +
         'rule.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JLS 17.5 — final Field Semantics', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-17.html#jls-17.5' }
+    ],
     tags: ['concurrency', 'publication', 'memory-model', 'singleton'],
     images: [],
     hasDiagram: false,
@@ -583,7 +585,9 @@ const concurrencyData = {
         'continuing. That makes the thread uninterruptible, and a task that ignores ' +
         'cancellation is a task that keeps an executor from shutting down and keeps a container ' +
         'from stopping until it is killed.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.lang.Thread — interrupt', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Thread.html#interrupt()' }
+    ],
     tags: ['concurrency', 'interruption', 'cancellation'],
     images: [],
     hasDiagram: false,
@@ -891,7 +895,9 @@ const concurrencyData = {
         '<code>CompletionException</code> while <code>get()</code> throws the checked ' +
         '<code>ExecutionException</code>. That is the only real difference between them, and it ' +
         'is why <code>join()</code> is the one that works inside a lambda.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'CompletableFuture — javadoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html' }
+    ],
     tags: ['concurrency', 'futures', 'error-handling'],
     images: [],
     hasDiagram: false,
@@ -972,7 +978,9 @@ const concurrencyData = {
         'the latch for fan-in, and a bounded executor has replaced the semaphore for limiting ' +
         'platform threads. The semaphore came back into fashion with virtual threads, where ' +
         'there is no pool to do the limiting.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.util.concurrent — package summary', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/package-summary.html' }
+    ],
     tags: ['concurrency', 'synchronizers', 'latches'],
     images: [],
     hasDiagram: false,
@@ -1047,7 +1055,9 @@ const concurrencyData = {
         '<p>Set a <code>ThreadFactory</code> with an <code>UncaughtExceptionHandler</code> ' +
         'anyway. It costs nothing and it is the only thing standing between a thread dying ' +
         'quietly and someone finding out.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'ExecutorService — submit', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html#submit(java.util.concurrent.Callable)' }
+    ],
     tags: ['concurrency', 'executors', 'error-handling', 'observability'],
     images: [],
     hasDiagram: false,
@@ -1335,7 +1345,9 @@ const concurrencyData = {
         'one is only worth it if you want to fail faster than the pool times out.</p>' +
         '<p>Resilience4j\'s bulkhead is this pattern with metrics and configuration attached, ' +
         'and is usually the better answer than a hand-rolled semaphore in a real service.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'java.util.concurrent.Semaphore', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/Semaphore.html' }
+    ],
     tags: ['concurrency', 'virtual-threads', 'semaphore', 'bulkhead'],
     images: [],
     hasDiagram: false,
@@ -1444,7 +1456,9 @@ const concurrencyData = {
         '<p>The good news is the part reactive gave up: a virtual thread has a real stack, so ' +
         'stack traces are complete and a debugger steps through the code as written. That is a ' +
         'large operational advantage and worth naming.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'JEP 444: Virtual Threads', url: 'https://openjdk.org/jeps/444' }
+    ],
     tags: ['concurrency', 'virtual-threads', 'observability', 'diagnostics'],
     images: [],
     hasDiagram: false,
@@ -1475,7 +1489,9 @@ const concurrencyData = {
         'executor should be, since creating one costs almost nothing.</p>' +
         '<p>The same pattern works for a platform-thread executor, and is a strictly better ' +
         'shutdown than most hand-written ones.</p>',
-    referenceLinks: [],
+    referenceLinks: [
+        { title: 'ExecutorService — close', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html#close()' }
+    ],
     tags: ['concurrency', 'virtual-threads', 'executors', 'lifecycle'],
     images: [],
     hasDiagram: false,
