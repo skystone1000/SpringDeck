@@ -329,7 +329,7 @@ const behaviouralProjectData = {
         'small</strong>, since anything estimated at more than a few days is really an estimate ' +
         'of something not yet understood.</p>',
     referenceLinks: [
-        { title: 'Google — How We Hire', url: 'https://www.google.com/about/careers/applications/how-we-hire/' }
+        { title: 'Martin Fowler — Purpose of Estimation', url: 'https://martinfowler.com/bliki/PurposeOfEstimation.html' }
     ],
     tags: ['behavioural', 'communication'],
     images: [],
@@ -415,7 +415,7 @@ const behaviouralProjectData = {
         '<p>Avoid a story where the answer was "the library had a bug" with no more detail. It ' +
         'happens, and as a story it has no method in it.</p>',
     referenceLinks: [
-        { title: 'Troubleshooting Guide — Java SE', url: 'https://docs.oracle.com/en/java/javase/21/troubleshoot/index.html' }
+        { title: 'Google SRE — Effective Troubleshooting', url: 'https://sre.google/sre-book/effective-troubleshooting/' }
     ],
     tags: ['behavioural', 'debugging'],
     images: [],

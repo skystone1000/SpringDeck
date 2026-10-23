@@ -13,9 +13,9 @@ track and renders in the "Everything else" sidebar group.
 | 4 | `a-decision-you-got-wrong` | must | ✓ | ✓ | ✓ | ✓ |
 | 5 | `describing-an-incident` | must | ✓ | ✓ | ✓ | ✓ |
 | 6 | `a-tradeoff-you-made` | should | ✓ | ✓ | ✓ | ✓ |
-| 7 | `estimating-and-missing` | should | ✓ | ✓ | ✓ | ~ |
+| 7 | `estimating-and-missing` | should | ✓ | ✓ | ✓ | ✓ |
 | 8 | `technical-disagreement` | should | ✓ | ✓ | ✓ | ✓ |
-| 9 | `hardest-bug` | should | ✓ | ✓ | ✓ | **~** |
+| 9 | `hardest-bug` | should | ✓ | ✓ | ✓ | ✓ |
 | 10 | `questions-to-ask-the-interviewer` | should | ✓ | ✓ | ✓ | ~ |
 
 ---
@@ -36,23 +36,27 @@ definition, the questions that get asked.
 
 **Tier — no changes.**
 
-**Reference — 10 of 10 have one, and four of them are marked `~` because the
-link does not support the answer.**
+**Reference — 10 of 10 have one. Four were marked `~` because the link did not
+support the answer; two are now fixed and two stand.**
 
 This is the topic that exposes the limit of `validate-questions` check 3.
 The check requires every `must-know` question to carry a reference and
 verifies that the URL is `https`. **It cannot check that the reference is
 about the question.**
 
-- **#9 `hardest-bug` cites the Java SE Troubleshooting Guide.** The answer is
-  about how to *tell* a debugging story — pick a bug where the wrong assumption
-  was somewhere nobody was looking. Oracle's guide is a fine document and
-  supports none of that.
-- **#3, #7 and #10 all cite the same page**, Google's "How We Hire". It is
-  topical for #3 and generic for the other two.
+- **#9 `hardest-bug` cited the Java SE Troubleshooting Guide** for an answer
+  about how to *tell* a debugging story. Oracle's guide is a fine document and
+  supported none of it. **Now cites Google SRE's Effective Troubleshooting**,
+  which is about reasoning through a hard failure and does support it.
+- **#3, #7 and #10 all cited the same page**, Google's "How We Hire". **#7
+  `estimating-and-missing` now cites Fowler's *Purpose of Estimation***, which
+  is about the thing the question is about. #3 and #10 keep the hiring page,
+  because for "how do you prepare to defend your CV" and "what should you ask
+  at the end" it is genuinely the right source rather than a placeholder.
 
-None of this is a defect a validator could have caught, and none of it makes
-an answer wrong. It is recorded because **"has a reference" and "is supported
+**Neither fix was available to a validator.** Check 3 now requires every
+question to carry a reference and verifies the URL is https; it cannot read
+the page, and it could not have told these two from the eight that were fine. It is recorded because **"has a reference" and "is supported
 by a reference" are different properties, and this deck only measures the
 first.** Six of the ten here are properly sourced — Amazon's hiring page, the
 C4 model, ADRs twice, the SRE book's postmortem chapter, Google's code-review

@@ -11,7 +11,7 @@ to 486.
 | **Not true** | **1** — fixed |
 | Asked, with a reservation | 2 |
 | Tier, with a reservation | 16 |
-| **No reference** | **81** |
+| **No reference** | **81** — all fixed |
 | Reference present but degraded or unsupporting | 12 |
 
 ---
@@ -82,7 +82,7 @@ For contrast, **ten topics have zero uncited questions**: `rest-api`,
 `kafka-messaging`, `caching-scale`, `cloud`, `design-patterns` and
 `architecture-ddd`.
 
-### 3. 81 questions carry no reference, and the distribution is not random
+### 3. FIXED — 81 questions carried no reference, and the distribution was not random
 
 None is `must-know` — `validate-questions` check 3 makes that an error — so
 all 81 are `should-know` (41) or `good-to-know` (40). But the *ratio* varies
@@ -123,6 +123,9 @@ systematically under-cited. 56 questions make a security-shaped claim and 14%
 are uncited, against a 17% corpus baseline. Two bad cases are not a pattern.
 
 ### 4. "Has a reference" and "is supported by a reference" are different properties
+
+**Two of the four bad cases are fixed**; the rule that permitted them is
+unchanged, because no validator can read a page.
 
 `validate-questions` check 3 requires a `must-know` question to carry a link
 and verifies the URL is `https`. It cannot check that the link is about the
