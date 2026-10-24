@@ -689,7 +689,7 @@ const transactionsData = {
     id: 'testing-transactions',
     importance: 'good-to-know',
     subsection: null,
-    question: 'Why does @Transactional on a test hide bugs?',
+    question: 'Which transaction behaviours stop being exercised when a test rolls back?',
     answer:
         '<p>Because Spring\'s test support <strong>rolls back at the end of each test by ' +
         'default</strong>, which is excellent for isolation and changes the behaviour of the ' +

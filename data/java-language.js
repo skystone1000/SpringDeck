@@ -2273,9 +2273,21 @@ const javaLanguageData = {
     id: 'try-with-resources-and-suppressed',
     importance: 'should-know',
     subsection: 'errors',
-    question: 'What does try-with-resources do that a finally block does not?',
+    question: 'If the body throws and then close() also throws, which exception does the caller see?',
     answer:
-        '<p>Three things, and the third is the one almost nobody gets right by hand.</p>' +
+        '<p><strong>The body\'s.</strong> The exception from <code>close()</code> is ' +
+        '<em>attached</em> to it rather than replacing it, through ' +
+        '<code>addSuppressed()</code>, and is printed by ' +
+        '<code>printStackTrace()</code> under a <code>Suppressed:</code> heading and ' +
+        'retrievable from <code>getSuppressed()</code>.</p>' +
+        '<p>That is the whole reason to prefer try-with-resources, and it is the ' +
+        'behaviour a hand-written <code>finally</code> gets backwards: a ' +
+        '<code>finally</code> block that closes lets the close exception <em>replace</em> ' +
+        'the original, so the one that said what actually went wrong is gone. Losing the ' +
+        'real failure because the cleanup also failed is one of the more infuriating ways ' +
+        'to lose a production afternoon.</p>' +
+        '<p>Two more things it does, which <code>java-io-time</code> covers as the ' +
+        'general question:</p>' +
         '<ul>' +
         '<li><strong>It closes in reverse order</strong> of declaration, which is what you want ' +
         'when a statement depends on a connection.</li>' +
@@ -2283,16 +2295,7 @@ const javaLanguageData = {
         'closing whatever was already opened. The hand-written equivalent needs a nested ' +
         '<code>try</code> per resource, which is why the hand-written equivalent is usually ' +
         'wrong.</li>' +
-        '<li><strong>It suppresses rather than replaces.</strong> If the body throws and then ' +
-        '<code>close()</code> also throws, the body\'s exception propagates and the close ' +
-        'exception is attached to it via <code>addSuppressed()</code>. A <code>finally</code> ' +
-        'block that closes will instead let the close exception replace the original — and the ' +
-        'original was the one that said what actually went wrong.</li>' +
         '</ul>' +
-        '<p>That last point is the whole reason to use it. Losing the real exception because the ' +
-        'cleanup also failed is one of the more infuriating ways to lose a production ' +
-        'afternoon, and the suppressed exceptions are printed by ' +
-        '<code>printStackTrace()</code> under a "Suppressed:" heading.</p>' +
         '<p>Since Java 9 the resource may be an effectively-final variable declared before the ' +
         '<code>try</code>, so you no longer have to declare it inside the parentheses.</p>',
     referenceLinks: [

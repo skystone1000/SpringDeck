@@ -20,6 +20,8 @@
         the runner cannot execute
      6  snippet languages are ones the highlighter knows
      7  authored HTML stays inside the allowed tag subset
+     8  no two topics ask the SAME question — identical wording is an error,
+        heavy overlap a warning
    ========================================================================== */
 
 'use strict';
@@ -310,6 +312,64 @@ function run() {
             seenRun.add(id);
         });
     });
+
+    /* ---- CHECK 8 — the same question, asked twice -----------------------
+       Check 2 refuses a duplicate ID across topics, which is what fired on
+       `graceful-shutdown` in Phase 6. It compares no content, so two topics
+       could ask the same question under different ids and nothing noticed —
+       and three pairs did. The Phase 10 triage found two of them by reading
+       and missed the other three, which is the argument for the check: a
+       careful read of 486 questions is worse at this than a set comparison.
+
+       Identical wording is an ERROR. A reader who searches meets the same
+       question twice, and the two copies drift — `testing-transactions` and
+       `transactional-tests-hide-bugs` had the same question text at
+       DIFFERENT TIERS, so the deck said one thing was both must-know and
+       good-to-know. Fix by narrowing one question to its own angle, not by
+       deleting content.
+
+       Heavy overlap is a WARNING, because two topics legitimately approach
+       one subject from different sides — java.time and Jackson both have
+       something to say about a timestamp on the wire — and the judgement of
+       whether that has become duplication is a reader's, not a validator's. */
+    const QUESTION_STOP = new Set(
+        ('the a an and or of in to for with on is are what how why when does do you your ' +
+         'it its not be that this at as by from can').split(' ')
+    );
+    function questionTokens(text) {
+        return new Set(
+            String(text).toLowerCase().replace(/<[^>]+>/g, ' ').replace(/[^a-z0-9 ]/g, ' ')
+                .split(/\s+/).filter(w => w.length > 2 && !QUESTION_STOP.has(w))
+        );
+    }
+    function overlap(a, b) {
+        let shared = 0;
+        a.forEach(w => { if (b.has(w)) shared++; });
+        return shared / (a.size + b.size - shared);
+    }
+
+    const asked = [];
+    (corpus.topics || []).forEach(topic => {
+        (topic.questions || []).forEach(question => {
+            asked.push({ topic: topic.id, id: question.id, tokens: questionTokens(question.question) });
+        });
+    });
+
+    for (let i = 0; i < asked.length; i++) {
+        for (let j = i + 1; j < asked.length; j++) {
+            if (asked[i].topic === asked[j].topic) continue;
+            const score = overlap(asked[i].tokens, asked[j].tokens);
+            const pair = `${asked[i].topic}#${asked[i].id} and ${asked[j].topic}#${asked[j].id}`;
+            if (score >= 0.9) {
+                report.error(
+                    `${pair} ask the same question in the same words. Narrow one to its ` +
+                    `own angle — two copies of an answer drift, and only one of them gets fixed.`
+                );
+            } else if (score >= 0.55) {
+                report.warn(`${pair} overlap heavily (${score.toFixed(2)}) — check they are still two questions`);
+            }
+        }
+    }
 
     /* ---- 2, second half: the collision assertion ---------------------- */
     const actual = [];

@@ -7,7 +7,7 @@ tier**, **does it have a reference**.
 | # | id | tier | T | A | R | L |
 |---|---|---|---|---|---|---|
 | 1 | `byte-versus-character-streams` | must | ✓ | ✓ | ✓ | ✓ |
-| 2 | `try-with-resources-details` | must | ✓ | ~ | ✓ | ✓ |
+| 2 | `try-with-resources-details` | must | ✓ | ✓ | ✓ | ✓ |
 | 3 | `streaming-a-large-file` | must | ✓ | ✓ | ✓ | ✓ |
 | 4 | `files-and-path-over-file` | should | ✓ | ✓ | ✓ | ✓ |
 | 5 | `nio-channels-and-buffers` | good | ✓ | ✓ | ✓ | ✓ |
@@ -45,7 +45,7 @@ without being obliged to.
 `java.time` resolves a gap and an overlap by documented rules rather than
 throwing. "It throws" is the common wrong answer and the question says so.
 
-## Is it asked — one reservation
+## Is it asked — one reservation, since resolved
 
 **#2 `try-with-resources-details` duplicates `java-language`
 #42 `try-with-resources-and-suppressed`.** Both are `must-know`/`should-know`
@@ -57,12 +57,13 @@ only refuses a **duplicate id** across topics — which is exactly the check
 that fired on `graceful-shutdown` in Phase 6. **Two questions can say the same
 thing under different names and nothing notices.**
 
-Whether it is a defect is a judgement. Recorded as `~` rather than `✗`
-because the framing genuinely differs — `java-language` reaches it through
-exception semantics and this one through resource handling — and a reader
-arriving from either topic wants it there. But it is one answer's worth of
-content maintained in two places, and if one is ever corrected the other will
-not be.
+**Recorded as `~` at the time, and that was too generous.** Re-read side by
+side the two answers were not two framings of one subject: both opened "three
+things, and the third is the one nobody gets right", and both covered reverse
+order, the throwing close and suppression. The `java-language` question has
+been narrowed to the suppression case its id always named, this one keeps the
+general question, and `validate-questions` check 8 now refuses two topics
+asking the same question in the same words.
 
 ## Is it at the right tier — no changes
 

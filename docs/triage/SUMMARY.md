@@ -140,7 +140,43 @@ deliberately and that now land on a JavaScript redirect shim; three are the
 `docs.junit.org/current/` aliases. Those are recorded trades. The
 `behavioural-project` four are not — they are links that satisfy a rule.
 
-## Two questions maintained twice
+## Five questions maintained twice — and a check that found three of them
+
+**The triage found two pairs by reading. A set comparison found five.** That
+is the argument for the check that now exists: on 486 questions a careful read
+is worse at this than comparing token sets, and `validate-questions` check 8
+does it in a second.
+
+Identical wording is now an **error** and heavy overlap a **warning**. Two
+pairs were errors and both are fixed by narrowing one question, never by
+deleting content:
+
+- `java-language#try-with-resources-and-suppressed` and
+  `java-io-time#try-with-resources-details` asked the same question in the
+  same words and gave near-identical answers — both "three things, and the
+  third is the one nobody gets right", both covering reverse order, throwing
+  close and suppression. That is duplication, not two angles. The
+  `java-language` one now asks **"if the body throws and then `close()` also
+  throws, which exception does the caller see?"**, which is what its id always
+  said it was about, and defers the general question to `java-io-time`.
+- `transactions#testing-transactions` and `testing#transactional-tests-hide-bugs`
+  asked the same question **at different tiers** — `good-to-know` and
+  `must-know` — so the deck said one thing was both. The `transactions` one now
+  asks **"which transaction behaviours stop being exercised when a test rolls
+  back?"**, which is what its answer is actually about: deferred constraints,
+  `REQUIRES_NEW`, and propagation never being tested.
+
+Four warnings stand, and standing is the point — a warning is a judgement a
+validator should not make:
+
+| Pair | Overlap | Judgement |
+|---|---|---|
+| `concurrency#virtual-threads-vs-reactive` / `beyond-rest#reactive-versus-virtual-threads` | 0.71 | two topics' angles on one question, same tier, consistent answers |
+| `spring-core#spel-in-value` / `architecture-ddd#entity-versus-value-object` | 0.60 | false positive — the shared word is "value" |
+| `java-io-time#time-on-the-wire` / `rest-api#jackson-dates-and-time` | 0.57 | the `java.time` side and the Jackson side |
+| `rest-api#dto-vs-entity` / `architecture-ddd#dto-versus-entity` | 0.57 | API-contract argument and domain-boundary argument |
+
+## The original wording of this finding
 
 Neither is caught by anything, because `validate-questions` check 2 refuses a
 duplicate **id** across topics and nothing compares content:
