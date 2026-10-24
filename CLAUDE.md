@@ -172,7 +172,7 @@ Where a cross-language comparison earns its place it is **prose in a
 | | |
 |---|---|
 | **Phases complete** | **All eleven.** 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes · 5 — Search · 6 — The question bank, all 26 topics · 7 — Theory, tracks 5–8 and the §5.9 insertions · 8 — The drill and predict catalogues · 9 — Verification · 10 — Documentation and triage |
-| **Next** | Nothing is planned. The open items are the seven Phase 10 findings below and the four unverified things in `docs/verification-log.md` §6 |
+| **Next** | Nothing is planned. Phase 10's findings are closed — see the follow-up record below. The one substantial open item is a chapter-by-chapter read of the 687 theory chapters |
 | **Corpus** | Questions: **26 topics, 486 questions**, 63 snippets, 19 diagrams |
 | | Theory: **83 modules, 687 chapters** on the reading path, 2,045 blocks, 61 glossary terms, 35 diagrams, 346 syntax blocks |
 | | Tracks: java-platform 20/163 · spring-core 7/51 · web-api 8/64 · persistence 14/121 · security 6/48 · distributed 11/86 · production 10/86 · craft 7/68 |
@@ -184,6 +184,40 @@ Where a cross-language comparison earns its place it is **prose in a
 | **Commit cadence** | **Reduced by instruction on 2026-09-03.** Fewer, larger commits — one per unit of work rather than 15–17 a day. The hand-set dates and the ascending-within-a-day rule still hold. |
 
 ### Phase gates recorded
+
+**Follow-up to Phase 10 — the findings, closed.** Every actionable item the
+triage produced was either fixed or withdrawn. Two were withdrawn, and that is
+worth as much as the fixes.
+
+- **Withdrawn: ten topics have no subsections.** Every one declares an explicit
+  `subsections: null` and argues the case in its file header. The finding had
+  said nothing distinguishes a considered null from an unconsidered one; the
+  headers distinguish them, and the pass had not read the headers.
+- **Withdrawn: ten predicts reveal with no `explain`.** All ten are `behaviour`
+  puzzles whose reasoning lives in `output.lines` — which is what a `trace` is
+  for — with `verification` carrying the citation. The `stdout` puzzles have
+  the opposite and equally correct shape.
+- **Fixed: `java-io-time` rendered six headings for three subsections.** Four
+  questions had been appended after the groups were laid out. Caught by the
+  contiguity check that `app.js` had claimed for years and no tool performed.
+- **Fixed: 81 questions with no reference, now 486 of 486.** Most sources were
+  already in the repository, cited from the theory corpus for the same fact.
+  Check 3 now applies to every question rather than must-know only.
+- **Fixed: 50 `relatedQuestions` added.** Uncited questions 80 → 42;
+  `jvm-memory` 9 → 38 citations, `streams-functional` 4 → 25.
+- **Fixed: two topics asking the same question in the same words**, one of them
+  at two different tiers. A token-set comparison found five overlapping pairs
+  where the read had found two.
+- **Found while chasing a reference: `spring-retry` is archived.** The GitHub
+  API reports it moved to `spring-attic`. The answer said to prefer
+  Resilience4j already; it now says where the library stands.
+- **Four new validator checks**, each induced deliberately and each fired:
+  subsections shape, subsection contiguity, a subject module must link
+  somewhere, and no two topics may ask the same question.
+- **465 route/width combinations swept clean**, with the viewport asserted
+  non-zero at every measurement.
+- **The CDN-blocked promise demonstrated** for the first time since Phase 0.
+
 
 **Phase 10 — Documentation and triage.** PASSED. `ARCHITECTURE.md`,
 `CODEBASE.md`, `FEATURES.md` and **26 triage files carrying 486 table rows**,

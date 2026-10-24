@@ -138,6 +138,10 @@ otherwise.
   true, is it asked, is it at the right tier, does it have a reference. One
   answer was wrong and is fixed. The record is
   [`docs/triage/SUMMARY.md`](docs/triage/SUMMARY.md).
+- **Every question carries a reference** — all 486, not just the must-know
+  ones, which is what the rule used to require.
+- **No two topics ask the same question in the same words**, and every version
+  block in the theory corpus has been read.
 
 **Still unverified, and stated because a features list that only lists
 successes is a claim about the whole deck:**
@@ -149,8 +153,14 @@ successes is a claim about the whole deck:**
   a machine compared every page title to the deck's own, which is a proxy and
   not a reading.
 - **687 theory chapters, 46 drills and 61 glossary terms have not been read
-  for correctness.** Phase 10 read the question bank. The other four modes are
-  next.
+  chapter by chapter.** The question bank was; the other four modes have had a
+  lesser pass — every one of the 44 version blocks read in full, mechanical
+  checks over everything, and two flags raised and refused. That is real and it
+  is not the same thing.
+- **`file://` opened by hand.** The mechanical half is checked, and the
+  CDN-blocked half is now demonstrated, so what is left is only whether a
+  browser's `file://` restrictions affect a page that uses no ES modules and no
+  network APIs.
 
 ## Deliberately not here
 
