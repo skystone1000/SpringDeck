@@ -206,6 +206,9 @@ thing, not that the thing is top-tier. A future reader will re-derive that.
 - **Whether the manifest is right** — whether these are the 26 topics, whether
   these are the right `keyTopics`, whether `cloud` should be AWS-flavoured.
   Those are questions about `SPRINGDECK-PLAN.md`.
-- **The other four modes.** 687 theory chapters, 46 drills, 81 predicts and 61
-  glossary terms were not read here. Phase 9 executed the 58 `stdout` claims
-  among them; nothing has read the prose.
+- **The other four modes, chapter by chapter.** 687 theory chapters, 46 drills,
+  81 predicts and 61 glossary terms have not had the treatment the question
+  bank got. They have since had a lesser one — every version block read in
+  full, mechanical checks over everything, two flags raised and refused — and
+  that record is in [`OTHER-MODES.md`](OTHER-MODES.md). **A chapter-by-chapter
+  read is the outstanding work on this deck.**
