@@ -12,6 +12,75 @@ Five modes, two corpora, one page:
 | **Predict the Output** | Commit-then-reveal puzzles with a determinate answer |
 | **Glossary** | Every term the curriculum defines, harvested rather than authored |
 
+---
+
+## New here? Read in this order
+
+1. **This section** — what the repo is and how to run it.
+2. **[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)** — why there is no build
+   step, how the pieces fit, and what the shape costs. Read this before any
+   source file.
+3. **[`docs/CODEBASE.md`](docs/CODEBASE.md)** — where everything lives, the
+   entry points, the commands, the conventions.
+4. **[`docs/FEATURES.md`](docs/FEATURES.md)** — what the deck does for a
+   reader, and which modules implement each feature.
+5. **[`CLAUDE.md`](CLAUDE.md)** — the standing protocol for changing this
+   repository, including the invariants and the plan/audit naming convention.
+
+## Set it up and run it
+
+There is **nothing to install**. No build step, no package manager, no
+`node_modules` in the application path.
+
+```bash
+git clone <this repo>
+cd SpringDeck
+
+open index.html            # that is the whole application
+```
+
+Opening it from disk is not a fallback — it is a supported mode and a checked
+invariant. A local server is available if you want one:
+
+```bash
+node tools/dev-server.js   # http://localhost:4173, zero dependencies
+```
+
+**Node is needed only for the checkers in `tools/`**, never to run the deck.
+Any recent Node works; there is no `package.json` because there are no
+dependencies. `tools/run-snippets.js` additionally needs a JDK, which it finds
+itself and names in its output.
+
+## Contributing
+
+Every change to `data/` or the navigation has to pass the validators, and they
+are the entire test suite:
+
+```bash
+node tools/validate-theory.js && node tools/validate-questions.js \
+  && node tools/validate-nav.js && node tools/validate-search.js
+```
+
+Three things worth knowing before your first change:
+
+- **The `<script>` order in `index.html` is the dependency graph.** There are
+  no imports. Adding a data file means adding a tag; a file only on disk is not
+  loaded and not validated.
+- **`tools/validate-nav.js` holds the five mode totals as hand-written
+  numbers.** Changing the corpus means stepping `EXPECTED_TOTALS` by hand in
+  the same commit. That friction is the check working.
+- **`css/themes.css` is the only file allowed a colour literal.** This grep
+  must return nothing:
+
+  ```bash
+  grep -nE '#[0-9a-fA-F]{3,8}\b|rgba?\(' css/*.css | grep -v themes.css
+  ```
+
+Then see [`docs/CODEBASE.md`](docs/CODEBASE.md) for where to look to do a
+common task, and [`CLAUDE.md`](CLAUDE.md) for the full invariant list and the
+commit conventions.
+
+
 ## What is built
 
 **All eleven phases are complete.** Five modes, both corpora, and the two
@@ -19,9 +88,8 @@ passes that check them: every `stdout` pane compiled and executed against a
 real JDK, all 1,446 documentation links followed, all 486 questions read once
 against four judgements, and all 687 theory chapters read chapter by chapter.
 What each pass found — and what it could **not** check — is in
-[`docs/verification-log.md`](docs/verification-log.md),
-[`docs/triage/SUMMARY.md`](docs/triage/SUMMARY.md) and
-[`docs/triage/THEORY.md`](docs/triage/THEORY.md).
+[`docs/audits/`](docs/audits/) — the verification log, the question-bank
+triage and the chapter-by-chapter theory read.
 
 **Questions mode** — all 26 topics, 486 questions, 63 code
 snippets and 19 diagrams, across every one of the eight subject tracks plus
@@ -151,19 +219,6 @@ number would be a sixth number true of nothing, and it would mislead in the
 direction that hurts: somebody who has read every chapter and sat no drill is
 not half ready for anything.
 
-## Running it
-
-There is no build step and no package manager. Open `index.html` from disk and
-it works, including with every CDN blocked — the three script tags are a
-particle background and an animation library, and blocking them costs nothing
-but decoration.
-
-For a local server:
-
-```bash
-node tools/dev-server.js
-```
-
 ## Checking it
 
 The validators are the test suite. Run them before any commit that touches
@@ -233,7 +288,7 @@ The first time `run-snippets --selftest` ran, one of its four probes found a
 real defect in the runner.
 
 What Phase 9 found by running these — and, more usefully, what it could not
-check — is in [`docs/verification-log.md`](docs/verification-log.md).
+check — is in [`docs/audits/audit_1_verification-log.md`](docs/audits/audit_1_verification-log.md).
 
 To see the data layer the way the browser assembles it:
 
@@ -244,36 +299,45 @@ node tools/load-corpus.js
 ## Scope
 
 Java is the only backend language in this deck. That is a decision, not an
-omission — see [`docs/SPRINGDECK-PLAN.md`](docs/SPRINGDECK-PLAN.md) §2.4.
+omission — see [`docs/plans/plan_2_springdeck.md`](docs/plans/plan_2_springdeck.md) §2.4.
 
 DSA practice is deliberately outside it: that needs a judge that runs your code
 against hidden tests, which a static site cannot be.
 
 ## Documentation
 
-**Start here:**
+Everything lives in [`docs/`](docs/). Current-state documents describe the deck
+as it is now; plans and audits are a sequential, numbered record of how it got
+here.
 
-- [`ARCHITECTURE.md`](ARCHITECTURE.md) — the design, the constraint that
-  decided it, and what the shape costs
-- [`CODEBASE.md`](CODEBASE.md) — where everything is and what each file is
-  responsible for
-- [`FEATURES.md`](FEATURES.md) — what the deck does for a reader, and what is
-  still unverified
+**Current state — start here:**
 
-**The record of what was checked:**
+| Document | What it answers |
+|---|---|
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | why the shape is the shape, how the pieces interact, what it costs |
+| [`docs/CODEBASE.md`](docs/CODEBASE.md) | where everything is, entry points, commands, conventions |
+| [`docs/FEATURES.md`](docs/FEATURES.md) | what the deck does, and which modules implement each feature |
 
-- [`docs/verification-log.md`](docs/verification-log.md) — Phase 9: the 58
-  `stdout` claims executed, the 1,446 links followed, and the four things that
-  remain unverified
-- [`docs/triage/SUMMARY.md`](docs/triage/SUMMARY.md) — Phase 10: one read of
-  all 486 questions, with a per-topic file beside it carrying a row per
-  question
-- [`docs/triage/THEORY.md`](docs/triage/THEORY.md) — the chapter-by-chapter read
-  of all 687 theory chapters, 46 drills and 81 predicts, and the fifteen
-  defects it found
+**Plans** — [`docs/plans/`](docs/plans/), named `plan_<N>_<feature-slug>.md`:
 
-**The plan it was built to:**
+| Plan | Status |
+|---|---|
+| [`plan_1_deck-blueprint.md`](docs/plans/plan_1_deck-blueprint.md) — the fixed architecture, generalised to any interview subject | active |
+| [`plan_2_springdeck.md`](docs/plans/plan_2_springdeck.md) — the Java content manifest and the eleven build phases | completed |
 
-- [`docs/DECK-BLUEPRINT.md`](docs/DECK-BLUEPRINT.md) — the architecture, and why it is shaped the way it is
-- [`docs/SPRINGDECK-PLAN.md`](docs/SPRINGDECK-PLAN.md) — what backend interviews ask, and the content manifest that answers it
-- [`CLAUDE.md`](CLAUDE.md) — working notes, commands, invariants
+**Audits** — [`docs/audits/`](docs/audits/), named `audit_<N>_<feature-slug>.md`:
+
+| Audit | Status |
+|---|---|
+| [`audit_1_verification-log.md`](docs/audits/audit_1_verification-log.md) — the `stdout` claims executed, every URL followed | completed |
+| [`audit_2_triage-summary.md`](docs/audits/audit_2_triage-summary.md) — all 486 questions read against four judgements | completed |
+| [`audit_3_other-modes.md`](docs/audits/audit_3_other-modes.md) — the mechanical pass over the other four modes | superseded by `audit_4` |
+| [`audit_4_theory.md`](docs/audits/audit_4_theory.md) — all 687 chapters, 46 drills and 81 predicts read; fifteen defects | completed |
+
+Per-question evidence for `audit_2` is 26 files under
+[`docs/audits/evidence/triage/`](docs/audits/evidence/triage/), one per topic,
+one table row per question.
+
+**Adding a plan or an audit?** Continue the numbering — never restart it — and
+reuse the feature's existing slug if it has one. The convention is stated in
+full in [`CLAUDE.md`](CLAUDE.md).

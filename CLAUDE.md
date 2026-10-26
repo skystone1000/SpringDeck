@@ -5,9 +5,74 @@ Boot backend engineering. No bundler, no package manager, no framework, no
 `npm install`. One `index.html` loads a fixed list of scripts in a fixed order,
 and every file declares one global.
 
-**Read before touching anything:** [`docs/DECK-BLUEPRINT.md`](docs/DECK-BLUEPRINT.md)
-(the architecture, fixed) and [`docs/SPRINGDECK-PLAN.md`](docs/SPRINGDECK-PLAN.md)
+**Read before touching anything:** the three current-state documents named in
+the protocol below. The plans behind them are
+[`docs/plans/plan_1_deck-blueprint.md`](docs/plans/plan_1_deck-blueprint.md)
+(the architecture, fixed) and
+[`docs/plans/plan_2_springdeck.md`](docs/plans/plan_2_springdeck.md)
 (the content manifest and build phases, for this subject).
+
+---
+
+## Standing protocol — read this first
+
+**1. Read the documentation before the source.**
+
+Read [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md),
+[`docs/CODEBASE.md`](docs/CODEBASE.md) and
+[`docs/FEATURES.md`](docs/FEATURES.md) **before** opening any source file.
+They exist so that you do not have to re-derive the shape of the repository
+from 127 data files and 15 application files every session.
+
+**2. Only read the source files the documentation points you to.**
+
+Do not re-scan the tree. `docs/CODEBASE.md` names every folder, every file in
+`js/` and `tools/`, and where to look to do a common task; `docs/FEATURES.md`
+names the modules that implement each feature. Start from the pointer, not
+from `find`.
+
+**3. If you change code, update the doc in the same session.**
+
+When a change affects the architecture, a module's responsibility, or a
+user-facing feature, update the corresponding document **in the same session**
+— surgically, only the sections that changed. Do not rewrite a document to
+accommodate a one-line change, and do not leave the change undocumented for
+later. Later does not arrive; the deck has three separate records of a claim
+going stale because the code moved and the prose did not.
+
+**4. Plans and audits are numbered, and the numbering never restarts.**
+
+| Kind | Location | Pattern |
+|---|---|---|
+| Plan | `docs/plans/` | `plan_<N>_<feature-slug>.md` |
+| Audit | `docs/audits/` | `audit_<N>_<feature-slug>.md` |
+
+- **The slug is the feature name. The number sequences the file.** The number
+  is not a quality ranking and not a priority.
+- **Continue from the highest existing `N` in that directory.** Never reuse a
+  number and never restart the sequence. Each kind has its own continuous
+  numbering space, so `plan_3` and `audit_5` can coexist.
+- **A new plan for an existing feature reuses that feature's slug with a fresh
+  `N`.** Two plans for `dark-mode` are `plan_4_dark-mode.md` and
+  `plan_9_dark-mode.md`, not `dark-mode-v2`.
+- **When a plan supersedes an earlier one for the same feature**, set the older
+  file's `status: superseded` and name the successor in its front matter as
+  `superseded_by:`. See `docs/audits/audit_3_other-modes.md` for the shape.
+- Every plan and audit carries YAML front matter: `title`, `status`
+  (`active` | `completed` | `superseded` | `abandoned`), `last_updated`,
+  `scope`. The three current-state documents carry `title`, `last_updated` and
+  `scope`.
+
+Current highest: **`plan_2`**, **`audit_4`**.
+
+**5. The documentation is the source of truth. If code and docs disagree, say
+so.**
+
+Do not silently follow whichever one you happen to be reading. A disagreement
+between the code and a document is itself a finding — flag it, decide which is
+right, and fix the other one. Every entry in the blind-spot list at the bottom
+of this file is a version of the same failure: something true stopped being
+true and nothing said so.
 
 ---
 
@@ -179,7 +244,7 @@ Where a cross-language comparison earns its place it is **prose in a
 | | Sets: synthesis **4 modules / 46 drills** (tiers 8·12·15·11) · output **11 modules / 81 predicts** (30 `stdout`, 51 not) |
 | **Catalogues** | Both complete and both still held as hard lists in `validate-theory.js`. An invented id is an error; an unwritten one is a warning. There are now none of either |
 | **Search index** | 1,361 entries — questions 486 · theory 687 · synthesis 46 · predict 81 · glossary 61 |
-| **Verified** | 58/58 `stdout` claims executed against OpenJDK 25 · 793 distinct doc URLs, zero errors · **all 687 theory chapters, 46 drills and 81 predicts read** · findings in [`docs/verification-log.md`](docs/verification-log.md) and [`docs/triage/THEORY.md`](docs/triage/THEORY.md) |
+| **Verified** | 58/58 `stdout` claims executed against OpenJDK 25 · 793 distinct doc URLs, zero errors · **all 687 theory chapters, 46 drills and 81 predicts read** · findings in [`docs/audits/audit_1_verification-log.md`](docs/audits/audit_1_verification-log.md) and [`docs/audits/audit_4_theory.md`](docs/audits/audit_4_theory.md) |
 | **Last commit date used** | 2026-10-26 |
 | **Commit cadence** | **Reduced by instruction on 2026-09-03.** Fewer, larger commits — one per unit of work rather than 15–17 a day. The hand-set dates and the ascending-within-a-day rule still hold. |
 
@@ -301,7 +366,7 @@ page — plus 57 rotted URLs.
   through all six branches, and the existence check was wrong: a bare
   `existsSync` is case-insensitive on macOS. Now `existsCaseExact()` in
   `schema.js`, shared with `check-offline.js`.
-- **`docs/verification-log.md` exists**, four phases after the plan asked for
+- **`docs/audits/audit_1_verification-log.md` exists**, four phases after the plan asked for
   it, and its last section is what was *not* checked.
 - **20 routes swept in a fresh tab after 46 data files changed.** 224 external
   links render, none malformed, no horizontal overflow, no `NaN`, no literal
@@ -626,8 +691,8 @@ inline event handler.
   survived every check — including Phase 9, which found and fixed *the
   identical fact* in a predict block two files away, because that one lived in
   a field a tool reads. The only instrument for this class of defect is
-  reading, and the record of the one reading that has happened is
-  `docs/triage/`.
+  reading, and the record of the readings that have happened is
+  `docs/audits/`.
 - **A validator that checks a reference RESOLVES has not checked that a module
   HAS one.** `heap-and-gc` has nine chapters and zero `relatedQuestions`, and
   `validate-theory` is green: it verifies every reference that exists, and a
