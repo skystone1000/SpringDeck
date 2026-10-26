@@ -205,7 +205,7 @@ const locksAndSynchronizersModule = {
                 },
                 {
                     type: 'tip',
-                    html: '<p>On Java 21, structured concurrency (<code>StructuredTaskScope</code>) replaces most uses of shape (a): it forks subtasks, joins them, propagates failure and cancels the rest, with the lifetime bounded by a try-with-resources block. If the target is 21 or later, say so — it is a better answer than a latch for fan-out and join.</p>'
+                    html: '<p>On Java 21 and later, structured concurrency (<code>StructuredTaskScope</code>) replaces most uses of shape (a) — <strong>as a preview feature</strong>, still preview in Java 25, so say so if you offer it: it forks subtasks, joins them, propagates failure and cancels the rest, with the lifetime bounded by a try-with-resources block. If the target is 21 or later, say so — it is a better answer than a latch for fan-out and join.</p>'
                 }
             ],
             docs: [

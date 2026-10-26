@@ -73,7 +73,7 @@ const genericsAndErasureModule = {
                 },
                 {
                     type: 'prose',
-                    html: '<p>The reason is compatibility, and it is worth stating because it makes the design defensible rather than merely regrettable. Java 5 had to introduce generics into an ecosystem where <code>List</code> already existed, was already implemented by thousands of classes, and already appeared in millions of compiled call sites. Erasure let generic and non-generic code interoperate in both directions on the <em>same</em> class file format — a Java 5 <code>List&lt;String&gt;</code> could be passed to a Java 1.4 library, and vice versa. C# made the other choice two years later and could afford to, because it changed its runtime to do it.</p>'
+                    html: '<p>The reason is compatibility, and it is worth stating because it makes the design defensible rather than merely regrettable. Java 5 had to introduce generics into an ecosystem where <code>List</code> already existed, was already implemented by thousands of classes, and already appeared in millions of compiled call sites. Erasure let generic and non-generic code interoperate in both directions on the <em>same</em> class file format — a Java 5 <code>List&lt;String&gt;</code> could be passed to a Java 1.4 library, and vice versa. C# made the other choice about a year later and could afford to, because it changed its runtime to do it.</p>'
                 },
                 {
                     type: 'syntax',

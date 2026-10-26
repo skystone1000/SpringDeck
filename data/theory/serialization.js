@@ -189,7 +189,7 @@ const serializationModule = {
                     type: 'syntax',
                     language: 'java',
                     title: 'Amount and currency together, as a string',
-                    code: '@JsonFormat(shape = JsonFormat.Shape.STRING)\nBigDecimal amount;              // "42.50", not 42.5\n\n// Better still, one type that cannot be used without its currency:\nrecord Money(\n        @JsonFormat(shape = STRING) BigDecimal amount,\n        String currency) {                       // "EUR"\n\n    Money {\n        amount = amount.setScale(2, RoundingMode.HALF_UP);\n    }\n}\n\n// And never this, anywhere near money:\n// new BigDecimal(0.1)   -> 0.1000000000000000055511151231257827\n// new BigDecimal("0.1")  -> 0.1',
+                    code: '@JsonFormat(shape = JsonFormat.Shape.STRING)\nBigDecimal amount;              // "42.50", not 42.5\n\n// Better still, one type that cannot be used without its currency:\nrecord Money(\n        @JsonFormat(shape = STRING) BigDecimal amount,\n        String currency) {                       // "EUR"\n\n    Money {\n        amount = amount.setScale(2, RoundingMode.HALF_UP);\n    }\n}\n\n// And never this, anywhere near money:\n// new BigDecimal(0.1)   -> 0.100000000000000005551115123125782702118158340454101562\n// new BigDecimal("0.1")  -> 0.1',
                     output: {
                         kind: 'trace',
                         lines: [

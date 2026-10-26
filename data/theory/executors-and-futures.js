@@ -447,7 +447,7 @@ const executorsAndFuturesModule = {
                 },
                 {
                     type: 'tip',
-                    html: '<p>If you are on Java 21 or later, mention <code>StructuredTaskScope</code> as the modern answer to fan-out: it makes the parent wait for its children by construction, propagates cancellation when one fails, and removes most of the reason to hand-roll a latch. It is covered in the virtual threads module.</p>'
+                    html: '<p>If you are on Java 21 or later, mention <code>StructuredTaskScope</code> as the modern answer to fan-out — noting that it is still a <strong>preview</strong> feature in Java 25: it makes the parent wait for its children by construction, propagates cancellation when one fails, and removes most of the reason to hand-roll a latch. It is covered in the virtual threads module.</p>'
                 }
             ],
             docs: [

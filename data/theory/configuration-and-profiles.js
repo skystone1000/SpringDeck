@@ -138,7 +138,7 @@ const configurationAndProfilesModule = {
                 },
                 {
                     type: 'tip',
-                    html: '<p>The conversion rule for an environment variable, stated once: uppercase everything, replace every dot and every dash with an underscore, and for a list use the index as its own segment. <code>spring.datasource.max-pool-size</code> becomes <code>SPRING_DATASOURCE_MAXPOOLSIZE</code>. Being able to do that in your head is a small thing that comes up constantly.</p>'
+                    html: '<p>The conversion rule for an environment variable, stated once: uppercase everything, replace every dot with an underscore, <strong>remove</strong> the dashes, and for a list use the index as its own segment. <code>spring.datasource.max-pool-size</code> becomes <code>SPRING_DATASOURCE_MAXPOOLSIZE</code>. Being able to do that in your head is a small thing that comes up constantly.</p>'
                 }
             ],
             docs: [
