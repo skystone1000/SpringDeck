@@ -340,7 +340,7 @@ const threadsAndMemoryModelModule = {
                 },
                 {
                     type: 'tip',
-                    html: '<p>Finish with how you would find it, which is what separates the coursework answer: <em>"In production I would take a thread dump — <code>jcmd &lt;pid&gt; Thread.print</code> — and the JVM detects monitor deadlocks itself and prints a &quot;Found one Java-level deadlock&quot; section naming both threads and both locks. It does not detect deadlocks on ReentrantLock as reliably, which is one argument for keeping to synchronized where either would do."</em></p>'
+                    html: '<p>Finish with how you would find it, which is what separates the coursework answer: <em>"In production I would take a thread dump — <code>jcmd &lt;pid&gt; Thread.print</code> — and the JVM finds the cycle itself and prints a &quot;Found one Java-level deadlock&quot; section naming both threads and both locks. That covers synchronized monitors and ReentrantLock alike — the dump reports the second as waiting for an ownable synchronizer. What it cannot see is a logical deadlock through something that is not a lock: two threads each waiting on the other via a connection pool, a latch or a queue."</em></p>'
                 }
             ],
             docs: [

@@ -452,7 +452,7 @@ const drillsDebugAndReviewModule = {
                     prompt: 'During a rolling deploy, messages written by new instances fail on old ones. The change was one added field. Explain what happened for a Java-serialized payload and for a JSON payload, and give the rule that would have prevented both.',
                     watchFor: [
                         'Not knowing that serialVersionUID is computed from the class shape when it is not declared, so ANY change to the shape changes it',
-                        'Assuming JSON is safe — it is, until FAIL_ON_UNKNOWN_PROPERTIES is left at its default true on the consumer',
+                        'Assuming JSON is safe unconditionally — it is safe only while the consumer tolerates unknown fields. Jackson defaults FAIL_ON_UNKNOWN_PROPERTIES to true and Spring Boot\'s auto-configured mapper turns it off, so which behaviour you have depends on how the mapper was built',
                         'Treating this as a serialization problem rather than as a version-skew problem, which is what it is',
                         'No mention that the consumer must be deployed before the producer for an additive change',
                         'Missing that a required new field is not an additive change at all'

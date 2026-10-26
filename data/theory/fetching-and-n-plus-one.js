@@ -243,12 +243,12 @@ const fetchingAndNPlusOneModule = {
             title: 'Pagination With a Collection Fetch',
             importance: 'must-know',
             summary: 'Hibernate cannot apply LIMIT to a query that joins a collection, so it fetches every row and paginates in memory. It warns, and the warning is usually not read.',
-            interviewAngle: 'A specific, checkable failure with a memorable log line. Recognising HHH000104 and knowing why it happens is a strong signal of real JPA experience.',
+            interviewAngle: 'A specific, checkable failure with a memorable log line. Recognising HHH90003004 and knowing why it happens is a strong signal of real JPA experience.',
             buildsOn: ['entitygraph'],
             blocks: [
                 {
                     type: 'prose',
-                    html: '<p>A collection <code>join fetch</code> produces one SQL row per child, so <code>LIMIT 20</code> would cut off mid-order — twenty <em>rows</em> is not twenty orders. Hibernate cannot express the intent in SQL, so it does the only correct thing available: it runs the query without a limit, materialises <strong>every matching row</strong>, and applies the pagination in Java.</p><p>It says so, at <code>WARN</code>: <code>HHH000104: firstResult/maxResults specified with collection fetch; applying in memory</code>. On a table of ten million orders that line is the difference between a fast endpoint and an <code>OutOfMemoryError</code>.</p>'
+                    html: '<p>A collection <code>join fetch</code> produces one SQL row per child, so <code>LIMIT 20</code> would cut off mid-order — twenty <em>rows</em> is not twenty orders. Hibernate cannot express the intent in SQL, so it does the only correct thing available: it runs the query without a limit, materialises <strong>every matching row</strong>, and applies the pagination in Java.</p><p>It says so, at <code>WARN</code>: <code>HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory</code>. On a table of ten million orders that line is the difference between a fast endpoint and an <code>OutOfMemoryError</code>.</p>'
                 },
                 {
                     type: 'types',
@@ -261,7 +261,7 @@ const fetchingAndNPlusOneModule = {
                 },
                 {
                     type: 'tip',
-                    html: '<p>Search the logs for <code>HHH000104</code> on any JPA codebase you inherit. It is a one-line grep, it is almost always present somewhere, and every occurrence is an endpoint that will fall over at a data volume nobody has reached yet.</p>'
+                    html: '<p>Search the logs for <code>HHH90003004</code> on any JPA codebase you inherit — and for <code>HHH000104</code> as well, which is the code Hibernate 5 used for the same warning. It is a one-line grep, it is almost always present somewhere, and every occurrence is an endpoint that will fall over at a data volume nobody has reached yet.</p>'
                 }
             ],
             docs: [
