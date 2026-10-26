@@ -59,7 +59,7 @@ node tools/check-doc-links.js
 | Tool | Guards | Run it when |
 |---|---|---|
 | `run-snippets.js` | the **58** `stdout` claims — 28 question snippets, 30 predicts — compiled and executed twice each. The other 35 snippets and 51 predicts are `trace` and are not its business | any snippet or its `output.lines` changes |
-| `check-doc-links.js` | the **1,365** `docs[]`, `docHub` and `referenceLinks[]` URLs, 762 distinct: https, no redirect, no meta-refresh stub, `#fragment` present | any link is added or edited; and once a phase regardless, because rot is not caused by a commit |
+| `check-doc-links.js` | the **1,446** `docs[]`, `docHub` and `referenceLinks[]` URLs, 793 distinct: https, no redirect, no meta-refresh stub, `#fragment` present | any link is added or edited; and once a phase regardless, because rot is not caused by a commit |
 
 **Always pass `--selftest` to `run-snippets`.** A runner that always returns
 "matched" and a corpus that is entirely correct print the same thing. Four
@@ -172,15 +172,15 @@ Where a cross-language comparison earns its place it is **prose in a
 | | |
 |---|---|
 | **Phases complete** | **All eleven.** 0 — Skeleton · 1 — The tool chain · 2 — The question bank, core half · 3 — Theory, tracks 1–4 · 4 — The rail and the five modes · 5 — Search · 6 — The question bank, all 26 topics · 7 — Theory, tracks 5–8 and the §5.9 insertions · 8 — The drill and predict catalogues · 9 — Verification · 10 — Documentation and triage |
-| **Next** | Nothing is planned. Phase 10's findings are closed — see the follow-up record below. The one substantial open item is a chapter-by-chapter read of the 687 theory chapters |
+| **Next** | Nothing is planned. The chapter-by-chapter read of the 687 theory chapters is **done** — see the record below. Nothing substantial is open |
 | **Corpus** | Questions: **26 topics, 486 questions**, 63 snippets, 19 diagrams |
 | | Theory: **83 modules, 687 chapters** on the reading path, 2,045 blocks, 61 glossary terms, 35 diagrams, 346 syntax blocks |
 | | Tracks: java-platform 20/163 · spring-core 7/51 · web-api 8/64 · persistence 14/121 · security 6/48 · distributed 11/86 · production 10/86 · craft 7/68 |
 | | Sets: synthesis **4 modules / 46 drills** (tiers 8·12·15·11) · output **11 modules / 81 predicts** (30 `stdout`, 51 not) |
 | **Catalogues** | Both complete and both still held as hard lists in `validate-theory.js`. An invented id is an error; an unwritten one is a warning. There are now none of either |
 | **Search index** | 1,361 entries — questions 486 · theory 687 · synthesis 46 · predict 81 · glossary 61 |
-| **Verified** | 58/58 `stdout` claims executed against OpenJDK 25 · 762 distinct doc URLs, zero errors · findings in [`docs/verification-log.md`](docs/verification-log.md) |
-| **Last commit date used** | 2026-10-21 |
+| **Verified** | 58/58 `stdout` claims executed against OpenJDK 25 · 793 distinct doc URLs, zero errors · **all 687 theory chapters, 46 drills and 81 predicts read** · findings in [`docs/verification-log.md`](docs/verification-log.md) and [`docs/triage/THEORY.md`](docs/triage/THEORY.md) |
+| **Last commit date used** | 2026-10-26 |
 | **Commit cadence** | **Reduced by instruction on 2026-09-03.** Fewer, larger commits — one per unit of work rather than 15–17 a day. The hand-set dates and the ascending-within-a-day rule still hold. |
 
 ### Phase gates recorded
@@ -567,6 +567,44 @@ unknown language (a Kotlin snippet — the Java-only rule holds), disallowed tag
 inline event handler.
 
 ### Known blind spots — recorded now, not discovered in Phase 9
+
+- **NOTHING READS AN ANSWER was half the problem. NOTHING COMPARES TWO CHAPTERS
+  is the other half.** The theory read found three defects that were the corpus
+  contradicting itself, and in each case one of the two statements was already
+  right: `jvm-diagnostics` said `Thread.print` finds `ReentrantLock` deadlocks
+  while `threads-and-memory-model` said it does not; `predict-jpa` used the
+  Hibernate 6 warning code while `fetching-and-n-plus-one` used the Hibernate 5
+  one; four files said Boot disables `FAIL_ON_UNKNOWN_PROPERTIES` while a drill
+  said it is on. **A corpus large enough to contradict itself is large enough to
+  be checked against itself**, and that check is mechanical in a way reading is
+  not — grep for a constant, an error code, a class name, and look at every
+  place it appears. Nothing in `tools/` does it, and it would have found three
+  of the fifteen.
+
+- **A prose claim and a code comment are the same claim, and only one of them
+  looks like a claim.** Four of the fifteen were in `//` comments inside a
+  `syntax` block: "does not compile on a LocalDate", "the message names the
+  VALUE", "every Comparator instance carries this$0", and the `LAG`/`LEAD`
+  aliases. `run-snippets` reads `output.lines` and never the code. A comment
+  asserting what the code does is unverified by construction, and it reads as
+  authoritative precisely because it sits next to the thing it describes.
+
+- **The version-block read was narrower than it said it was.** Phase 10 recorded
+  all 44 blocks read with "No errors found". One was wrong — Hibernate's
+  `@UuidGenerator(style = TIME)` is an RFC 4122 version 1 strategy, not v7 —
+  and the reason it survived is that the pass checked JDK and Spring releases,
+  which are widely known, against memory. A third-party library API is not, and
+  it needs the javadoc opened. **"I checked the version numbers" is two claims:
+  that they were checked, and that the checker knew them.**
+
+- **My own verification of a fix reproduced the bug I was fixing.** The
+  corrected inner-class leak example was first written with
+  `private final boolean descending = true;`. That is a compile-time constant,
+  `javac` folds it, the inner class stops reading its outer, `this$0` is elided
+  again — and `javap` showed no field. The fix had silently reverted to the
+  defect. It is the Phase 9 `final`-constant blind spot, met while fixing
+  something else, one session later. **Verify the fix the same way you verified
+  the defect**, and expect the verification to fail the first time.
 
 - **A viewport of zero makes every overflow check fire and every element an
   offender.** The Phase 10 render check reported 531 elements wider than the

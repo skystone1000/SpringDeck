@@ -1,20 +1,28 @@
 # Triage — theory, synthesis, predict and glossary
 
 The question bank was read question by question; the record is the 26 files
-beside this one. **The other four modes have not had that treatment**, and
-this file is careful about the difference between what was checked and what
-was read.
+beside this one. This file records the **mechanical** pass over the other four
+modes, made on 2026-10-24, and was careful at the time about the difference
+between what had been checked and what had been read.
+
+The read it said was outstanding happened on 2026-10-26. Its record is
+[`THEORY.md`](THEORY.md).
 
 Checked 2026-10-24, against the corpus at that date: 687 chapters across 83
 modules, 46 drills, 81 predicts, 61 glossary terms.
 
 | | Read in full | Checked mechanically |
 |---|---|---|
-| Theory — 687 chapters | ✗ | ✓ |
-| Theory — **44 version blocks, 139 items** | **✓** | ✓ |
-| Synthesis — 46 drills | ✗ | ✓ |
-| Predict — 81 puzzles | ✗ | ✓ |
-| Glossary — 61 terms | ✗ | ✓ |
+| Theory — 687 chapters | **✓ — 2026-10-26, see [`THEORY.md`](THEORY.md)** | ✓ |
+| Theory — **44 version blocks, 139 items** | ✓ — see the correction below | ✓ |
+| Synthesis — 46 drills | **✓ — 2026-10-26** | ✓ |
+| Predict — 81 puzzles | **✓ — 2026-10-26** | ✓ |
+| Glossary — 61 terms | **✓ — harvested from the `definition` blocks, which were read** | ✓ |
+
+> **This file is superseded by [`THEORY.md`](THEORY.md).** It is kept because the two refusals it
+> records are still correct, and because its final section — the one that said the read had not
+> happened — is the reason it did.
+
 
 ---
 
@@ -26,7 +34,13 @@ be wrong and the content whose wrongness matters most. There are 44 of them
 carrying 139 items, which is a bounded set, so it was read in full rather
 than sampled.
 
-**No errors found.** Spot-checked against what is known of each release: JEP
+**No errors found — and that claim was too broad.** The chapter-by-chapter read of
+2026-10-26 found one: `relational-foundations` stated that Hibernate 6.5's
+`@UuidGenerator(style = TIME)` generates UUIDv7 values. It does not — `TIME` is an
+RFC 4122 **version 1** strategy, and `VERSION_7` arrives in Hibernate 7.0. What was
+actually verified below is the JDK and Spring releases, which are widely known; a
+third-party library API was not, and it survived. Spot-checked against what is known of
+each release: JEP
 491 removing `synchronized` pinning in Java 24, JEP 486 disabling the Security
 Manager in 24, JEP 490 removing non-generational ZGC in 24 after JEP 474 made
 generational the default in 23, JEP 400 making UTF-8 the default charset in
@@ -113,16 +127,19 @@ absent because the trace is doing its job.
 | non-`stdout` predicts with no `verification` | **0** of 51 |
 | glossary terms duplicated, empty, or under 60 characters | **0** of 61 |
 
-## What has NOT been done, stated plainly
+## What HAD not been done — now done
 
-**687 chapters, 46 drills, 81 predicts and 61 glossary terms have not been
-read for correctness.** What has happened is a full read of the 44 version
-blocks, a set of mechanical checks over everything, and two flags investigated
-and refused. That is a real pass and it is not the pass the question bank got.
+This section used to read:
 
-The question-bank read found exactly one wrong answer in 486. If that rate
-holds, there is roughly one wrong claim somewhere in the 687 chapters and
-nothing here would have found it — the version blocks are where the *dated*
-claims live, and an undated wrong claim looks like every other sentence.
+> **687 chapters, 46 drills, 81 predicts and 61 glossary terms have not been read for
+> correctness.** ... **A chapter-by-chapter read is the outstanding work on this deck.**
 
-**A chapter-by-chapter read is the outstanding work on this deck.**
+It happened on 2026-10-26 and the record is [`THEORY.md`](THEORY.md). It found **fifteen defects**,
+four of them proved by compiling or executing the claim.
+
+The prediction this file made was: *"The question-bank read found exactly one wrong answer in 486.
+If that rate holds, there is roughly one wrong claim somewhere in the 687 chapters and nothing here
+would have found it."* The rate did not hold — it was about fifteen times higher — and the reason
+is the one the prediction missed. The question bank is mostly prose about judgement, which does not
+rot. The theory corpus is where the version numbers, the JEP references and the third-party APIs
+live, and those do.

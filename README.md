@@ -16,11 +16,12 @@ Five modes, two corpora, one page:
 
 **All eleven phases are complete.** Five modes, both corpora, and the two
 passes that check them: every `stdout` pane compiled and executed against a
-real JDK, all 1,365 documentation links followed, and all 486 questions read
-once against four judgements. What each pass found — and what it could **not**
-check — is in
-[`docs/verification-log.md`](docs/verification-log.md) and
-[`docs/triage/SUMMARY.md`](docs/triage/SUMMARY.md).
+real JDK, all 1,446 documentation links followed, all 486 questions read once
+against four judgements, and all 687 theory chapters read chapter by chapter.
+What each pass found — and what it could **not** check — is in
+[`docs/verification-log.md`](docs/verification-log.md),
+[`docs/triage/SUMMARY.md`](docs/triage/SUMMARY.md) and
+[`docs/triage/THEORY.md`](docs/triage/THEORY.md).
 
 **Questions mode** — all 26 topics, 486 questions, 63 code
 snippets and 19 diagrams, across every one of the eight subject tracks plus
@@ -219,7 +220,7 @@ hash order or thread interleaving can match once by luck. The other 86 output
 panes are `trace`, which is prose about behaviour that no runner can confirm,
 and the summary counts them out loud rather than passing over them.
 
-`check-doc-links.js` checks all 1,365 documentation URLs — 762 distinct. Not
+`check-doc-links.js` checks all 1,446 documentation URLs — 793 distinct. Not
 just the status: it reads the body, because a page can answer 200 and bounce
 the reader elsewhere from a `<meta http-equiv="refresh">`, and four of this
 deck's links were doing exactly that. It also checks that a cited `#fragment`
@@ -262,11 +263,14 @@ against hidden tests, which a static site cannot be.
 **The record of what was checked:**
 
 - [`docs/verification-log.md`](docs/verification-log.md) — Phase 9: the 58
-  `stdout` claims executed, the 1,365 links followed, and the four things that
+  `stdout` claims executed, the 1,446 links followed, and the four things that
   remain unverified
 - [`docs/triage/SUMMARY.md`](docs/triage/SUMMARY.md) — Phase 10: one read of
   all 486 questions, with a per-topic file beside it carrying a row per
   question
+- [`docs/triage/THEORY.md`](docs/triage/THEORY.md) — the chapter-by-chapter read
+  of all 687 theory chapters, 46 drills and 81 predicts, and the fifteen
+  defects it found
 
 **The plan it was built to:**
 
