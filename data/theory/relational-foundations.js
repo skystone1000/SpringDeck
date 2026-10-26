@@ -191,7 +191,8 @@ const relationalFoundationsModule = {
                     title: 'Where UUIDv7 support stands',
                     items: [
                         { version: 'RFC 9562', state: 'is', html: '<p>Published 2024, obsoleting RFC 4122. Defines versions 6, 7 and 8; <strong>v7 is the time-ordered one</strong> and the one to name.</p>' },
-                        { version: 'Hibernate 6.5', state: 'changed', html: '<p><code>@UuidGenerator(style = TIME)</code> generates UUIDv7-style values, so the application can produce them without a library.</p>' },
+                        { version: 'Hibernate 6.x', state: 'was', html: '<p><code>@UuidGenerator</code> offered <code>AUTO</code>, <code>RANDOM</code> and <code>TIME</code> only, and <code>TIME</code> is <em>not</em> v7 — its javadoc describes a time-based strategy consistent with RFC 4122 <strong>version 1</strong>, with an IP address in place of the MAC address.</p>' },
+                        { version: 'Hibernate 7.0', state: 'changed', html: '<p><code>Style.VERSION_6</code> and <code>Style.VERSION_7</code> arrive, both marked <code>@Incubating</code>. <code>@UuidGenerator(style = VERSION_7)</code> is how Hibernate produces a time-ordered UUID without a library.</p>' },
                         { version: 'PostgreSQL 18', state: 'changed', html: '<p><code>uuidv7()</code> as a built-in function. Before it, an extension or application-side generation was needed.</p>' }
                     ]
                 },
