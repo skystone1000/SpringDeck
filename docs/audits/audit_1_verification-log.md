@@ -1,3 +1,13 @@
+---
+title: Verification log — Phase 9
+status: completed
+last_updated: 2026-10-16
+scope: >
+  Executing the stdout claims against a real JDK and following every
+  documentation URL. Records eight defects found, and closes by naming what it
+  could not check.
+---
+
 # Verification log — Phase 9
 
 What was checked, how, what it found, and — at the end, deliberately —

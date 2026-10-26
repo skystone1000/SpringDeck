@@ -1,19 +1,84 @@
+---
+title: Codebase
+last_updated: 2026-10-26
+scope: >
+  Directory tree with the responsibility of every folder and file, the entry
+  points, the build and run commands, naming and code conventions, and where
+  to look to do common tasks.
+---
+
 # Codebase
 
 Where everything is and what it is responsible for. For *why* the shape is
-what it is, see [`ARCHITECTURE.md`](ARCHITECTURE.md).
+what it is, see [`ARCHITECTURE.md`](ARCHITECTURE.md); for what it does for a
+reader, see [`FEATURES.md`](FEATURES.md).
 
 ```
 index.html          145 script tags — 3 optional CDN, 127 data, 15 application
 css/       2,740 lines   7 stylesheets, loaded in order
 data/                   127 files — two corpora and three registries
 js/        5,049 lines  15 files, app.js last
-tools/     3,495 lines   7 validators plus a corpus loader, a schema and a server
-docs/                   the plan, the blueprint, the verification log, 27 triage files
+tools/     3,639 lines   7 checkers plus a corpus loader, a schema and a server
+docs/                   3 current-state docs, 2 plans, 4 audits, 26 evidence files
 assets/img/             empty on purpose — see its README
 ```
 
 ---
+
+## Entry points
+
+| Entry point | What it is |
+|---|---|
+| `index.html` | the only HTML file. Opening it is the whole application |
+| `js/app.js` → `initApp()` | the one function that starts everything, on `DOMContentLoaded`. Loaded last |
+| `data/modes.js` | the mode registry. Read this before any `js/` file |
+| `tools/load-corpus.js` | the entry point for every Node tool — it is how the data layer is read outside a browser |
+
+## Running it
+
+There is **no build step, no package manager and no install**. Node is needed
+only for the checkers in `tools/`, and they have zero dependencies.
+
+```bash
+# Run it — either of these works.
+open index.html                 # straight from disk; this must always work
+node tools/dev-server.js        # http://localhost:4173, zero dependencies
+
+# Before any commit touching data/ or the navigation:
+node tools/validate-theory.js && node tools/validate-questions.js \
+  && node tools/validate-nav.js && node tools/validate-search.js
+
+# Before any commit touching index.html, the stylesheets or the load order:
+node tools/check-offline.js
+
+# Slower — one needs a JDK, the other the network. Not in the pre-commit chain.
+node tools/run-snippets.js --selftest
+node tools/check-doc-links.js
+
+# The invariant grep: this must return nothing.
+grep -nE '#[0-9a-fA-F]{3,8}\b|rgba?\(' css/*.css | grep -v themes.css
+```
+
+## Conventions
+
+- **One file, one global, declared with `const`.** No IIFE returns to a
+  namespace object, no `window.X =` except the handful `app.js` exports by name
+  at the bottom for later-loaded files.
+- **Nothing runs at parse time** except that `const` and the four
+  `router.register` calls. Behaviour starts from `initApp()`.
+- **Data files are named after their id.** `data/collections.js` declares the
+  topic whose `id` is `collections`; `data/theory/hashmap-internals.js` declares
+  the module whose `id` is `hashmap-internals`. The validators rely on it.
+- **Ids are kebab-case.** `tools/schema.js` exports the `KEBAB` regex and both
+  content validators reject anything else.
+- **Colour is a token, never a literal**, outside `css/themes.css`.
+- **Every `localStorage` access is inside a `try/catch`.** `check-offline.js`
+  counts them and fails if one is bare.
+- **Authored HTML stays inside a fixed tag subset**, and `<img>` is outside it —
+  figures arrive as structured `images[]` data so a validator can check the path.
+- **A field is either escaped or it is markup, and the two are declared in
+  separate tables** in `tools/schema.js`. A `<code>` tag written into an escaped
+  field renders as literal angle brackets and nothing fails.
 
 ## `index.html`
 
@@ -148,7 +213,7 @@ thing to maintain.
 | `validate-search.js` | 6 checks over the search index — the only one that reads a file out of `js/` |
 | `check-offline.js` | the `file://` invariant: local references case-exact, remote optional, `localStorage` guarded |
 | `run-snippets.js` | compiles and runs the 58 `stdout` claims. `--selftest` first |
-| `check-doc-links.js` | 1,365 documentation URLs. `--selftest` needs no network |
+| `check-doc-links.js` | 1,446 documentation URLs, 793 distinct. `--selftest` needs no network |
 | `dev-server.js` | zero-dependency static server |
 
 Before any commit touching `data/` or the navigation:
@@ -166,13 +231,25 @@ own author only afterwards.
 
 ## `docs/`
 
+Three current-state documents, then plans and audits under a sequential
+naming convention. Every file carries YAML front matter.
+
 | File | What it is |
 |---|---|
-| `DECK-BLUEPRINT.md` | the architecture, fixed. Read before touching anything |
-| `SPRINGDECK-PLAN.md` | the content manifest and the eleven build phases |
-| `verification-log.md` | what Phase 9 checked, what it found, and what it could **not** check |
-| `triage/SUMMARY.md` | the Phase 10 read of all 486 questions |
-| `triage/<topic-id>.md` | 26 files, one per topic, one table row per question |
+| `ARCHITECTURE.md` | why the shape is the shape, and what it costs |
+| `CODEBASE.md` | this file — where everything is |
+| `FEATURES.md` | what the deck does for a reader, and what is still unverified |
+| `plans/plan_1_deck-blueprint.md` | the architecture, fixed. Read before touching anything |
+| `plans/plan_2_springdeck.md` | the content manifest and the eleven build phases |
+| `audits/audit_1_verification-log.md` | executing the `stdout` claims and following every URL |
+| `audits/audit_2_triage-summary.md` | the read of all 486 questions |
+| `audits/audit_3_other-modes.md` | the mechanical pass over the other four modes — **superseded** |
+| `audits/audit_4_theory.md` | the chapter-by-chapter read of all 687 chapters |
+| `audits/evidence/triage/<topic-id>.md` | 26 files, one per topic, one table row per question |
+
+**Numbering continues; it never restarts.** A new plan is
+`plans/plan_3_<feature-slug>.md`, a new audit `audits/audit_5_<feature-slug>.md`.
+The slug names the feature and the number sequences it — see `CLAUDE.md`.
 
 ## Where to start reading
 

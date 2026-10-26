@@ -1,3 +1,12 @@
+---
+title: Features
+last_updated: 2026-10-26
+scope: >
+  Every user-facing feature, what it does, and which modules implement it end
+  to end. Closes with what is verified, what is not, and what is deliberately
+  absent.
+---
+
 # Features
 
 What the deck does for someone preparing for a Java or Spring Boot backend
@@ -27,6 +36,12 @@ snippet or a diagram.
 - **Progress is per question**, keyed `topicId:questionId`, and the sidebar
   count, the header bar and the rail meter all follow a toggle.
 
+**Implemented by** `js/app.js` (`handleQuestions`, `renderTopic`, the tier
+chips, the cram banner) · `data/<topic-id>.js` × 26 · `js/progress.js`
+(`questions` store, keyed `topicId:questionId`) · `js/navigation.js` (`?tier=`
+and `?cram` in `location.search`) · `js/code-highlight.js` and `js/diagrams.js`
+for snippet and figure rendering.
+
 ### 2 · Theory — `#theory`
 
 **687 chapters across 83 modules and 8 subject tracks**, in a global reading
@@ -45,12 +60,23 @@ puzzles and version blocks.
 - **Chapters link to the questions that drill them**, and the questions link
   back through search.
 
+**Implemented by** `js/theory.js` (the mode and all twelve block renderers) ·
+`data/theory/<module>.js` × 83 · `data/theory/index.js` (reading order,
+`modulesInTrack`) · `data/index.js` (the shared track registry that gives a
+module its hue) · `js/sidebar.js` (`tracks` shape) · `js/progress.js`
+(`theory` store).
+
 ### 3 · Synthesis — `#synthesis`
 
 **46 design and implementation drills across four tiers**, from machine-coding
 exercises through system design, focused implementation, and debug-and-review.
 A drill is a prompt, a set of things to watch for, and — in tier 3 — a sketch
 of the shape a good answer takes.
+
+**Implemented by** `js/synthesis.js`, which renders `drill` blocks using
+*theory's* renderer rather than one of its own · `data/theory/sets/drills-*.js`
+× 4 · `data/theory/index.js` (`blocksOfTypeInTrack`) · `js/sidebar.js` (`sets`
+shape).
 
 ### 4 · Predict — `#predict`
 
@@ -68,12 +94,23 @@ JDK and requires the two runs to agree with each other before comparing either
 to the corpus. The other 51 carry a `verification` string naming the engine
 and version they were checked against.
 
+**Implemented by** `js/predict.js`, which reuses theory's renderer **and its
+binder**, so a verdict recorded here and one recorded on the same puzzle inside
+a chapter are the same write · `data/theory/sets/predict-*.js` × 11 ·
+`js/progress.js` (`predict` store, a **map** rather than a set) ·
+`tools/run-snippets.js` for the 30 `stdout` claims.
+
 ### 5 · Glossary — `#glossary`
 
 **61 terms across 18 initials.** Every one is **harvested, never authored** —
 each entry is a definition block that already lives in the chapter that
 teaches it, so every term carries a link back to where it is explained in
 context.
+
+**Implemented by** `js/glossary.js`, which harvests every `definition` block
+out of the theory corpus at run time — there is no glossary corpus ·
+`data/theory/index.js` (`blocksOfTypeInTrack`) · `js/sidebar.js` (`alphabet`
+shape) · `js/progress.js` (`glossary` store).
 
 ## Search
 
@@ -91,6 +128,11 @@ drills, 81 predicts, 61 glossary terms.
 - Searching `List<String>` matches the decoded text and highlights it
   correctly in both themes.
 
+**Implemented by** `js/search-index.js` — which builds the entry list and
+ranks, and **touches no DOM**, so `tools/validate-search.js` can load it into a
+Node `vm` and check the real ranking functions — and `js/search.js`, which owns
+the panel, the input, the arrow keys and the escaping, and nothing else.
+
 ## Progress that means something
 
 Five independent counters, one per mode, each counting its own noun:
@@ -104,6 +146,11 @@ because that number would be a lie.
 Everything is stored in `localStorage`, every access is inside a `try/catch`,
 and nothing leaves your machine.
 
+**Implemented by** `js/progress.js` (five stores, a subscriber list, no
+aggregate) · `data/modes.js` (each mode declares its own `progressNoun`, `unit`
+and `storageKey`) · `js/rail.js` (the meter, one subscription for all five
+modes).
+
 ## Reading it anywhere
 
 - **Open `index.html` from a disk and it works.** No server, no build, no
@@ -114,7 +161,7 @@ and nothing leaves your machine.
   line numbers, diagrams still draw, and the console stays clean.
 - **Both themes are first-class**, and the theme is applied before the body
   parses, so there is no flash.
-- **It prints.** `print.css` hides the line gutter so a wrapped code line
+- **It prints.** `css/print.css` hides the line gutter so a wrapped code line
   cannot misnumber the rest of the block.
 - **Every route is shareable.** `#questions/collections?tier=must-know&cram`
   is a link to exactly what you were looking at.
@@ -132,16 +179,20 @@ Nothing here is a claim the toolchain has not checked, except where this says
 otherwise.
 
 - **58 `stdout` claims execute and match**, twice each, against OpenJDK 25.
-- **1,365 documentation links checked** — status, redirects, meta-refresh
-  stubs and fragment anchors. Zero errors.
+- **1,446 documentation links checked**, 793 distinct — status, redirects,
+  meta-refresh stubs and fragment anchors. Zero errors.
 - **All 486 questions have been read once** against four judgements: is it
   true, is it asked, is it at the right tier, does it have a reference. One
   answer was wrong and is fixed. The record is
-  [`docs/triage/SUMMARY.md`](docs/triage/SUMMARY.md).
+  [`audits/audit_2_triage-summary.md`](audits/audit_2_triage-summary.md).
 - **Every question carries a reference** — all 486, not just the must-know
   ones, which is what the rule used to require.
-- **No two topics ask the same question in the same words**, and every version
-  block in the theory corpus has been read.
+- **All 687 theory chapters, 46 drills and 81 predicts have been read**, module
+  by module. Fifteen defects were found and fixed; four of them needed the
+  claim compiled or executed to see at all, because the prose around them was
+  internally consistent and wrong. The record is
+  [`audits/audit_4_theory.md`](audits/audit_4_theory.md).
+- **No two topics ask the same question in the same words.**
 
 **Still unverified, and stated because a features list that only lists
 successes is a claim about the whole deck:**
@@ -152,15 +203,22 @@ successes is a claim about the whole deck:**
 - **Whether a cited page still says what it is cited for.** The links resolve;
   a machine compared every page title to the deck's own, which is a proxy and
   not a reading.
-- **687 theory chapters, 46 drills and 61 glossary terms have not been read
-  chapter by chapter.** The question bank was; the other four modes have had a
-  lesser pass — every one of the 44 version blocks read in full, mechanical
-  checks over everything, and two flags raised and refused. That is real and it
-  is not the same thing.
+- **Whether every version block is right.** All 44 were read, and the chapter
+  read then found one of them wrong — a Hibernate API detail that was checked
+  against memory rather than against a javadoc. The others were checked against
+  JDK and Spring releases, which are widely known. That is a narrower claim than
+  "read in full" sounded.
 - **`file://` opened by hand.** The mechanical half is checked, and the
   CDN-blocked half is now demonstrated, so what is left is only whether a
   browser's `file://` restrictions affect a page that uses no ES modules and no
   network APIs.
+
+**Implemented by** `index.html` (the inline `<head>` theme script, and the
+ordered script tags) · `js/theme.js` · `css/themes.css` (the whole token layer)
+· `css/print.css` (`media="print"`; hides the gutter) · `js/navigation.js`
+(hash routes, legacy normalisation, query-string survival) ·
+`tools/check-offline.js`, which is what turns "it works from disk" from a claim
+into a check.
 
 ## Deliberately not here
 

@@ -1,3 +1,13 @@
+---
+title: Triage — the theory corpus, read chapter by chapter
+status: completed
+last_updated: 2026-10-26
+scope: >
+  All 98 theory modules read in full: 687 chapters, 46 drills, 81 predicts.
+  Fifteen defects found and fixed, four proved by compiling or executing the
+  claim.
+---
+
 # Triage — the theory corpus, read chapter by chapter
 
 `OTHER-MODES.md` recorded, on 2026-10-24, that **687 chapters, 46 drills, 81 predicts and 61

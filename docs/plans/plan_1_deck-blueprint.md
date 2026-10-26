@@ -1,3 +1,13 @@
+---
+title: Deck Blueprint — the generalised build prompt
+status: active
+last_updated: 2026-08-21
+scope: >
+  The fixed architecture: every file, schema, invariant, navigation and
+  progress model, generalised so the same vessel can carry any interview
+  subject. Authoritative on structure; says nothing about Java content.
+---
+
 # The Deck Blueprint — a generalised prompt for building a topic interview-prep site
 
 > **What this is.** A complete, self-contained build prompt. Handed to an agent

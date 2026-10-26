@@ -1,3 +1,15 @@
+---
+title: Triage — theory, synthesis, predict and glossary (mechanical pass)
+status: superseded
+superseded_by: audits/audit_4_theory.md
+last_updated: 2026-10-26
+scope: >
+  The mechanical pass over the four modes the question-bank read did not
+  cover, plus two findings raised and refused. Superseded for the read itself
+  by audit_4_theory.md; kept for the refusals and the version-block
+  correction.
+---
+
 # Triage — theory, synthesis, predict and glossary
 
 The question bank was read question by question; the record is the 26 files

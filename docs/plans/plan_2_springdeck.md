@@ -1,3 +1,13 @@
+---
+title: SpringDeck — build and preparation plan
+status: completed
+last_updated: 2026-10-21
+scope: >
+  The topic prompt the blueprint asks for: what Java and Spring Boot
+  interviews ask, the content manifest, and the eleven build phases. All
+  eleven phases are complete.
+---
+
 # SpringDeck — Build & Preparation Plan
 
 **Subject:** Backend Engineering with Java and Spring Boot

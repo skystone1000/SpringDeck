@@ -1,3 +1,12 @@
+---
+title: Architecture
+last_updated: 2026-10-26
+scope: >
+  System design: the constraint that decided the shape, how the components
+  interact, data and control flow, the three external dependencies, and the
+  key decisions with their reasoning and their cost.
+---
+
 # Architecture
 
 SpringDeck is a single-page interview-preparation deck for Java and Spring
@@ -53,6 +62,48 @@ The consequence to keep in mind: **reordering scripts to "fix" a reference
 does nothing and can break the data layer**, where order genuinely matters
 because `data/index.js` reads the topic globals and `data/modes.js` reads
 both corpora.
+
+## Control flow: page load to rendered route
+
+Nothing runs at parse time except `const` assignments and four
+`router.register` calls. All behaviour starts from one function.
+
+```
+<head> inline script          stamps data-theme on <html> before <body> parses
+                              — this is why there is no flash of the wrong theme
+  |
+145 <script> tags parsed      3 CDN (optional) → 127 data → 15 js
+  |                           each declares one global; theory.js, synthesis.js,
+  |                           predict.js and glossary.js also call
+  |                           router.register() at parse time
+  |
+DOMContentLoaded → initApp()  js/app.js, the last file loaded
+  |
+  ├─ initTheme()              wires the switch to the already-applied theme
+  ├─ initBackground()         three-bg.js; bails silently if THREE is absent
+  ├─ bindShell()              hamburger, search trigger, global keydown
+  ├─ progressStore.subscribe  sidebar counts follow question writes
+  ├─ rail.start()             renders the five modes from data/modes.js
+  ├─ router.onAny(...)        rail follows every route; sidebar re-shapes
+  ├─ router.register(         the fifth handler — the other four registered
+  │    'questions', ...)      themselves at parse time
+  └─ router.start()           binds hashchange, then dispatches the current hash
+```
+
+**A route change is then one path, every time.** `router.dispatch` parses
+`location.hash`, normalises a legacy bare segment with `replaceState`, resolves
+the mode, runs the `onAny` subscribers — rail meter, sidebar shape — and calls
+that mode's registered handler. The handler renders into `#main` and nothing
+else in the application knows which mode is on screen except through
+`document.documentElement.dataset.mode`.
+
+**Writes flow the other way through one store.** A card toggle calls
+`progressStore.toggle(mode, key)`, which writes `localStorage` inside a
+`try/catch` and notifies its subscribers. The rail meter and the sidebar counts
+are subscribers; neither is called directly by the thing that changed, and
+neither knows about the other. That is why answering a question in Questions
+mode does not repaint the Theory meter behind it — `rail.js` compares the
+changed mode against the one on screen before touching the DOM.
 
 ## Two corpora, deliberately not views of each other
 
@@ -187,7 +238,7 @@ and the drift would be silent.
 | `validate-search.js` | 6 — route resolution, ranking, glossary slugs, SQL identifiers |
 | `check-offline.js` | local references case-exact, remote ones optional, `localStorage` guarded |
 | `run-snippets.js` | the 58 `stdout` claims, compiled and executed twice each |
-| `check-doc-links.js` | 1,365 URLs — status, redirects, meta-refresh stubs, fragments |
+| `check-doc-links.js` | 1,446 URLs, 793 distinct — status, redirects, meta-refresh stubs, fragments |
 
 **`validate-nav.js` holds the five mode totals as hand-written numbers.**
 Changing the corpus means changing `EXPECTED_TOTALS` in the same commit. If
@@ -211,6 +262,9 @@ Stated plainly, because every one of these is a real price:
 - **A CSS custom-property typo is silent.** `var(--typo)` is an unset
   property, not an error. The colour grep cannot see it and no validator reads
   CSS. One shipped in Phase 2 and was found by looking at the page.
-- **The validators cannot read prose.** They check structure. Phase 10 read
-  all 486 questions by hand and found one answer wrong that every tool had
-  passed; see [`docs/triage/SUMMARY.md`](docs/triage/SUMMARY.md).
+- **The validators cannot read prose.** They check structure. The question
+  bank was read by hand and one answer was wrong that every tool had passed
+  ([`audits/audit_2_triage-summary.md`](audits/audit_2_triage-summary.md)); the
+  theory corpus was read chapter by chapter and fifteen more were found, four
+  of which needed compiling or executing the claim to see at all
+  ([`audits/audit_4_theory.md`](audits/audit_4_theory.md)).

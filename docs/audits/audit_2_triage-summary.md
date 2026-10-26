@@ -1,3 +1,13 @@
+---
+title: Triage summary — all 26 topics, 486 questions
+status: completed
+last_updated: 2026-10-24
+scope: >
+  One read of every question in the question bank against four judgements: is
+  it true, is it asked, is it at the right tier, does it have a reference.
+  Per-question evidence in audits/evidence/triage/.
+---
+
 # Triage summary — all 26 topics, 486 questions
 
 One read of every question in the deck against four judgements: **is it
